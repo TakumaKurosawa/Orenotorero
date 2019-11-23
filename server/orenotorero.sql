@@ -44,6 +44,7 @@ CREATE TABLE `kanban` (
     `id` int AUTO_INCREMENT NOT NULL ,
     `board_id` int  NOT NULL ,
     `title` string  NOT NULL ,
+    `position` int  NOT NULL ,
     PRIMARY KEY (
         `id`
     )
@@ -55,6 +56,7 @@ CREATE TABLE `card` (
     `title` string  NOT NULL ,
     `describe` string  NULL ,
     `deadline` datetime  NULL ,
+    `position` int  NOT NULL ,
     PRIMARY KEY (
         `id`
     )
