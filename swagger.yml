@@ -7,6 +7,14 @@ host: "localhost:8080"
 tags:
 -   name: "user"
     description: "ユーザ関連API"
+-   name: "board"
+    description: "ボード関連API"
+-   name: "kanban"
+    description: "カンバン関連API"
+-   name: "card"
+    description: "カード関連API"
+-   name: "utility"
+    description: "ユーティリティ関連API"
 
 schemes:
 - "http"
@@ -85,6 +93,419 @@ paths:
                     "schema":
                         "$ref": "#/definitions/UserCreateResponse"
 
+    /board:
+      get:
+          tags:
+          - "board"
+          summary: "ボード情報取得API"
+          description: "ユーザに紐づくボードの一覧を取得します。"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+          responses:
+              200:
+                  "description": "A successful response."
+                  "schema":
+                      "$ref": "#/definitions/BoardGetResponse"
+
+      post:
+            tags:
+            - "board"
+            summary: "ボード作成API"
+            description: "ボード情報の新規作成をします。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/BoardCreateRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+    /board/publish:
+      put:
+          tags:
+          - "board"
+          summary: "ボードの公開・非公開変更API"
+          description: "ボードの公開情報を変更する処理を行うAPI"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/BoardChangePublishRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+
+    board/invite:
+      post:
+            tags:
+            - "board"
+            summary: "ボード招待メール送信API"
+            description: "ボードへの招待リンクをメールにて送信します。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/BoardSendInvitationMailRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+    /kanban:
+      get:
+          tags:
+          - "kanban"
+          summary: "カンバン＆カード一覧情報取得API"
+          description: "ボードに紐づくカンバンとカードの一覧を取得します。"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "header"
+                name: "kanban-id"
+                description: "カンバンID"
+                required: true
+                type: "integer"
+          responses:
+              200:
+                  "description": "A successful response."
+                  "schema":
+                      "$ref": "#/definitions/KanbanGetResponse"
+
+      post:
+            tags:
+            - "kanban"
+            summary: "カンバン作成API"
+            description: "カンバン情報の新規作成をします。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/KanbanCreateRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+      delete:
+            tags:
+            - "kanban"
+            summary: "カンバン削除API"
+            description: "カンバンデータ1件の削除をします。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/KanbanDeleteRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+      put:
+          tags:
+          - "kanban"
+          summary: "カンバンのタイトル変更API"
+          description: "カンバンのタイトルを変更する処理を行うAPI"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/KanbanChangeTitleRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+
+    /kanban/position:
+      put:
+          tags:
+          - "kanban"
+          summary: "カンバンポジション変更API"
+          description: "カンバンの位置が変更される度に呼び出されるAPI。\nカンバンのポジションを変更する。"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/KanbanChangePositionRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+
+    /card:
+      post:
+            tags:
+            - "card"
+            summary: "カード作成API"
+            description: "カード情報の新規作成をします。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/CardCreateRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+      put:
+          tags:
+          - "card"
+          summary: "カードのタイトル変更API"
+          description: "カードのタイトルを変更する処理を行うAPI"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/CardChangeTitleRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+
+
+    /card/file:
+      post:
+            tags:
+            - "card"
+            summary: "ファイル添付API"
+            description: "カード情報にファイルを添付します。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/CardAttachFileRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+    /card/deadline:
+      put:
+            tags:
+            - "card"
+            summary: "期限情報追加＆変更API"
+            description: "カードの期限情報を追加・変更します。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/CardChangeDeadlineRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+
+    /card/position:
+      put:
+          tags:
+          - "card"
+          summary: "カードポジション変更API"
+          description: "カードの位置が変更される度に呼び出されるAPI。\nカードのポジションを変更する。"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/CardChangePositionRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+
+    /email/check:
+      put:
+          tags:
+          - "utility"
+          summary: "アカウント存在チェックAPI"
+          description: "ユーザがメールアドレスを入力する度に呼び出されるAPI。\n使って良いメールアドレスかを確認します。"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/EmailCheckRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+                  "schema":
+                      "$ref": "#/definitions/EmailCheckResponse"
+
+    /img:
+      put:
+          tags:
+          - "utility"
+          summary: "背景画像アップロードAPI"
+          description: "背景画像に使う画像アップロードを行うAPI"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/ImgUploadRequest"
+          responses:
+              200:
+                  "description": "A successful response."
+                  "schema":
+                      "$ref": "#/definitions/ImgUploadResponse"
+
 definitions:
     LoginRequest:
         type: "object"
@@ -145,6 +566,275 @@ definitions:
                 type: "string"
                 description: "jwtトークン"
                 example: "fkjfejeifeisajkljljfdklfdkliefkldjklf"
+
+    BoardGetResponse:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+                type: "integer"
+                description: "ボードID"
+                example: 1
+            title:
+                type: "string"
+                description: "ボードタイトル"
+                example: "TODOリスト"
+            img:
+                type: "string"
+                description: "S3のURL"
+                example: "https://aws.s3.image.com"
+            publish:
+                type: boolean
+                description: "公開・非公開情報"
+                example: false
+            author:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                        type: "string"
+                        description: "ユーザID"
+                        example: "kdfjaL343kjfdlkalkdkfa"
+                    img:
+                        type: "string"
+                        description: "S3のURL"
+                        example: "https://aws.s3.hoge.com"
+                    name:
+                        type: "string"
+                        description: "ユーザ名"
+                        example: "錦織圭"
+
+    BoardCreateRequest:
+        type: "object"
+        properties:
+            title:
+                type: "string"
+                description: "ボードタイトル"
+                example: "TODOリスト"
+            img:
+                type: "string"
+                description: "S3のURL"
+                example: "https://aws.s3.image.com"
+
+    BoardChangePublishRequest:
+        type: "object"
+        properties:
+            publish:
+                type: boolean
+                description: "公開・非公開情報"
+                example: false
+            id:
+                type: "integer"
+                description: "ボードID"
+                example: 1
+
+    BoardSendInvitationMailRequest:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                description: "ボードID"
+                example: 1
+            email:
+                type: "string"
+                description: "メールアドレス"
+                example: "example@gmail.com"
+            message:
+                type: "string"
+                description: "招待メッセージ"
+                example: "一緒にTrelloで編集しよう！"
+
+    KanbanGetResponse:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+                type: "integer"
+                description: "カンバンID"
+                example: 1
+            title:
+                type: "string"
+                description: "カンバンタイトル"
+                example: "今週やること"
+            card:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                        type: "integer"
+                        description: "カードID"
+                        example: 1
+                    title:
+                        type: "string"
+                        description: "カードタイトル"
+                        example: "牛乳を買いに行く"
+                    describe:
+                        type: "string"
+                        description: "カード説明"
+                        example: "これは1番目のカードです。"
+                    deadline:
+                        type: "string"
+                        description: "期日"
+                        example: "2019-05-03 11:00"
+
+    KanbanCreateRequest:
+        type: "object"
+        properties:
+            title:
+                type: "string"
+                description: "カンバンタイトル"
+                example: "やること"
+            board_id:
+                type: "integer"
+                description: "ボードID"
+                example: 1
+            position:
+                type: "integer"
+                description: "カンバンの位置（現在のカンバンの配列の長さ+1）"
+                example: 5
+
+    KanbanDeleteRequest:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                description: "カンバンID"
+                example: 5
+
+    KanbanChangeTitleRequest:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                description: "カンバンID"
+                example: 5
+            title:
+                type: "string"
+                description: "カンバン名"
+                example: "作業中"
+
+    KanbanChangePositionRequest:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                description: "カンバンID"
+                example: 5
+            current_position:
+                type: "integer"
+                description: "現在のカンバン位置"
+                example: 4
+            destination_position:
+                type: "integer"
+                description: "移動先のカンバン位置"
+                example: 2
+
+    CardCreateRequest:
+        type: "object"
+        properties:
+            title:
+                type: "string"
+                description: "カードタイトル"
+                example: "やること"
+            kanban_id:
+                type: "integer"
+                description: "カンバンID"
+                example: 4
+            position:
+                type: "integer"
+                description: "カードのポジション（現在のカードの配列の長さ+1）"
+                example: 2
+
+    CardChangeTitleRequest:
+        type: "object"
+        properties:
+            title:
+                type: "string"
+                description: "カードタイトル"
+                example: "やること"
+            id:
+                type: "integer"
+                description: "カードID"
+                example: 4
+
+    CardChangeDeadlineRequest:
+        type: "object"
+        properties:
+            deadline:
+                type: "string"
+                description: "期限日時"
+                example: "2019-05-03 11:00"
+            id:
+                type: "integer"
+                description: "カードID"
+                example: 4
+
+    CardAttachFileRequest:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                description: "カードID"
+                example: 4
+            name:
+                type: "string"
+                description: "ファイル名"
+                example: "半期予算目標.txt"
+            data:
+                type: "string"
+                description: "base64"
+                example: "fjkkdfjeiei3ijjtkljlkrjkld"
+
+    CardChangePositionRequest:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                description: "カードID"
+                example: 5
+            current_position:
+                type: "integer"
+                description: "現在のカード位置"
+                example: 4
+            destination_position:
+                type: "integer"
+                description: "移動先のカード位置"
+
+    EmailCheckRequest:
+        type: "object"
+        properties:
+            email:
+                type: "string"
+                description: "メールアドレス"
+                example: "example@gmail.com"
+
+    EmailCheckResponse:
+        type: "object"
+        properties:
+            is_exist:
+                type: "boolean"
+                description: "存在するかどうか"
+                example: true
+
+    ImgUploadRequest:
+        type: "object"
+        properties:
+            img:
+                type: "string"
+                description: "base64"
+                example: "kdfjifoiedfjljglgjei3rj3j"
+
+    ImgUploadResponse:
+        type: "object"
+        properties:
+            url:
+                type: "string"
+                description: "S3のURL"
+                example: "https://aws.s3.image.com"
 
     ErrorResponse:
         type: "object"
