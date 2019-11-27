@@ -12,37 +12,39 @@
 - プルリクは最低1レビュー以上無いとマージできない
 
 ## GitHubの運用の流れ
-1. 本スプリントで自分がアサインされているものの中から今から作業するissueを決める
-2. そのissue番号を確認する
+### 1. 本スプリントで自分がアサインされているものの中から今から作業するissueを決める
+
+### 2. そのissue番号を確認し、カードをIn progressへ移動しておく
+
 ![](README用画像/issue番号の確認.png)
 
-3. masterブランチでPullしてくる
+### 3. masterブランチでPullしてくる
 
 ```
 git pull origin master
 ```
 
-4. 作業ブランチを切り替える
+### 4. 作業ブランチを切り替える
 
 ```
 git checkout -b feat/14/writeDownREADME
 ```
 
-5. 1コミットあたりの作業量を意識しながら作業をする
+### 5. 1コミットあたりの作業量を意識しながら作業をする
 
-6. 作業が完了したら、変更したファイルが正しいか確認する
+### 6. 作業が完了したら、変更したファイルが正しいか確認する
 
 ```
 git status
 ```
 
-7. 自分の変更した内容が正しいか確認する
+### 7. 自分の変更した内容が正しいか確認する
 
 ```
 git diff
 ```
 
-8. 自分の変更分が正しいことを確認したらリモートへプッシュする
+### 8. 自分の変更分が正しいことを確認したらリモートへプッシュする
 
 ```
 git add .
@@ -58,5 +60,31 @@ git push
 git push --set-upstream origin feat/14/writeDownREADME
 ```
 
-9. Pull Requestを作成する
+### 9. Pull Requestを作成する
+
 ![](README用画像/PullRequest1.png)
+![](README用画像/PullRequest2.png)
+
+### 10. descriptionに `close #[issue番号]` と入力
+
+これをやっておくことで、マージされたタイミングに自動でissueがcloseになるのでおすすめ！
+
+![](README用画像/PullRequest4.png)
+
+### 11. レビューしてもらいたい人をアサインする
+
+![](README用画像/PullRequest3.png)
+
+### 12. ProjectsのカードをIn progressからレビューへ変更する
+
+### 13. アサインしたレビュワーに対してレビュー依頼を送る（Slackの#reviewチャンネルで！）
+
+▼定型文
+
+```
+@けんしん
+お疲れ様です。
+下記プルリクのレビュー＆マージをお願いします。
+
+https://github.com/Takumaron/Orenotorero/pull/15
+```
