@@ -166,7 +166,7 @@ paths:
               200:
                   "description": "A successful response."
 
-    board/invite:
+    /board/invite:
       post:
             tags:
             - "board"
