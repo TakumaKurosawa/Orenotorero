@@ -1,0 +1,157 @@
+swagger: "2.0"
+info:
+    description: "Field Sensing API仕様\n"
+    version: "1.0.0"
+    title: "Golang Field Sensing API"
+host: "localhost:8080"
+tags:
+-   name: "user"
+    description: "ユーザ関連API"
+
+schemes:
+- "http"
+paths:
+    /login:
+        post:
+            tags:
+            - "user"
+            summary: "ログイン用API"
+            description: "Emailとpassword情報を使ってユーザ認証を行うAPI"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/LoginRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+                    "schema":
+                        "$ref": "#/definitions/LoginResponse"
+
+    /user/get:
+        get:
+            tags:
+            - "user"
+            summary: "ユーザ情報取得API"
+            description: "ユーザ情報を取得します。\n
+      ユーザの認証と特定の処理はリクエストヘッダのx-tokenを読み取ってデータベースに照会をします。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            responses:
+                200:
+                    "description": "A successful response."
+                    "schema":
+                        "$ref": "#/definitions/UserGetResponse"
+
+    /user/create:
+        post:
+            tags:
+            - "user"
+            summary: "ユーザ作成API"
+            description: "ユーザ情報の新規作成をします。"
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/UserCreateRequest"
+            responses:
+                200:
+                    "description": "A successful response."
+                    "schema":
+                        "$ref": "#/definitions/UserCreateResponse"
+
+definitions:
+    LoginRequest:
+        type: "object"
+        properties:
+            email:
+                type: "string"
+                description: "メールアドレス"
+                example: "example@example.com"
+            password:
+                type: "string"
+                description: "パスワード"
+                example: "password12345"
+
+    LoginResponse:
+        type: "object"
+        properties:
+            token:
+                type: "string"
+                description: "jwtトークン"
+                example: "ufkdskaeLKDKJFlji322rnkdsjdfk"
+
+    UserGetResponse:
+        type: "object"
+        properties:
+            id:
+                type: "string"
+                description: "ユーザID"
+                example: "ufkdskaeLKDKJFlji322rnkdsjdfk"
+            img:
+                type: "string"
+                description: "S3のURL"
+                example: "https://aws.s3.hoge.com"
+            name:
+                type: "string"
+                description: "ユーザ名"
+                example: "錦織圭"
+
+    UserCreateRequest:
+        type: "object"
+        properties:
+            name:
+                type: "string"
+                description: "ユーザ名"
+                example: "ロジャー・フェデラー"
+            email:
+                type: "string"
+                description: "メールアドレス"
+                example: "example@example.com"
+            password:
+                type: "string"
+                description: "パスワード"
+                example: "password12345"
+
+    UserCreateResponse:
+        type: "object"
+        properties:
+            token:
+                type: "string"
+                description: "jwtトークン"
+                example: "fkjfejeifeisajkljljfdklfdkliefkldjklf"
+
+    ErrorResponse:
+        type: "object"
+        properties:
+            code:
+                type: "integer"
+                description: "ステータスコード"
+            message:
+                type: "string"
+                description: "エラーメッセージ"
