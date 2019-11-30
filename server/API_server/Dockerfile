@@ -9,8 +9,7 @@ WORKDIR /go/src/api/
 # 必要なパッケージをイメージにインストールする
 RUN apk update \
   && apk add --no-cache git \
-  && go get -u github.com/codegangsta/gin \
-  && go get -u github.com/golang/dep/cmd/dep \
-  && dep ensure
+  && go get -u github.com/gin-gonic/gin \
+  && go build main.go
 
-CMD gin -i run
+CMD ./main
