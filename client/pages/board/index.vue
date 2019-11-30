@@ -5,9 +5,8 @@
         -->
 </template>
 
-<script>
-export default {
-  //   components: {
-  //   }
+<script lang="ts">
+export default class BoardTop extends vue {
+
 }
 </script>
