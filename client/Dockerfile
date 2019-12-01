@@ -1,5 +1,5 @@
 # コンテナイメージの指定
-FROM node:latest
+FROM node:11.14.0
 # ワーキングディレクトリの指定
 WORKDIR /usr/src/app
 # パッケージ管理用ファイルの転送
