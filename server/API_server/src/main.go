@@ -1,17 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"orenotorero/db"
-
 	"github.com/gin-gonic/gin"
+	"orenotorero/db"
 )
 
 func main() {
-	db := db.GormConnect()
-	defer db.Close()
+	dbInstance := db.GormCreate()
+	defer dbInstance.Close()
 
-	fmt.Println(db)
+	//dbInstance.Create(&user)
+	//dbInstance.Find(&user)
+	//fmt.Println()
+	//fmt.Printf("%v\n", user)
+	//fmt.Println()
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
