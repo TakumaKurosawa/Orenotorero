@@ -1,14 +1,23 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"orenotorero/db"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-    r := gin.Default()
-    r.GET("/ping", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "message": "ping",
-        })
-    })
-    // ポートを設定しています。
-    r.Run(":3000")
+	db := db.GormConnect()
+	defer db.Close()
+
+	fmt.Println(db)
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "ping",
+		})
+	})
+	// ポートを設定しています。
+	r.Run(":3000")
 }
