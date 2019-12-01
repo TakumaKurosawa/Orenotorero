@@ -6,7 +6,10 @@
 </template>
 
 <script lang="ts">
-export default class BoardTop extends vue {
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component
+export default class BoardTop extends Vue {
 
 }
 </script>
