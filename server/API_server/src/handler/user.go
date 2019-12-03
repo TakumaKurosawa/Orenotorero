@@ -15,7 +15,7 @@ func NewUserHandler(service service.UserService) UserHandler {
 }
 
 func (handler *UserHandler) SelectAll(context *gin.Context) {
-	user := handler.UserService.SelectAll()
+	users := handler.UserService.SelectAll()
 
-	context.JSON(http.StatusOK, gin.H{"testUsers": user})
+	context.JSON(http.StatusOK, gin.H{"testUsers": users})
 }
