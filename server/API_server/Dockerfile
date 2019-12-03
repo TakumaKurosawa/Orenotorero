@@ -9,9 +9,9 @@ WORKDIR /go/src/api/
 # 必要なパッケージをイメージにインストールする
 RUN apk update \
   && apk add --no-cache git \
-  && go get -u github.com/gin-gonic/gin \
-  && go build main.go
+  && export GO111MODULE=on \
+  && go build
 
-CMD ./main
+CMD ./orenotorero
 
 EXPOSE 3000
