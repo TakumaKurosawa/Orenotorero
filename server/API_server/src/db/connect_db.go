@@ -28,18 +28,16 @@ func GormCreate() *gorm.DB {
 
 func migration(db *gorm.DB) *gorm.DB {
 	db.Set("gorm:table_options", "ENGINE=InnoDB")
-	db.SingularTable(true)
 
+	db.SingularTable(true)
 	db.AutoMigrate(
 		&model.User{},
 		&model.Board{},
 		&model.Author{},
 		&model.Card{},
 		&model.Kanban{},
+		&model.File{},
 	)
-
-	db.SingularTable(false)
-	db.AutoMigrate(&model.Files{})
 
 	return db
 }

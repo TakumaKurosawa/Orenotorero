@@ -66,7 +66,7 @@ CREATE DATABASE IF NOT EXISTS orenotorero;
 --     )
 -- );
 
--- CREATE TABLE `orenotorero`.`files` (
+-- CREATE TABLE `orenotorero`.`file` (
 --     `id` int AUTO_INCREMENT NOT NULL ,
 --     `card_id` int  NOT NULL ,
 --     `name` varchar(255)  NOT NULL ,
