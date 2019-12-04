@@ -12,11 +12,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import BoardCanvas from '../../components/board/boardCanvas.vue'
+import BoardHeader from '../../components/board/boardHeader.vue'
 
 @Component({
   components: {
-    BoardCanvas: () => import('../../components/board/boardcanvas.vue'),
-    BoardHeader: () => import('../../components/board/boardheader.vue')
+    BoardCanvas,
+    BoardHeader
   }
 })
 export default class BoardTop extends Vue {

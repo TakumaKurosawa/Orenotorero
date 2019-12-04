@@ -8,11 +8,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import Profile from '../../components/account/profile.vue'
+import Config from '../../components/account/config.vue'
 
 @Component({
   components: {
-    Profile: () => import('../../components/account/profile.vue'),
-    Config: () => import('../../components/account/config.vue')
+    Profile,
+    Config
   }
 })
 export default class AccountTop extends Vue {}

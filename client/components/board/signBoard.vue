@@ -1,17 +1,18 @@
 <template>
   <div>
-    <h2>BoardCanvas</h2>
-    <SignBoard></SignBoard>
+    <h3>SignBoard</h3>
+    <TaskCard></TaskCard>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import TaskCard from './taskCard.vue'
 
 @Component({
   components: {
-    SignBoard: () => import('./signboard.vue')
+    TaskCard
   }
 })
-export default class BoardCanvas extends Vue {}
+export default class SignBoard extends Vue {}
 </script>
