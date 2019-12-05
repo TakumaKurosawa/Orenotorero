@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import TaskCard from './taskCard.vue'
+import TaskCard from './TaskCard.vue'
 
 @Component({
   components: {

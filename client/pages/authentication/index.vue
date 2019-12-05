@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import SignIn from '../../components/authentication/signIn.vue'
-import SignUp from '../../components/authentication/signUp.vue'
+import SignIn from '../../components/authentication/SignIn.vue'
+import SignUp from '../../components/authentication/SignUp.vue'
 
 @Component({
   components: {

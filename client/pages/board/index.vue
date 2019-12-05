@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import BoardCanvas from '../../components/board/boardCanvas.vue'
-import BoardHeader from '../../components/board/boardHeader.vue'
+import BoardCanvas from '../../components/board/BoardCanvas.vue'
+import BoardHeader from '../../components/board/BoardHeader.vue'
 
 @Component({
   components: {
