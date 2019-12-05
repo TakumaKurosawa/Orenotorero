@@ -13,6 +13,6 @@ import { Vue, Component } from 'vue-property-decorator'
 
 @Component
 export default class BoardTop extends Vue {
-  boardData: object = this.$store.state.boardData;
+  boardData: object = this.$store.state.boardData
 }
 </script>

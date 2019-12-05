@@ -1,32 +1,25 @@
-import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
-import boardData from '../assets/mock/board.json';
-​
+import { Module, MutationTree, GetterTree } from 'vuex'
+import boardData from '../assets/mock/board.json'
 export interface RootState {
-  version: string;
-};
-​
+  version: string
+}
 export interface BoardState {
   boardData: object
-};
-​
+}
 export const state: () => BoardState = (): BoardState => ({
-  boardData: boardData
-});
-​
+  boardData
+})
 const getters: GetterTree<BoardState, RootState> = {
-  getBoardData (state: BoardState) {
-    return state.boardData;
+  getBoardData(state: BoardState) {
+    return state.boardData
   }
-};
-​
+}
 const mutations: MutationTree<BoardState> = {
-  setBoardData (state: BoardState, boardData: any): void {
-    state.boardData = boardData;
+  setBoardData(state: BoardState, boardData: any): void {
+    state.boardData = boardData
   }
-};
-​
+}
 // const actions: ActionTree<BoardState, RootState> = {
-// ​
 // //   nuxtServerInit ({ commit }, { req }) {
 // //   if (req.headers.cookie) {
 // //     const cookieData = cookieparser.parse(req.headers.cookie);
@@ -53,13 +46,11 @@ const mutations: MutationTree<BoardState> = {
 // // }
 // }
 // };
-​
 export const Board: Module<BoardState, RootState> = {
   namespaced: true,
   state,
   getters,
   // actions,
   mutations
-};
-​
-export default Board;
+}
+export default Board

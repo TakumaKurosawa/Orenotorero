@@ -12,7 +12,6 @@ module.exports = {
     ],
     plugins: [
         'vue',
-        'nuxt/recommended'
     ],
     rules: {
         'vue/html-closing-bracket-newline': 'off',
