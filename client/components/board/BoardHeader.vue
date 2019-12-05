@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-  import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 
-  @Component
-  export default class BoardHeader extends Vue {}
+@Component
+export default class BoardHeader extends Vue {}
 </script>

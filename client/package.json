@@ -8,16 +8,21 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
+    "lint": "eslint --ext .ts,.js,.vue .",
     "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "eslint-loader": "^3.0.2",
+    "eslint-plugin-nuxt": "^0.5.0",
     "nuxt": "^2.0.0",
     "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.3.4",
+    "@nuxtjs/eslint-config-typescript": "^1.0.0",
     "@nuxtjs/vuetify": "^1.0.0",
+    "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
     "prettier": "^1.16.4"
