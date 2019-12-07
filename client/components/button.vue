@@ -6,7 +6,7 @@
 import { Vue, Prop, Component } from 'vue-property-decorator'
 
 @Component
-export default class myButton extends Vue {
+export default class MyButton extends Vue {
   submit() {
     this.$emit('submit')
   }

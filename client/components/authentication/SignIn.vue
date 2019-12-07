@@ -1,17 +1,17 @@
 <template>
   <div>
     <h2>ログイン</h2>
-    <myButton :is-valid="isValid" @submit="loginAction()"></myButton>
+    <MyButton :is-valid="isValid" @submit="loginAction()"></MyButton>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import myButton from '../../components/button.vue'
+import MyButton from '../../components/button.vue'
 
 @Component({
   components: {
-    myButton
+    MyButton
   }
 })
 export default class SignIn extends Vue {
