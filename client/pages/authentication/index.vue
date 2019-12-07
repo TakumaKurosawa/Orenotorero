@@ -1,8 +1,17 @@
 <template>
   <div>
-    <h1>ユーザー認証ページ</h1>
-    <SignIn></SignIn>
-    <SignUp></SignUp>
+    <h1>{{ boo }}</h1>
+    <v-tabs color="white" centered dark>
+      <v-tabs-slider color="white"></v-tabs-slider>
+      <v-tab v-on:click="indicateLogin = true">
+        ログイン
+      </v-tab>
+      <v-tab v-on:click="indicateLogin = false">
+        新規登録
+      </v-tab>
+    </v-tabs>
+    <SignIn v-if="indicateLogin == true"></SignIn>
+    <SignUp v-if="indicateLogin == false"></SignUp>
   </div>
 </template>
 
@@ -17,5 +26,7 @@ import SignUp from '../../components/authentication/SignUp.vue'
     SignUp
   }
 })
-export default class AuthenticationTop extends Vue {}
+export default class AuthenticationTop extends Vue {
+  indicateLogin: boolean = true
+}
 </script>
