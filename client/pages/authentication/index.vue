@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>ログインページ</h1>
+    <h1>ユーザー認証ページ</h1>
     <v-tabs color="white" centered dark>
       <v-tabs-slider color="white"></v-tabs-slider>
       <v-tab @click="indicateLogin = true">
@@ -28,5 +28,14 @@ import SignUp from '../../components/authentication/SignUp.vue'
 })
 export default class AuthenticationTop extends Vue {
   indicateLogin: boolean = true
+  emailRules = [
+    (v: string) => !!v || 'emailの入力は必須です',
+    (v: string) => /.+@.+/.test(v) || 'emailが正しくありません'
+  ]
+
+  passRules = [
+    (v: string) => !!v || 'passの入力は必須です',
+    (v: string) => v.length <= 10 || 'passは10文字以内で入力してください'
+  ]
 }
 </script>
