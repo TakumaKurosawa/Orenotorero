@@ -1,21 +1,14 @@
 package repository
 
 import (
-	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
 )
 
-type UserRepository struct {
-	DB *gorm.DB
-}
-
-func NewUserRepostiory(DB *gorm.DB) UserRepository {
-	return UserRepository{DB: DB}
-}
-
-func (p *UserRepository) SelectAll() []model.User {
-	var users []model.User
-	p.DB.Find(&users)
-
-	return users
+type UserRepository interface {
+	InsertUser() error
+	Login() (string, error)
+	UpdateImg(s3Url string) error
+	SelectByUserId() (model.User, error)
+	SelectAll() ([]model.User, error)
+	SelectByEmail(email string) (model.User, error)
 }
