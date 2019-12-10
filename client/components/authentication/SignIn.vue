@@ -1,17 +1,17 @@
 <template>
   <div>
     <h2>ログイン</h2>
-    <MyButton :is-valid="isValid" @submit="loginAction()"></MyButton>
+    <BaseButton :is-valid="isValid" @submit="loginAction()"></BaseButton>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import MyButton from '../../components/button.vue'
+import BaseButton from '../Button.vue'
 
 @Component({
   components: {
-    MyButton
+    BaseButton
   }
 })
 export default class SignIn extends Vue {
