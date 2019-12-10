@@ -6,12 +6,12 @@ import (
 	"github.com/google/wire"
 	"github.com/jinzhu/gorm"
 	"orenotorero/handler"
-	"orenotorero/repository"
+	"orenotorero/infrastructure/mysqlDB"
 	"orenotorero/service"
 )
 
 func InitUserAPI(db *gorm.DB) handler.UserHandler {
-	wire.Build(repository.NewUserRepostiory, service.NewUserService, handler.NewUserHandler)
+	wire.Build(mysqlDB.NewUserRepoImpl, service.NewUserService, handler.NewUserHandler)
 
 	return handler.UserHandler{}
 }

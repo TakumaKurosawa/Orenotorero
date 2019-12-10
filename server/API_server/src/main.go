@@ -19,7 +19,21 @@ func main() {
 		})
 	})
 
-	r.GET("/users", userAPI.SelectAll)
+	// userAPI
+	r.POST("/login", userAPI.Login)
+	r.POST("/user/create", userAPI.CreateNewUser)
+	r.GET("/user/get", userAPI.GetUser)
+	r.GET("/users", userAPI.GetAllUsers)
+
+	// boardAPI
+
+	// kanbanAPI
+
+	// cardAPI
+
+	// utilityAPI
+
+
 	// ポートを設定しています。
 	r.Run(":3000")
 }
