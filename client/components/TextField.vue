@@ -14,18 +14,18 @@ import { Vue, Prop, Component } from 'vue-property-decorator'
 @Component
 export default class TextField extends Vue {
   @Prop({ type: Array, required: false })
-  textRules: Array<string>
+  textRules!: Array<string>
 
   @Prop({ type: Number, required: false })
-  maxLen: number
+  maxLen!: number
 
   @Prop({ type: String, required: true })
-  textLabel: string
+  textLabel!: string
 
   @Prop({ type: String, required: false })
-  textType: string
+  textType!: string
 
   @Prop({ type: String, required: false, default: '' })
-  textValue: string
+  textValue!: string
 }
 </script>

@@ -28,9 +28,9 @@ import TextField from '../../components/TextField.vue'
 })
 export default class SignUp extends Vue {
   @Prop({ type: Array, required: true })
-  emailRules: Array<string>
+  emailRules!: Array<string>
 
   @Prop({ type: Array, required: true })
-  passRules: Array<string>
+  passRules!: Array<string>
 }
 </script>
