@@ -17,7 +17,7 @@ export default class TextField extends Vue {
   textRules!: Array<string>
 
   @Prop({ type: Number, required: false })
-  maxLen!: number
+  maxLength!: number
 
   @Prop({ type: String, required: true })
   textLabel!: string

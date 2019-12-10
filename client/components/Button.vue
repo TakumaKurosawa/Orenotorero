@@ -1,5 +1,5 @@
 <template>
-  <v-btn :disabled="!isValid" @click="submit">{{ text }}</v-btn>
+  <v-btn :disabled="!isValid" @click="submit">{{ value }}</v-btn>
 </template>
 
 <script lang="ts">
@@ -15,6 +15,6 @@ export default class BaseButton extends Vue {
   isValid!: boolean
 
   @Prop({ type: String, default: '完了' })
-  text!: string
+  value!: string
 }
 </script>
