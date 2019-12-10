@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import Profile from '../../components/account/Profile.vue'
-import Config from '../../components/account/Config.vue'
+import Profile from '@/components/account/Profile.vue'
+import Config from '@/components/account/Config.vue'
 
 @Component({
   components: {

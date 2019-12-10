@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     :rules="textRules"
-    :counter="maxLen"
+    :counter="maxLength"
     :label="textLabel"
     :type="textType"
     :value="textValue"

@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import BoardCanvas from '../../components/board/BoardCanvas.vue'
-import BoardHeader from '../../components/board/BoardHeader.vue'
+import BoardCanvas from '@/components/board/BoardCanvas.vue'
+import BoardHeader from '@/components/board/BoardHeader.vue'
 
 @Component({
   components: {

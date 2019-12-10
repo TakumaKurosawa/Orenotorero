@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import SignIn from '../../components/authentication/SignIn.vue'
-import SignUp from '../../components/authentication/SignUp.vue'
+import SignIn from '@/components/authentication/SignIn.vue'
+import SignUp from '@/components/authentication/SignUp.vue'
 
 @Component({
   components: {
