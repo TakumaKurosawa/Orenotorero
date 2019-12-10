@@ -3,6 +3,7 @@
     :rules="textRules"
     :counter="maxLen"
     :label="textLabel"
+    :type="textType"
   ></v-text-field>
 </template>
 
@@ -19,5 +20,8 @@ export default class TextField extends Vue {
 
   @Prop({ type: String, required: true })
   textLabel: string
+
+  @Prop({ type: String, required: false })
+  textType: string
 }
 </script>

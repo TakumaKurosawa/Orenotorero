@@ -3,16 +3,16 @@
     <h1>ユーザー認証ページ</h1>
     <v-tabs color="white" centered dark>
       <v-tabs-slider color="white"></v-tabs-slider>
-      <v-tab @click="indicateLogin = true">
+      <v-tab @click="isOpenLoginTab = true">
         ログイン
       </v-tab>
-      <v-tab @click="indicateLogin = false">
+      <v-tab @click="isOpenLoginTab = false">
         新規登録
       </v-tab>
     </v-tabs>
-    <SignIn v-if="indicateLogin"></SignIn>
+    <SignIn v-if="isOpenLoginTab"></SignIn>
     <SignUp
-      v-if="!indicateLogin"
+      v-if="!isOpenLoginTab"
       :email-rules="emailRules"
       :pass-rules="passRules"
     ></SignUp>
@@ -31,7 +31,7 @@ import SignUp from '../../components/authentication/SignUp.vue'
   }
 })
 export default class AuthenticationTop extends Vue {
-  indicateLogin: boolean = true
+  isOpenLoginTab: boolean = true
   emailRules = [
     (v: string) => !!v || 'emailの入力は必須です',
     (v: string) => /.+@.+/.test(v) || 'emailが正しくありません'

@@ -1,11 +1,16 @@
 <template>
   <div>
     <h2>新規登録</h2>
-    <TextField :text-rules="emailRules" :text-label="'email'"></TextField>
+    <TextField
+      :text-rules="emailRules"
+      :text-label="'email'"
+      :text-type="'email'"
+    ></TextField>
     <TextField
       :text-rules="passRules"
       :max-len="32"
       :text-label="'password'"
+      :text-type="'password'"
     ></TextField>
   </div>
 </template>
