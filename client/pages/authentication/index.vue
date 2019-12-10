@@ -11,7 +11,11 @@
       </v-tab>
     </v-tabs>
     <SignIn v-if="indicateLogin"></SignIn>
-    <SignUp v-if="!indicateLogin"></SignUp>
+    <SignUp
+      v-if="!indicateLogin"
+      :email-rules="emailRules"
+      :pass-rules="passRules"
+    ></SignUp>
   </div>
 </template>
 
@@ -34,8 +38,8 @@ export default class AuthenticationTop extends Vue {
   ]
 
   passRules = [
-    (v: string) => !!v || 'passの入力は必須です',
-    (v: string) => v.length <= 10 || 'passは10文字以内で入力してください'
+    (v: string) => !!v || 'passwordの入力は必須です'
+    // (v: string) => v.length <= 10 || 'passwordは10文字以内で入力してください'
   ]
 }
 </script>
