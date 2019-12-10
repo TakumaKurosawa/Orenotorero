@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 import MenuList from '../../components/home/MenuList.vue'
 import BoardList from '../../components/home/BoardList.vue'
 
