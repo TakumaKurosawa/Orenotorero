@@ -16,6 +16,7 @@
     "eslint-loader": "^3.0.2",
     "eslint-plugin-nuxt": "^0.5.0",
     "nuxt": "^2.0.0",
+    "nuxt-property-decorator": "^2.5.0",
     "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {

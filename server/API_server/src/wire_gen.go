@@ -8,14 +8,14 @@ package main
 import (
 	"github.com/jinzhu/gorm"
 	"orenotorero/handler"
-	"orenotorero/repository"
+	"orenotorero/infrastructure/mysqlDB"
 	"orenotorero/service"
 )
 
 // Injectors from wire.go:
 
 func InitUserAPI(db *gorm.DB) handler.UserHandler {
-	userRepository := repository.NewUserRepostiory(db)
+	userRepository := mysqlDB.NewUserRepoImpl(db)
 	userService := service.NewUserService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
 	return userHandler
