@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+const path = require('path')
 
 export default {
   mode: 'universal',
@@ -89,6 +90,14 @@ export default {
           exclude: /(node_modules)/
         })
       }
+    }
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.vue', '.ts'],
+    root: path.resolve(__dirname),
+    alias: {
+      '@': path.resolve(__dirname),
+      '~': path.resolve(__dirname)
     }
   }
 }
