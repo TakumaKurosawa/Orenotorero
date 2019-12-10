@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'nuxt-property-decorator'
-import TextField from '../TextField.vue'
+import TextField from '@/components/TextField.vue'
 import BaseButton from '@/components/Button.vue'
 
 @Component({
