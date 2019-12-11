@@ -10,7 +10,11 @@
         新規登録
       </v-tab>
     </v-tabs>
-    <SignIn v-if="isOpenLoginTab"></SignIn>
+    <SignIn
+      v-if="isOpenLoginTab"
+      :email-rules="emailRules"
+      :pass-rules="passRules"
+    ></SignIn>
     <SignUp
       v-if="!isOpenLoginTab"
       :email-rules="emailRules"
