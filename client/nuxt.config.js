@@ -90,6 +90,8 @@ export default {
           exclude: /(node_modules)/
         })
       }
+      const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+      config.plugins.push(new HardSourceWebpackPlugin())
     }
   },
   resolve: {
