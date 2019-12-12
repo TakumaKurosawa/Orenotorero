@@ -12,6 +12,4 @@ RUN apk update \
   && export GO111MODULE=on \
   && go build
 
-CMD ./orenotorero
-
 EXPOSE 3000

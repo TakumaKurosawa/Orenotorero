@@ -1,0 +1,22 @@
+version: '3'
+services:
+    api:
+        build:
+            context: ./server/API_server/
+        ports: 
+            - 3000:3000
+        command: ./orenotorero
+        depends_on: 
+            - db
+    db:
+        build:
+            context: ./server/DB/
+        ports:
+            - 3333:3306
+        command: mysqld
+    client:
+        build:
+            context: ./client/
+        ports: 
+            - 80:3000
+        command: bash start.sh
