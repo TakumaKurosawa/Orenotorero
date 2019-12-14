@@ -16,9 +16,10 @@ func GormCreate() *gorm.DB {
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
 
 	db, err := gorm.Open(DBMS, CONNECT)
+	db.DB().SetMaxIdleConns(10)
 	if err != nil {
 		fmt.Printf("hoge")
-		panic(err.Error())
+		fmt.Println(err.Error())
 	}
 
 	db = migration(db)
