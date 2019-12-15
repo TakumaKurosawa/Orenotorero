@@ -11,13 +11,13 @@ func GormCreate() *gorm.DB {
 	DBMS := "mysql"
 	USER := "root"
 	PASS := "root"
-	PROTOCOL := "tcp(127.0.0.1:3333)"
+	PROTOCOL := "tcp(127.0.0.1:30002)"
 	DBNAME := "orenotorero"
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
 
 	db, err := gorm.Open(DBMS, CONNECT)
 	if err != nil {
-		panic(err.Error())
+		fmt.Printf(err.Error())
 	}
 
 	db = migration(db)
