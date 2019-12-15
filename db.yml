@@ -1,0 +1,49 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: orenotorero-db
+  labels:
+    app: orenotorero-db
+spec:
+  selector:
+    matchLabels:
+      app: orenotorero-db
+      tier: orenotorero-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: orenotorero-db
+        tier: orenotorero-db
+    spec:
+      containers:
+        - image: mysql:5.7
+          name: orenotorero-db
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+            - name: MYSQL_DATABASE
+              value: orenotorero
+          ports:
+            - containerPort: 3306
+              name: orenotorero-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orenotorero-db
+  labels:
+    app: orenotorero-db
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+      nodePort: 30002
+  selector:
+    app: orenotorero-db
+    tier: orenotorero-db
+  type: NodePort
