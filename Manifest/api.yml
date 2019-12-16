@@ -15,6 +15,9 @@ spec:
         - name: orenotorero-api
           image: orenotorero-api
           imagePullPolicy: Never
+          env:
+            - name: IP
+              value: $IP
           ports:
             - containerPort: 3000
           command:
