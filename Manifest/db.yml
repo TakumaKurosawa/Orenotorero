@@ -40,10 +40,9 @@ metadata:
     app: orenotorero-db
 spec:
   ports:
-    - port: 3306
+    - port: 30002
       targetPort: 3306
-      nodePort: 30002
   selector:
     app: orenotorero-db
     tier: orenotorero-db
-  type: NodePort
+  type: ClusterIP
