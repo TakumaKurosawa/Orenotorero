@@ -13,7 +13,11 @@
         :text-label="'password'"
         :text-type="'password'"
       ></TextField>
-      <BaseButton :is-valid="isValid" @action="loginAction()"></BaseButton>
+      <BaseButton
+        :value="'ログイン'"
+        :is-valid="isValid"
+        @action="loginAction()"
+      ></BaseButton>
     </v-form>
   </div>
 </template>

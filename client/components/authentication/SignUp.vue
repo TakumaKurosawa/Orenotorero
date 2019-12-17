@@ -14,7 +14,11 @@
         :text-label="'password'"
         :text-type="'password'"
       ></TextField>
-      <BaseButton :is-valid="isValid" @action="signUpAction()"></BaseButton>
+      <BaseButton
+        :value="'新規登録'"
+        :is-valid="isValid"
+        @action="signUpAction()"
+      ></BaseButton>
     </v-form>
   </div>
 </template>
