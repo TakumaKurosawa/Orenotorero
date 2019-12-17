@@ -10,10 +10,10 @@ import { Vue, Prop, Component } from 'nuxt-property-decorator'
 
 @Component
 export default class BaseButton extends Vue {
-  @Prop({ type: Array, required: true })
-  textLabel!: Array<string>
+  @Prop({ type: String, required: true })
+  textLabel!: string
 
-  @Prop({ type: Array, required: false, default: '' })
-  iconName!: Array<string>
+  @Prop({ type: String, required: false, default: '' })
+  iconName!: string
 }
 </script>
