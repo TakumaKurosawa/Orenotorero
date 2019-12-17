@@ -5,5 +5,5 @@ run: ## APIをビルドせずに立ち上げるコマンド
 	go run main.go wire_gen.go
 
 build: ## APIをビルドして立ち上げるコマンド
-	go build
-	./orenotorero
+	go build -o binary/orenotorero
+	./binary/orenotorero
