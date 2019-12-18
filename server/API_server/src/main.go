@@ -10,6 +10,10 @@ func main() {
 	defer dbInstance.Close()
 
 	userAPI := InitUserAPI(dbInstance)
+	utilityAPI := InitUtilityAPI(dbInstance)
+	boardAPI := InitBoardAPI(dbInstance)
+	cardAPI := InitCardAPI(dbInstance)
+	kanbanAPI := InitKanbanAPI(dbInstance)
 
 	r := gin.Default()
 
@@ -26,13 +30,28 @@ func main() {
 	r.GET("/users", userAPI.GetAllUsers)
 
 	// boardAPI
+	r.GET("/board", boardAPI.GetBoard)
+	r.POST("/board", boardAPI.CreateNewBoard)
+	r.PUT("/board/publish", boardAPI.ChangeBoardPublish)
+	r.POST("/board/invite", boardAPI.SendInviteMail)
 
 	// kanbanAPI
+	r.GET("/kanban", kanbanAPI.GetKanban)
+	r.POST("/kanban", kanbanAPI.CreateNewKanban)
+	r.DELETE("/kanban", kanbanAPI.DeleteKanban)
+	r.PUT("/kanban", kanbanAPI.ChangeKanbanTitle)
+	r.PUT("/kanban/position", kanbanAPI.ChangeKanbanPosition)
 
 	// cardAPI
+	r.POST("/card", cardAPI.CreateNewCard)
+	r.POST("/card/file", cardAPI.AddFile)
+	r.PUT("/card", cardAPI.ChangeCardTitle)
+	r.PUT("/card/deadline", cardAPI.ChangeCardDeadline)
+	r.PUT("/card/position", cardAPI.ChangeCardPosition)
 
 	// utilityAPI
-
+	r.PUT("/email/check", utilityAPI.EmailCheck)
+	r.PUT("/img", utilityAPI.FileUpload)
 
 	// ポートを設定しています。
 	r.Run(":3000")
