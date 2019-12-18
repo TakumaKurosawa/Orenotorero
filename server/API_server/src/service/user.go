@@ -24,7 +24,14 @@ func (userSvc *UserService) GetUser(token string) (model.User, error) {
 func (userSvc *UserService) CreateNewUser(name, email, password string) (string, error) {
 	var token string
 
-	err := userSvc.UserRepository.InsertUser()
+	user := model.User{
+		Name: name,
+		Email: email,
+		Password: password,
+	}
+
+
+	err := userSvc.UserRepository.InsertUser(user)
 
 	// token作成処理
 	return token, err
