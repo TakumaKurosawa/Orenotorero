@@ -55,8 +55,6 @@ func (handler *UserHandler) CreateNewUser(context *gin.Context) {
 		context.Error(err)
 	}
 
-	//fmt.Printf("AAAA%v\n",reqBody)
-
 	token, err := handler.UserService.CreateNewUser(reqBody.Name, reqBody.Email, reqBody.Password)
 	if err != nil {
 		context.Error(err)
@@ -64,7 +62,6 @@ func (handler *UserHandler) CreateNewUser(context *gin.Context) {
 
 	token = "hoge"
 	context.JSON(http.StatusOK, gin.H{"token": token})
-
 }
 
 func (handler *UserHandler) GetAllUsers(context *gin.Context) {

@@ -39,7 +39,6 @@ func (p *UserRepositoryImpliment) SelectByUserId() (model.User, error) {
 
 func (p *UserRepositoryImpliment) InsertUser(user model.User) error {
 	// ユーザ作成機能
-	//fmt.Printf("AA%v\n",user)
 	p.DB.Create(&user)
 
 	return nil
