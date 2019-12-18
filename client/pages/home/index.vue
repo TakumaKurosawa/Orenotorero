@@ -17,5 +17,5 @@ import BoardList from '../../components/home/BoardList.vue'
     BoardList
   }
 })
-export default class ome extends Vue {}
+export default class Home extends Vue {}
 </script>
