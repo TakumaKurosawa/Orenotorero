@@ -41,3 +41,11 @@ clear: ## 立ち上がっているアプリケーションをクローズし、�
 	$(KUBE_DELETE)
 	$(DOCKER_REMOVE_IMG)
 
+dev-db: ## 開発用にDBコンテナを立ち上げるコマンド
+	$(DOCKER) build -t orenotorero-db-dev server/DB
+	$(eval PASS = $(shell read password;echo $$password))
+	$(eval DB = $(shell read db;echo $$db))
+	$(DOCKER) run --rm --name dev-db -e MYSQL_ROOT_PASSWORD=$(PASS) -e MYSQL_DATABASE=$(DB) -d -p 30002:3306 orenotorero-db-dev
+
+dev-db-stop: ## 立ち上がっている開発用DBコンテナを削除するコマンド
+	$(DOCKER) stop dev-db
