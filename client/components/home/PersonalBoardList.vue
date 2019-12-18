@@ -6,12 +6,12 @@
       :icon-name="'mdi-account-outline'"
     ></LabelIcon>
     <Card
-      v-for="item in cardTitles"
+      v-for="item in boardData"
       :key="item.id"
       :card-title="item.title"
       :card-height="100"
       :card-width="180"
-      :card-img="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'"
+      :card-img="item.img"
     ></Card>
   </div>
 </template>
@@ -28,6 +28,6 @@ import Card from '@/components/atom/Card.vue'
 })
 export default class BoardList extends Vue {
   @Prop({ type: Array, required: true })
-  cardTitles!: Array<string>
+  boardData!: Array<string>
 }
 </script>

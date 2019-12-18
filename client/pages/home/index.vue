@@ -2,7 +2,7 @@
   <div>
     <h1>ユーザーTOPページ</h1>
     <MenuList></MenuList>
-    <PersonalBoardList :card-titles="cardTitles"></PersonalBoardList>
+    <PersonalBoardList :board-data="boardData"></PersonalBoardList>
   </div>
 </template>
 
@@ -18,15 +18,36 @@ import PersonalBoardList from '../../components/home/PersonalBoardList.vue'
   }
 })
 export default class Home extends Vue {
-  cardTitles = [
-    { title: 'test1' },
-    { title: 'test2' },
-    { title: 'test3' },
-    { title: 'test4' },
-    { title: 'test5' },
-    { title: 'test6' },
-    { title: 'test7' },
-    { title: 'test8' }
+  boardData = [
+    {
+      title: 'test1',
+      img: 'https://pro.foto.ne.jp/free/img/images_thumb/yam0065-049.jpg'
+    },
+    { title: 'test2', img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg' },
+    {
+      title: 'test3',
+      img: 'https://pro.foto.ne.jp/share/v5/linkthumb_stock/img/36/49002993.jpg'
+    },
+    {
+      title: 'test4',
+      img: 'https://pro.foto.ne.jp/share/v5/linkthumb_stock/img/36/6918622.jpg'
+    },
+    {
+      title: 'test5',
+      img: 'https://pro.foto.ne.jp/share/v5/linkthumb_stock/img/36/35242924.jpg'
+    },
+    {
+      title: 'test6',
+      img: 'https://pro.foto.ne.jp/share/v5/linkthumb_stock/img/36/36758373.jpg'
+    },
+    {
+      title: 'test7',
+      img: 'https://pro.foto.ne.jp/share/v5/linkthumb_stock/img/36/639385.jpg'
+    },
+    {
+      title: 'test8',
+      img: 'https://pro.foto.ne.jp/share/v5/linkthumb_stock/img/37/27330761.jpg'
+    }
   ]
 }
 </script>
