@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"orenotorero/db"
+	"orenotorero/middleware"
 )
 
 func main() {
@@ -15,8 +16,14 @@ func main() {
 	cardAPI := InitCardAPI(dbInstance)
 	kanbanAPI := InitKanbanAPI(dbInstance)
 
+	jwtAuth, err := middleware.CreateJwtInstance(userAPI)
+	if err != nil {
+		panic(err)
+	}
+
 	r := gin.Default()
 
+	// connection testAPI
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "ping",
@@ -24,9 +31,12 @@ func main() {
 	})
 
 	// userAPI
-	r.POST("/login", userAPI.Login)
+	r.POST("/login", jwtAuth.LoginHandler)
+	r.Use(jwtAuth.MiddlewareFunc())
+	{
+		r.GET("/user/get", userAPI.GetUser)
+	}
 	r.POST("/user/create", userAPI.CreateNewUser)
-	r.GET("/user/get", userAPI.GetUser)
 	r.GET("/users", userAPI.GetAllUsers)
 
 	// boardAPI
