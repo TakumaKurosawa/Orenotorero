@@ -11,7 +11,7 @@ import (
 
 func CreateJwtInstance(userHandler handler.UserHandler) (*jwt.GinJWTMiddleware, error) {
 	return jwt.New(&jwt.GinJWTMiddleware{
-		Realm:       "test zone",
+		Realm:       "orenotorero zone",
 		Key:         []byte(os.Getenv("JWT_KEY")),
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
