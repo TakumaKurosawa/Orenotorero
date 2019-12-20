@@ -1,3 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jwtkey
+type: Opaque
+data:
+  secretkey: T3Jlbm90SldUa2V5MTgwMw==
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +29,12 @@ spec:
         - name: orenotorero-api
           image: orenotorero-api
           imagePullPolicy: Never
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwtkey
+                  key: secretkey
           ports:
             - containerPort: 3000
           command:

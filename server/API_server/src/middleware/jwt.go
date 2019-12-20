@@ -5,13 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"orenotorero/db/Model"
 	"orenotorero/handler"
+	"os"
 	"time"
 )
 
 func CreateJwtInstance(userHandler handler.UserHandler) (*jwt.GinJWTMiddleware, error) {
 	return jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "test zone",
-		Key:         []byte("secret key"),
+		Key:         []byte(os.Getenv("JWT_KEY")),
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
 		IdentityKey: "id",
