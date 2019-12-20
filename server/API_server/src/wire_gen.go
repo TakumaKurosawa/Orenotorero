@@ -20,3 +20,31 @@ func InitUserAPI(db *gorm.DB) handler.UserHandler {
 	userHandler := handler.NewUserHandler(userService)
 	return userHandler
 }
+
+func InitUtilityAPI(db *gorm.DB) handler.UtilityHandler {
+	userRepository := mysqlDB.NewUserRepoImpl(db)
+	utilityService := service.NewUtilityService(userRepository)
+	utilityHandler := handler.NewUtilityHandler(utilityService)
+	return utilityHandler
+}
+
+func InitBoardAPI(db *gorm.DB) handler.BoardHandler {
+	boardRepository := mysqlDB.NewBoardRepoImpl(db)
+	boardService := service.NewBoardService(boardRepository)
+	boardHandler := handler.NewBoardHandler(boardService)
+	return boardHandler
+}
+
+func InitCardAPI(db *gorm.DB) handler.CardHandler {
+	cardRepository := mysqlDB.NewCardRepoImpl(db)
+	cardService := service.NewCardService(cardRepository)
+	cardHandler := handler.NewCardHandler(cardService)
+	return cardHandler
+}
+
+func InitKanbanAPI(db *gorm.DB) handler.KanbanHandler {
+	kanbanRepository := mysqlDB.NewKanbanRepoImpl(db)
+	kanbanService := service.NewKanbanService(kanbanRepository)
+	kanbanHandler := handler.NewKanbanHandler(kanbanService)
+	return kanbanHandler
+}

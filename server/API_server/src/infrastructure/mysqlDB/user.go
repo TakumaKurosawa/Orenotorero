@@ -1,6 +1,7 @@
 package mysqlDB
 
 import (
+	"github.com/appleboy/gin-jwt/v2"
 	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
 	"orenotorero/repository"
@@ -16,12 +17,18 @@ func NewUserRepoImpl(DB *gorm.DB) repository.UserRepository {
 	}
 }
 
-func (p *UserRepositoryImpliment) Login() (string, error) {
-	var token string
+func (p *UserRepositoryImpliment) Login(email, password string) (*model.User, error) {
+	user, err := p.SelectByEmail(email)
+	if err != nil {
+		return nil, err
+	}
 
 	// ユーザ認証機能
+	if user.Password != password {
+		return nil, jwt.ErrFailedAuthentication
+	}
 
-	return token, nil
+	return &user, nil
 }
 
 func (p *UserRepositoryImpliment) UpdateImg(s3Url string) error {
@@ -29,10 +36,11 @@ func (p *UserRepositoryImpliment) UpdateImg(s3Url string) error {
 	return nil
 }
 
-func (p *UserRepositoryImpliment) SelectByUserId() (model.User, error) {
+func (p *UserRepositoryImpliment) SelectByUserId(id string) (model.User, error) {
 	var user model.User
 
 	// ユーザ取得機能
+	p.DB.Where("id = ?", id).Find(&user)
 
 	return user, nil
 }
@@ -52,6 +60,8 @@ func (p *UserRepositoryImpliment) SelectAll() ([]model.User, error) {
 }
 
 func (p *UserRepositoryImpliment) SelectByEmail(email string) (model.User, error) {
+	var user model.User
+	p.DB.Where("email = ?", email).Find(&user)
 	// DB.Whereを使って受け取ったEmailがデータベースに存在するかチェックする
-	return model.User{}, nil
+	return user, nil
 }

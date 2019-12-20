@@ -5,13 +5,19 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"orenotorero/db/Model"
+	"os"
 )
 
 func GormCreate() *gorm.DB {
+	ip := os.Getenv("ORENOTORERO_DB_SERVICE_HOST")
+	if ip == "" {
+		ip = "127.0.0.1"
+	}
+
 	DBMS := "mysql"
 	USER := "root"
 	PASS := "root"
-	PROTOCOL := "tcp(127.0.0.1:3333)"
+	PROTOCOL := "tcp(" + ip + ":30002)"
 	DBNAME := "orenotorero"
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
 

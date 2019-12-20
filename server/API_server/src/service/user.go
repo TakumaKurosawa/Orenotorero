@@ -13,12 +13,12 @@ func NewUserService(repository repository.UserRepository) UserService {
 	return UserService{UserRepository: repository}
 }
 
-func (userSvc *UserService) Login(email, password string) (string, error) {
-	return userSvc.UserRepository.Login()
+func (userSvc *UserService) Login(email, password string) (*model.User, error) {
+	return userSvc.UserRepository.Login(email, password)
 }
 
-func (userSvc *UserService) GetUser(token string) (model.User, error) {
-	return userSvc.UserRepository.SelectByUserId()
+func (userSvc *UserService) GetUser(id string) (model.User, error) {
+	return userSvc.UserRepository.SelectByUserId(id)
 }
 
 func (userSvc *UserService) CreateNewUser(name, email, password string) (string, error) {

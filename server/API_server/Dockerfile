@@ -10,8 +10,6 @@ WORKDIR /go/src/api/
 RUN apk update \
   && apk add --no-cache git \
   && export GO111MODULE=on \
-  && go build
-
-CMD ./orenotorero
+  && go build -o binary/orenotorero
 
 EXPOSE 3000

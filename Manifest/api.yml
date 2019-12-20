@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jwtkey
+type: Opaque
+data:
+  secretkey: T3Jlbm90SldUa2V5MTgwMw==
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orenotorero-api
+spec:
+  selector:
+    matchLabels:
+      app: orenotorero-api
+  template:
+    metadata:
+      labels:
+        app: orenotorero-api
+    spec:
+      initContainers:
+        - name: init-db
+          image: busybox:1.28
+          command: ['sh', '-c', 'sleep 20']
+      containers:
+        - name: orenotorero-api
+          image: orenotorero-api
+          imagePullPolicy: Never
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwtkey
+                  key: secretkey
+          ports:
+            - containerPort: 3000
+          command:
+            - sh
+            - -c
+            - ./binary/orenotorero
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orenotorero-api
+spec:
+  selector:
+    app: orenotorero-api
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30000
+  type: NodePort
