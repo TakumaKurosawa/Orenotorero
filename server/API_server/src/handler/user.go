@@ -25,7 +25,7 @@ func (handler *UserHandler) Login(context *gin.Context) (interface{}, error) {
 
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		return "", ginJwt.ErrMissingLoginValues
+		return "", err
 	}
 
 	user, err := handler.UserService.Login(reqBody.Email, reqBody.Password)
