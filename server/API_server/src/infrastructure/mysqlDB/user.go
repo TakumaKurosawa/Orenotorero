@@ -40,7 +40,7 @@ func (p *UserRepositoryImpliment) SelectByUserId(id string) (model.User, error) 
 	var user model.User
 
 	// ユーザ取得機能
-	p.DB.Where("id = ?", id).Find(&user)
+	p.DB.Select("name, email, img").Where("id = ?", id).Find(&user)
 
 	return user, nil
 }

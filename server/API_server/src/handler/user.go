@@ -1,11 +1,15 @@
 package handler
 
 import (
-	"github.com/appleboy/gin-jwt/v2"
+	ginJwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
 	"orenotorero/service"
+	"orenotorero/utility"
+	"os"
+	"time"
 )
 
 type UserHandler struct {
@@ -21,24 +25,24 @@ func (handler *UserHandler) Login(context *gin.Context) (interface{}, error) {
 
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		return "", jwt.ErrMissingLoginValues
+		return "", ginJwt.ErrMissingLoginValues
 	}
 
 	user, err := handler.UserService.Login(reqBody.Email, reqBody.Password)
 	if err != nil {
 		return nil, err
 	} else if user == nil {
-		return nil, jwt.ErrFailedAuthentication
+		return nil, ginJwt.ErrFailedAuthentication
 	}
 
 	return user, nil
 }
 
 func (handler *UserHandler) GetUser(context *gin.Context) {
-	claims := jwt.ExtractClaims(context)
+	claims := ginJwt.ExtractClaims(context)
 	id, ok := claims["id"].(string)
 	if ok == false {
-		context.Error(jwt.ErrFailedAuthentication)
+		context.Error(ginJwt.ErrForbidden)
 	}
 
 	user, err := handler.UserService.GetUser(id)
