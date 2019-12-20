@@ -1,8 +1,8 @@
 package mysqlDB
 
 import (
-	"github.com/appleboy/gin-jwt/v2"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 	"orenotorero/db/Model"
 	"orenotorero/repository"
 )
@@ -24,8 +24,9 @@ func (p *UserRepositoryImpliment) Login(email, password string) (*model.User, er
 	}
 
 	// ユーザ認証機能
-	if user.Password != password {
-		return nil, jwt.ErrFailedAuthentication
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return nil, err
 	}
 
 	return &user, nil

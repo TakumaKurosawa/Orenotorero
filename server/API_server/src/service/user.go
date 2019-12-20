@@ -1,6 +1,7 @@
 package service
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"orenotorero/db/Model"
 	"orenotorero/repository"
 )
@@ -22,12 +23,16 @@ func (userSvc *UserService) GetUser(id string) (model.User, error) {
 }
 
 func (userSvc *UserService) CreateNewUser(id, name, email, password string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
 
 	user := model.User{
 		Id:       id,
 		Name:     name,
 		Email:    email,
-		Password: password,
+		Password: string(hashedPassword),
 	}
 
 	return userSvc.UserRepository.InsertUser(user)
