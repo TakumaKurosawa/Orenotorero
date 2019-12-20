@@ -21,20 +21,17 @@ func (userSvc *UserService) GetUser(id string) (model.User, error) {
 	return userSvc.UserRepository.SelectByUserId(id)
 }
 
-func (userSvc *UserService) CreateNewUser(name, email, password string) (string, error) {
-	var token string
+func (userSvc *UserService) CreateNewUser(id, name, email, password string) error {
 
 	user := model.User{
-		Name: name,
-		Email: email,
+		Id:       id,
+		Name:     name,
+		Email:    email,
 		Password: password,
 	}
 
+	return userSvc.UserRepository.InsertUser(user)
 
-	err := userSvc.UserRepository.InsertUser(user)
-
-	// token作成処理
-	return token, err
 }
 
 func (userSvc *UserService) SelectAll() ([]model.User, error) {
