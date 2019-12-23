@@ -30,7 +30,6 @@ func main() {
 		})
 	})
 
-	auth := r.Group("")
 	// userAPI
 	r.POST("/login", jwtAuth.LoginHandler)
 	authByJwt := r.Group("")
