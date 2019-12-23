@@ -12,7 +12,7 @@ func NewUtilityService(repository repository.UserRepository) UtilityService {
 	return UtilityService{UserRepository: repository}
 }
 
-func (UtilitySvc *UtilityService) CheckEmail(token, email string) (bool, error) {
+func (UtilitySvc *UtilityService) CheckEmail(email string) (bool, error) {
 	user, err := UtilitySvc.UserRepository.SelectByEmail(email)
 	if err != nil {
 		return true, err
