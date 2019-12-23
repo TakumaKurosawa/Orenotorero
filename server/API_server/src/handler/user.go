@@ -1,11 +1,15 @@
 package handler
 
 import (
-	"github.com/appleboy/gin-jwt/v2"
+	ginJwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
 	"orenotorero/service"
+	"orenotorero/utility"
+	"os"
+	"time"
 )
 
 type UserHandler struct {
@@ -21,24 +25,24 @@ func (handler *UserHandler) Login(context *gin.Context) (interface{}, error) {
 
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		return "", jwt.ErrMissingLoginValues
+		return "", err
 	}
 
 	user, err := handler.UserService.Login(reqBody.Email, reqBody.Password)
 	if err != nil {
 		return nil, err
 	} else if user == nil {
-		return nil, jwt.ErrFailedAuthentication
+		return nil, ginJwt.ErrFailedAuthentication
 	}
 
 	return user, nil
 }
 
 func (handler *UserHandler) GetUser(context *gin.Context) {
-	claims := jwt.ExtractClaims(context)
+	claims := ginJwt.ExtractClaims(context)
 	id, ok := claims["id"].(string)
 	if ok == false {
-		context.Error(jwt.ErrFailedAuthentication)
+		context.Error(ginJwt.ErrForbidden)
 	}
 
 	user, err := handler.UserService.GetUser(id)
@@ -52,17 +56,30 @@ func (handler *UserHandler) GetUser(context *gin.Context) {
 func (handler *UserHandler) CreateNewUser(context *gin.Context) {
 	var reqBody requestBody.UserCreate
 
-	err := context.BindJSON(reqBody)
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	token, err := handler.UserService.CreateNewUser(reqBody.Name, reqBody.Email, reqBody.Password)
+	id := utility.CreateUserId(255)
+
+	err = handler.UserService.CreateNewUser(id, reqBody.Name, reqBody.Email, reqBody.Password)
 	if err != nil {
 		context.Error(err)
 	}
 
-	context.JSON(http.StatusOK, gin.H{"token": token})
+	// token作成処理
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"exp":      time.Now().Add(time.Hour).Unix(),
+		"id":       id,
+		"orig_iat": time.Now().Unix(),
+	})
+	tokenStr, err := token.SignedString([]byte(os.Getenv("JWT_KEY")))
+	if err != nil {
+		context.Error(err)
+	}
+
+	context.JSON(http.StatusOK, gin.H{"token": tokenStr})
 }
 
 func (handler *UserHandler) GetAllUsers(context *gin.Context) {

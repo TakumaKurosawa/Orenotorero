@@ -33,9 +33,10 @@ func main() {
 	auth := r.Group("")
 	// userAPI
 	r.POST("/login", jwtAuth.LoginHandler)
-	auth.Use(jwtAuth.MiddlewareFunc())
+	authByJwt := r.Group("")
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
 	{
-		r.GET("/user/get", userAPI.GetUser)
+		authByJwt.GET("/user/get", userAPI.GetUser)
 	}
 	r.POST("/user/create", userAPI.CreateNewUser)
 	r.GET("/users", userAPI.GetAllUsers)

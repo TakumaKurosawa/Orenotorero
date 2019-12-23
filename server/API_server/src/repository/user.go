@@ -5,7 +5,7 @@ import (
 )
 
 type UserRepository interface {
-	InsertUser() error
+	InsertUser(user model.User) error
 	Login(email, password string) (*model.User, error)
 	UpdateImg(s3Url string) error
 	SelectByUserId(id string) (model.User, error)
