@@ -22,7 +22,7 @@ func (p *BoardRepositoryImpliment) SelectByUserId(userId int) ([]model.Board, er
 	return nil, nil
 }
 
-func (p *BoardRepositoryImpliment) InsertBoard(userId string, title, img string) error {
+func (p *BoardRepositoryImpliment) InsertBoard(userId, title, img string) error {
 	// ボード新規作成
 	newBoard := model.Board{
 		CreatedUserId: userId,
@@ -30,8 +30,9 @@ func (p *BoardRepositoryImpliment) InsertBoard(userId string, title, img string)
 		Publish:       false,
 		BgImg:         img,
 		LastAccess:    time.Now(),
-		InviteURL:     "https://orenotorero/invite/1",
+		InviteURL:     "https://orenotorero/invite/1", // TODO:招待URLを捌くチケットで修正
 	}
+
 	p.DB.Create(&newBoard)
 	return nil
 }
