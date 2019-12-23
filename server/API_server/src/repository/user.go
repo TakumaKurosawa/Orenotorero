@@ -11,4 +11,5 @@ type UserRepository interface {
 	SelectByUserId(id string) (model.User, error)
 	SelectAll() ([]model.User, error)
 	SelectByEmail(email string) (model.User, error)
+	IsExistEmail(email string) (bool, error)
 }

@@ -13,16 +13,11 @@ func NewUtilityService(repository repository.UserRepository) UtilityService {
 }
 
 func (UtilitySvc *UtilityService) CheckEmail(email string) (bool, error) {
-	user, err := UtilitySvc.UserRepository.SelectByEmail(email)
+	flag, err := UtilitySvc.UserRepository.IsExistEmail(email)
 	if err != nil {
 		return true, err
 	}
-
-	if user.Email != "" {
-		return true, nil
-	}
-
-	return false, nil
+	return flag, nil
 }
 
 func (UtilitySvc *UtilityService) FileUpload(token, img string) (string, error) {

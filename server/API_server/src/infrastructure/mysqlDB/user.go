@@ -66,3 +66,14 @@ func (p *UserRepositoryImpliment) SelectByEmail(email string) (model.User, error
 	// DB.Whereを使って受け取ったEmailがデータベースに存在するかチェックする
 	return user, nil
 }
+
+func (p *UserRepositoryImpliment) IsExistEmail(email string) (bool, error) {
+	var user model.User
+	var count int
+	p.DB.Where("email = ?", email).Find(&user).Count(&count)
+	// DB.Whereを使って受け取ったEmailがデータベースに存在するかチェックする
+	if count >= 1 {
+		return true, nil
+	}
+	return false, nil
+}
