@@ -69,7 +69,7 @@ func (handler *BoardHandler) CreateNewBoard(context *gin.Context) {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}

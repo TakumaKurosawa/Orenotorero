@@ -22,8 +22,9 @@ func (boardSvc *BoardService) GetBoard(token string) ([]model.Board, error) {
 }
 
 func (boardSvc *BoardService) CreateNewBoard(token string, title, img string) error {
-	var userId int
+	var userId string
 	// 受け取ったTokenを元にuserIdを取得する
+	userId = "user1"
 
 	// ボード新規作成機能
 	err := boardSvc.BoardRepository.InsertBoard(userId, title, img)

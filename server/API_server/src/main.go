@@ -30,9 +30,10 @@ func main() {
 		})
 	})
 
+	auth := r.Group("")
 	// userAPI
 	r.POST("/login", jwtAuth.LoginHandler)
-	r.Use(jwtAuth.MiddlewareFunc())
+	auth.Use(jwtAuth.MiddlewareFunc())
 	{
 		r.GET("/user/get", userAPI.GetUser)
 	}

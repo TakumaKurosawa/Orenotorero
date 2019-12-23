@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
 	"orenotorero/repository"
+	"time"
 )
 
 type BoardRepositoryImpliment struct {
@@ -21,8 +22,17 @@ func (p *BoardRepositoryImpliment) SelectByUserId(userId int) ([]model.Board, er
 	return nil, nil
 }
 
-func (p *BoardRepositoryImpliment) InsertBoard(userId int, title, img string) error {
+func (p *BoardRepositoryImpliment) InsertBoard(userId string, title, img string) error {
 	// ボード新規作成
+	newBoard := model.Board{
+		CreatedUserId: userId,
+		Title:         title,
+		Publish:       false,
+		BgImg:         img,
+		LastAccess:    time.Now(),
+		InviteURL:     "https://orenotorero/invite/1",
+	}
+	p.DB.Create(&newBoard)
 	return nil
 }
 
