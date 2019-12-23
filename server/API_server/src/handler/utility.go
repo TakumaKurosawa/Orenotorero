@@ -16,20 +16,14 @@ func NewUtilityHandler(service service.UtilityService) UtilityHandler {
 }
 
 func (handler *UtilityHandler) EmailCheck(context *gin.Context) {
-	var token string
 	var reqBody requestBody.EmailCheck
 
-	err := context.BindHeader(token)
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	isExist, err := handler.UtilityService.CheckEmail(token, reqBody.Email)
+	isExist, err := handler.UtilityService.CheckEmail(reqBody.Email)
 	if err != nil {
 		context.Error(err)
 	}
