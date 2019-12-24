@@ -16,9 +16,24 @@ func NewBoardRepoImpl(DB *gorm.DB) repository.BoardRepository {
 	}
 }
 
-func (p *BoardRepositoryImpliment) SelectByUserId(userId int) ([]model.Board, error) {
+func (p *BoardRepositoryImpliment) SelectByUserId(userId string) []model.Board {
 	// ユーザIDにひもづくボードを全件取得
-	return nil, nil
+	//var authors []model.Author
+	//p.DB.Where("user_id = ?", userId).Find(&authors)
+	//
+	//var boardIds []int
+	//for _, author := range authors {
+	//	boardIds = append(boardIds, author.BoardId)
+	//}
+	//
+	//var Board []model.Board
+	//p.DB.Where("id IN (?)", boardIds).Find(&Board)
+
+	var authors []model.Author
+	var Boards []model.Board
+
+	p.DB.Where("user_id = ?", userId).Find(&authors).Related(&Boards)
+	return Board
 }
 
 func (p *BoardRepositoryImpliment) InsertBoard(userId int, title, img string) error {
