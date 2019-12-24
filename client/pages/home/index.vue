@@ -2,20 +2,23 @@
   <div>
     <h1>ユーザーTOPページ</h1>
     <MenuList></MenuList>
-    <BoardList></BoardList>
+    <PersonalBoardList :board-data="boardData"></PersonalBoardList>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import MenuList from '../../components/home/MenuList.vue'
-import BoardList from '../../components/home/BoardList.vue'
+import MenuList from '@/components/home/MenuList.vue'
+import PersonalBoardList from '@/components/home/PersonalBoardList.vue'
+import BoardData from '@/assets/mock/board.json'
 
 @Component({
   components: {
     MenuList,
-    BoardList
+    PersonalBoardList
   }
 })
-export default class ome extends Vue {}
+export default class Home extends Vue {
+  boardData = BoardData
+}
 </script>
