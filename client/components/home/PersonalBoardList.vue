@@ -8,7 +8,7 @@
     <Card
       v-for="item in boardData"
       :key="item.id"
-      :card-title="item.title"
+      :card-title="item.name"
       :card-height="100"
       :card-width="180"
       :card-img="item.img"
