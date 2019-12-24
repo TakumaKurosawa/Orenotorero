@@ -5,14 +5,16 @@
       :text-label="'パーソナルボード'"
       :icon-name="'mdi-account-outline'"
     ></LabelIcon>
-    <Card
-      v-for="item in boardData"
-      :key="item.id"
-      :card-title="item.name"
-      :card-height="100"
-      :card-width="180"
-      :card-img="item.img"
-    ></Card>
+    <v-row>
+      <Card
+        v-for="item in boardData"
+        :key="item.id"
+        :card-title="item.name"
+        :card-height="100"
+        :card-width="180"
+        :card-img="item.img"
+      ></Card>
+    </v-row>
   </div>
 </template>
 <script lang="ts">
