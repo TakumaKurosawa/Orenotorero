@@ -1,12 +1,9 @@
 <template>
   <div>
-    <LabelIcon
-      :text-label="'パーソナルボード'"
-      :icon-name="'mdi-account-outline'"
-    ></LabelIcon>
+    <LabelIcon :text-label="'最近の表示'" :icon-name="'mdi-clock'"></LabelIcon>
     <v-row>
       <Card
-        v-for="item in boardData"
+        v-for="item in cardCount"
         :key="item.id"
         :card-title="item.name"
         :card-height="100"
@@ -27,7 +24,11 @@ import Card from '@/components/atom/Card.vue'
     Card
   }
 })
-export default class PersonalBoardList extends Vue {
+export default class RecentlyUsedBoardList extends Vue {
+  get cardCount() {
+    return this.boardData.slice(0, 4)
+  }
+
   @Prop({ type: Array, required: true })
   boardData!: Array<string>
 }
