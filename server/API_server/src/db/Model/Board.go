@@ -10,5 +10,5 @@ type Board struct {
 	BgImg         string    `json:"bg_img"          gorm:"type:varchar(255); NOT NULL"`
 	LastAccess    time.Time `json:"last_access"     gorm:"type:datetime; NOT NULL"`
 	InviteURL     time.Time `json:"invite_url"      gorm:"invite_url;type:varchar(255); NOT NULL"`
-	User          User      `json:"user"            gorm:"foreignkey:CreatedUserId"`
+	Kanbans       []Kanban  `json:"" gorm:"foreignkey:UserRefer"`
 }
