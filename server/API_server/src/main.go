@@ -41,7 +41,10 @@ func main() {
 	r.GET("/users", userAPI.GetAllUsers)
 
 	// boardAPI
-	r.GET("/board", boardAPI.GetBoard)
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
+	{
+		authByJwt.GET("/board", boardAPI.GetBoard)
+	}
 	r.POST("/board", boardAPI.CreateNewBoard)
 	r.PUT("/board/publish", boardAPI.ChangeBoardPublish)
 	r.POST("/board/invite", boardAPI.SendInviteMail)
