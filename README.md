@@ -9,7 +9,7 @@
 make dev-db
 # -> root
 # -> orenotorero
-# と2回連続rootと入力する
+# と入力する
 
 # クライアントサイドアプリケーションを立ち上げる
 cd client && yarn
