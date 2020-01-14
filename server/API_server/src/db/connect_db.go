@@ -39,7 +39,6 @@ func migration(db *gorm.DB) *gorm.DB {
 	db.AutoMigrate(
 		&model.User{},
 		&model.Board{},
-		&model.Author{},
 		&model.Card{},
 		&model.Kanban{},
 		&model.File{},
