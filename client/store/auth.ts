@@ -34,12 +34,16 @@ const mutations: MutationTree<AuthState> = {
 }
 const actions: ActionTree<AuthState, RootState> = {
   login({ commit }, email: string, pass: string): void {
-    const res = this.$axios.$post('http://localhost:30002/login', {
+    const res = this.$axios.$post('/login', {
       email,
       password: pass
     })
     console.log(res.data)
     commit('updateIsAuth', true)
+  },
+  test(): void {
+    const res = this.$axios.$get('/ping')
+    console.log(res.data)
   }
 }
 export const Auth: Module<AuthState, RootState> = {
