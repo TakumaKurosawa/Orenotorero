@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -83,17 +84,11 @@ func (handler *BoardHandler) CreateNewBoard(context *gin.Context) {
 }
 
 func (handler *BoardHandler) GetBoard(context *gin.Context) {
-	var token string
-
-	err := context.BindHeader(token)
-	if err != nil {
-		context.Error(err)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
 	}
-
-	Boards, err := handler.BoardService.GetBoard(token)
-	if err != nil {
-		context.Error(err)
-	}
-
+	Boards := handler.BoardService.GetBoard(id)
 	context.JSON(http.StatusOK, Boards)
 }
