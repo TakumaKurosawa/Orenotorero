@@ -13,12 +13,8 @@ func NewBoardService(repository repository.BoardRepository) BoardService {
 	return BoardService{BoardRepository: repository}
 }
 
-func (boardSvc *BoardService) GetBoard(token string) ([]model.Board, error) {
-	var userId int
-	// 受け取ったTokenを元にuserIdを取得してボードへのアクセス権限があるかをチェックする
-
-	// ボード新規作成機能
-	return boardSvc.BoardRepository.SelectByUserId(userId)
+func (boardSvc *BoardService) GetBoard(id string) []model.Board {
+	return boardSvc.BoardRepository.SelectByUserId(id)
 }
 
 func (boardSvc *BoardService) CreateNewBoard(token string, title, img string) error {
