@@ -1,0 +1,23 @@
+settings:
+    legacy:
+        force: false
+        interval: 0s
+schema:
+-   name: src
+    path: .
+    commands:
+        install:
+            status: true
+            method: go build -o binary/orenotorero
+        run:
+            status: true
+            method: binary/orenotorero
+    watcher:
+        extensions:
+        - go
+        paths:
+        - /
+        ignored_paths:
+        - .git
+        - .realize
+        - vendor
