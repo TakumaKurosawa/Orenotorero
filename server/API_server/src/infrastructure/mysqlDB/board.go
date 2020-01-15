@@ -24,7 +24,7 @@ func (p *BoardRepositoryImpliment) SelectByUserId(userId string) []model.Board {
 	var user model.User
 
 	//userIdによるユーザー情報の取得
-	p.DB.Where("id=?",userId).Find(&user)
+	p.DB.Where("id=?", userId).Find(&user)
 
 	//取得したユーザーに対応するBoardを取得
 	p.DB.Model(&user).Related(&boards, "Boards")

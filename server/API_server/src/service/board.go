@@ -21,7 +21,6 @@ func (boardSvc *BoardService) CreateNewBoard(token string, title, img string) er
 	var userId int
 	// 受け取ったTokenを元にuserIdを取得する
 
-
 	// ボード新規作成機能
 	err := boardSvc.BoardRepository.InsertBoard(userId, title, img)
 	if err != nil {
