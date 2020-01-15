@@ -19,7 +19,7 @@ func GormCreate() *gorm.DB {
 	PASS := "root"
 	PROTOCOL := "tcp(" + ip + ":30002)"
 	DBNAME := "orenotorero"
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
+	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?parseTime=true"
 
 	db, err := gorm.Open(DBMS, CONNECT)
 	if err != nil {
@@ -34,12 +34,12 @@ func GormCreate() *gorm.DB {
 
 func migration(db *gorm.DB) *gorm.DB {
 	db.Set("gorm:table_options", "ENGINE=InnoDB")
-
+	db.LogMode(true)
 	db.SingularTable(true)
+
 	db.AutoMigrate(
 		&model.User{},
 		&model.Board{},
-		&model.Author{},
 		&model.Card{},
 		&model.Kanban{},
 		&model.File{},

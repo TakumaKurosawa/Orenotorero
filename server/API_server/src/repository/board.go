@@ -5,7 +5,7 @@ import (
 )
 
 type BoardRepository interface {
-	SelectByUserId(userId int) ([]model.Board, error)
-	InsertBoard(userId string, title, img string) error
+	SelectByUserId(userId string) []model.Board
+	InsertBoard(userId int, title, img string) error
 	UpdateBoardPublish(id int, publish bool) error
 }
