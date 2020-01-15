@@ -5,5 +5,5 @@ type Kanban struct {
 	BoardId  int    `json:"board_id" gorm:"type:int; NOT NULL"`
 	Position int    `json:"position" gorm:"type:int; NOT NULL"`
 	Title    string `json:"title"    gorm:"type:varchar(255); NOT NULL"`
-	Cards    []Card `json:"cards"	 gorm:"foreignkey:KanbanId"`
+	Cards    []Card `json:"cards"	   gorm:"foreignkey:KanbanId"`
 }
