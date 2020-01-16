@@ -25,6 +25,9 @@ go run main.go wire_gen.go
 1. [Swagger](https://editor.swagger.io/)へアクセスする
 2. [Swaggerの内容](https://github.com/Takumaron/Orenotorero/blob/master/swagger.yml)をSwaggerページにコピペする
 
+## 【Backend】DBへのデータ取得方法
+[こちら]（https://hackmd.io/tWkmJETsT0W5CEU3nkKbpw?view）を参考にする
+
 ## GitHub運用ルール
 - masterへの直接Push＝NG
 - ブランチは下記のルールに則って作成する
