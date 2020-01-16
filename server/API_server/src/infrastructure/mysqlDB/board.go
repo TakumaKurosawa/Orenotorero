@@ -34,6 +34,9 @@ func (p *BoardRepositoryImpliment) SelectByUserId(userId string) []model.Board {
 }
 
 func (p *BoardRepositoryImpliment) InsertBoard(userId, title, img string) error {
+	var user model.User
+	user.Id = userId
+
 	// ボード新規作成
 	newBoard := model.Board{
 		CreatedUserId: userId,
@@ -45,6 +48,7 @@ func (p *BoardRepositoryImpliment) InsertBoard(userId, title, img string) error 
 	}
 
 	p.DB.Create(&newBoard)
+	p.DB.Model(&user).Association("Boards").Append(&newBoard)
 	return nil
 }
 
