@@ -44,9 +44,9 @@ func main() {
 	authByJwt.Use(jwtAuth.MiddlewareFunc())
 	{
 		authByJwt.GET("/board", boardAPI.GetBoard)
+		authByJwt.PUT("/board/publish", boardAPI.ChangeBoardPublish)
 	}
 	r.POST("/board", boardAPI.CreateNewBoard)
-	r.PUT("/board/publish", boardAPI.ChangeBoardPublish)
 	r.POST("/board/invite", boardAPI.SendInviteMail)
 
 	// kanbanAPI

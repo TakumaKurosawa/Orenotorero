@@ -37,7 +37,25 @@ func (p *BoardRepositoryImpliment) InsertBoard(userId int, title, img string) er
 	return nil
 }
 
-func (p *BoardRepositoryImpliment) UpdateBoardPublish(id int, publish bool) error {
+func (p *BoardRepositoryImpliment) UpdateBoardPublish(userId string, boardId int, publish bool) error {
 	// ボードの公開・非公開情報更新
+
+	//モデル変数の宣言
+	var user model.User
+	var boards []model.Board
+
+	//userIdによるユーザー情報の取得
+	p.DB.Where("id=?", userId).Find(&user)
+
+	//取得したユーザーに対応するBoardを取得
+	p.DB.Model(&user).Related(&boards, "Boards")
+
+	for _, board := range boards {
+		//該当のBoardを見つけたらUPDATEをかける
+		if board.Id == boardId {
+			p.DB.Model(&board).Update("publish", publish)
+		}
+	}
+
 	return nil
 }
