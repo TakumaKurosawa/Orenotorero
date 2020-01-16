@@ -30,11 +30,6 @@ paths:
             produces:
             - "application/json"
             parameters:
-            -   in: "header"
-                name: "x-token"
-                description: "認証トークン"
-                required: true
-                type: "string"
             -   in: "body"
                 name: "body"
                 description: "Request Body"
@@ -209,8 +204,8 @@ paths:
                 required: true
                 type: "string"
             -   in: "header"
-                name: "kanban-id"
-                description: "カンバンID"
+                name: "board-id"
+                description: "ボードID"
                 required: true
                 type: "integer"
           responses:
@@ -530,10 +525,6 @@ definitions:
     UserGetResponse:
         type: "object"
         properties:
-            id:
-                type: "string"
-                description: "ユーザID"
-                example: "ufkdskaeLKDKJFlji322rnkdsjdfk"
             img:
                 type: "string"
                 description: "S3のURL"
@@ -584,10 +575,18 @@ definitions:
                 type: "string"
                 description: "S3のURL"
                 example: "https://aws.s3.image.com"
+            created_user:
+                type: "string"
+                description: "作成したUser"
+                example: "noihgeaohigeohigeigeaige"
             publish:
-                type: boolean
+                type: "boolean"
                 description: "公開・非公開情報"
                 example: false
+            last_access:
+                type: "string"
+                description: "最終アクセス日"
+                example: "1999-03-08 00:00:00"
             author:
                 type: "array"
                 items:
@@ -659,6 +658,10 @@ definitions:
                 type: "string"
                 description: "カンバンタイトル"
                 example: "今週やること"
+            position:
+                type: "integer"
+                description: "Kanbanの位置関係を表す"
+                example: 1
             card:
                 type: "array"
                 items:
@@ -680,6 +683,10 @@ definitions:
                         type: "string"
                         description: "期日"
                         example: "2019-05-03 11:00"
+                    position:
+                        type: "integer"
+                        description: "Cardの位置関係を表す"
+                        example: 1
 
     KanbanCreateRequest:
         type: "object"
