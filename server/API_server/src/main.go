@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"orenotorero/db"
 	"orenotorero/middleware"
@@ -22,6 +23,10 @@ func main() {
 	}
 
 	r := gin.Default()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	r.Use(cors.New(config))
 
 	// connection testAPI
 	r.GET("/ping", func(c *gin.Context) {
