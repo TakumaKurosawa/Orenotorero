@@ -68,5 +68,5 @@ func main() {
 	r.PUT("/img", utilityAPI.FileUpload)
 
 	// ポートを設定しています。
-	r.Run(":3000")
+	r.Run(":8080")
 }
