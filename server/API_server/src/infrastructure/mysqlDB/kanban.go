@@ -37,8 +37,8 @@ func (p *KanbanRepositoryImpliment) DeleteKanban(kanbanId int) error {
 }
 
 func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(kanbanId int, newTitle string) error {
-
 	// カンバンタイトル変更機能
+	p.DB.Find(&model.Kanban{}, kanbanId).Update("Title", newTitle)
 	return nil
 }
 
