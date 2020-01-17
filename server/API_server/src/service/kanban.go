@@ -25,8 +25,8 @@ func (KanbanSvc *KanbanService) CreateNewKanban(token, title string, boardId, po
 	return KanbanSvc.KanbanRepository.InsertKanban(boardId, position, title)
 }
 
-func (KanbanSvc *KanbanService) DeleteKanban(kanbanId int, token string) error {
-	// tokenでボードへのアクセス権限があるかをチェックする
+func (KanbanSvc *KanbanService) DeleteKanban(userId string, kanbanId int) error {
+	// User確認をする
 
 	return KanbanSvc.KanbanRepository.DeleteKanban(kanbanId)
 }

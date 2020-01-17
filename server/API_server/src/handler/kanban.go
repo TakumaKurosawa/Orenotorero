@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -55,20 +56,20 @@ func (handler *KanbanHandler) CreateNewKanban(context *gin.Context) {
 }
 
 func (handler *KanbanHandler) DeleteKanban(context *gin.Context) {
-	var token string
 	var reqBody requestBody.KanbanDelete
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.KanbanService.DeleteKanban(reqBody.KanbanId, token)
+	err = handler.KanbanService.DeleteKanban(id, reqBody.KanbanId)
 	if err != nil {
 		context.Error(err)
 	}
