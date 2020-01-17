@@ -25,7 +25,6 @@ func (p *CardRepositoryImpliment) InsertCard(title string, kanbanId, position in
 		Title:    title,
 		Describe: nil,
 		DeadLine: nil,
-		Files:    nil,
 	}
 
 	p.DB.Create(&newCard)
