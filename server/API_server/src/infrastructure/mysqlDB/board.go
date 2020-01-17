@@ -2,7 +2,6 @@ package mysqlDB
 
 import (
 	"errors"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
 	"orenotorero/repository"
@@ -60,9 +59,9 @@ func (p *BoardRepositoryImpliment) UpdateBoardPublish(userId string, boardId int
 	var board model.Board
 
 	isMyBoard := utility.IsMyBoard(p.DB, userId, boardId)
-	fmt.Println(isMyBoard)
 
 	if isMyBoard {
+		board.Id = boardId
 		p.DB.Model(&board).Update("publish", publish)
 		return nil
 	} else {
