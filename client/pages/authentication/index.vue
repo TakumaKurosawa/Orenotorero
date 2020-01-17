@@ -1,6 +1,8 @@
 <template>
   <div>
     <h1>ユーザー認証ページ</h1>
+    {{ this.$store.state.auth.isAuth }}
+    {{ this.$store.state.auth.authedUser }}
     <v-tabs color="white" centered dark>
       <v-tabs-slider color="white"></v-tabs-slider>
       <v-tab @click="isOpenLoginTab = true">
