@@ -1,10 +1,12 @@
 <template>
   <v-text-field
+    v-model="textData"
     :rules="textRules"
     :counter="maxLength"
     :label="textLabel"
     :type="textType"
     :value="textValue"
+    @input="emitValue"
   ></v-text-field>
 </template>
 
@@ -13,6 +15,11 @@ import { Vue, Prop, Component } from 'nuxt-property-decorator'
 
 @Component
 export default class TextField extends Vue {
+  textData = ''
+  emitValue() {
+    this.$emit('submit', this.textData)
+  }
+
   @Prop({ type: Array, required: false })
   textRules!: Array<string>
 
