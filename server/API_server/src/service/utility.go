@@ -5,7 +5,7 @@ import (
 )
 
 type UtilityService struct {
-	UserRepository repository.UserRepository
+	UserRepository   repository.UserRepository
 	KanbanRepository repository.KanbanRepository
 }
 
