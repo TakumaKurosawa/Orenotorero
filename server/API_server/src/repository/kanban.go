@@ -9,5 +9,5 @@ type KanbanRepository interface {
 	SelectByBoardId(boardId int) ([]model.Kanban, error)
 	DeleteKanban(kanbanId int) error
 	UpdateKanbanTitle(kanbanId int, newTitle string) error
-	UpdateKanbanPosition(id, current, destination int) error
+	UpdatePosition(position []int) error
 }

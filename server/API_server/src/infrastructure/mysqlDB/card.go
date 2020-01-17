@@ -32,11 +32,6 @@ func (p *CardRepositoryImpliment) UpdateCardDeadLine(id int, deadline time.Time)
 	return nil
 }
 
-func (p *CardRepositoryImpliment) UpdateCardPosition(id, current, destination int) error {
-	// カードポジション更新機能
-	return nil
-}
-
 func (p *CardRepositoryImpliment) SelectAll(kanbanId int) ([]model.Card, error) {
 	// カンバンに紐づくカード全件取得機能
 	var cards []model.Card

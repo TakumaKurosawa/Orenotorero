@@ -6,6 +6,7 @@ import (
 
 type UtilityService struct {
 	UserRepository repository.UserRepository
+	KanbanRepository repository.KanbanRepository
 }
 
 func NewUtilityService(repository repository.UserRepository) UtilityService {
@@ -29,4 +30,15 @@ func (UtilitySvc *UtilityService) FileUpload(token, img string) (string, error) 
 	}
 
 	return s3Url, nil
+}
+
+func (UtilitySvc *UtilityService) UpdatePosition(userId string, position []int) error {
+	//ここでリクエストを投げたUserがちゃんと該当Boardを所持しているかを確認する
+
+	//Update
+	err := UtilitySvc.KanbanRepository.UpdatePosition(position)
+	if err != nil {
+		return err
+	}
+	return nil
 }

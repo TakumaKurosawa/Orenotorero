@@ -22,10 +22,6 @@ func (CardSvc *CardService) ChangeCardTitle(cardId int, token, title string) err
 	return CardSvc.CardRepository.UpdateCardTitle(cardId, title)
 }
 
-func (CardSvc *CardService) ChangeCardPosition(cardId, current, destination int, token string) error {
-	return CardSvc.CardRepository.UpdateCardPosition(cardId, current, destination)
-}
-
 func (CardSvc *CardService) ChangeCardDeadline(cardId int, token string, deadline time.Time) error {
 	return CardSvc.CardRepository.UpdateCardDeadLine(cardId, deadline)
 }
