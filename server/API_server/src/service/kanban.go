@@ -21,7 +21,7 @@ func (KanbanSvc *KanbanService) GetKanban(token string, boardId int) ([]model.Ka
 
 func (KanbanSvc *KanbanService) CreateNewKanban(userId, title string, boardId, position int) error {
 	//UserがBoardを所有しているかを確認する
-	return KanbanSvc.KanbanRepository.InsertKanban(boardId, position, title)
+	return KanbanSvc.KanbanRepository.InsertKanban(userId, boardId, position, title)
 }
 
 func (KanbanSvc *KanbanService) DeleteKanban(kanbanId int, token string) error {
