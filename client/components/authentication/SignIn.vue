@@ -19,7 +19,7 @@
         @action="loginAction()"
       ></BaseButton>
     </v-form>
-    <v-btn @click="loginAction"> あくしよんテスト</v-btn>
+    <v-btn @click="loginAction()"> あくしよんテスト</v-btn>
   </div>
 </template>
 

@@ -1,12 +1,12 @@
 import { Module, MutationTree, GetterTree, ActionTree } from 'vuex'
-export interface RootState {
-  version: string
-}
+import { RootState } from '~/store/index'
+
 export interface AuthState {
   isAuth: boolean
   authedUser: object
   authToken: string
 }
+
 export const state: () => AuthState = (): AuthState => ({
   isAuth: false,
   authedUser: {
@@ -47,10 +47,9 @@ const actions: ActionTree<AuthState, RootState> = {
   //   commit('updateIsAuth', true)
   // },
   async login({ commit }: any, payload: object): Promise<any> {
+    console.log(payload)
     await this.$axios
-      .post('/login', {
-        payload
-      })
+      .post('/login', payload)
       .then((res: any) => {
         console.log(res.data)
         commit('updateIsAuth', true)

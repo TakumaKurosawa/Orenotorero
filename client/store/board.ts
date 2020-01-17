@@ -1,8 +1,7 @@
 import { Module, MutationTree, GetterTree } from 'vuex'
 import boardData from '../assets/mock/board.json'
-export interface RootState {
-  version: string
-}
+import { RootState } from '~/store/index'
+
 export interface BoardState {
   boardData: object
 }
