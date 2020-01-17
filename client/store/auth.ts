@@ -38,16 +38,7 @@ const mutations: MutationTree<AuthState> = {
   }
 }
 const actions: ActionTree<AuthState, RootState> = {
-  // login({ commit }, email: string, pass: string): void {
-  //   const res = this.$axios.$post('/login', {
-  //     email,
-  //     password: pass
-  //   })
-  //   console.log(res.data)
-  //   commit('updateIsAuth', true)
-  // },
   async login({ commit }: any, payload: object): Promise<any> {
-    console.log(payload)
     await this.$axios
       .post('/login', payload)
       .then((res: any) => {
