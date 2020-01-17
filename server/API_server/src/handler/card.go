@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -16,20 +17,20 @@ func NewCardHandler(service service.CardService) CardHandler {
 }
 
 func (handler *CardHandler) CreateNewCard(context *gin.Context) {
-	var token string
 	var reqBody requestBody.CardCreate
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.CardService.CreateCard(token, reqBody.Title, reqBody.KanbanId, reqBody.Position)
+	err = handler.CardService.CreateCard(id, reqBody.Title, reqBody.KanbanId, reqBody.Position)
 	if err != nil {
 		context.Error(err)
 	}

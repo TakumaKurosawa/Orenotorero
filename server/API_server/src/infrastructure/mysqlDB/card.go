@@ -19,6 +19,16 @@ func NewCardRepoImpl(DB *gorm.DB) repository.CardRepository {
 
 func (p *CardRepositoryImpliment) InsertCard(title string, kanbanId, position int) error {
 	// カード新規作成機能
+	newCard := model.Card{
+		KanbanId: kanbanId,
+		Position: position,
+		Title:    title,
+		Describe: nil,
+		DeadLine: nil,
+		Files:    nil,
+	}
+
+	p.DB.Create(&newCard)
 	return nil
 }
 

@@ -13,8 +13,8 @@ func NewCardService(repository repository.CardRepository) CardService {
 	return CardService{CardRepository: repository}
 }
 
-func (CardSvc *CardService) CreateCard(token, title string, kanbanId, position int) error {
-	// tokenを使ってアクセス権限の有無
+func (CardSvc *CardService) CreateCard(userId, title string, kanbanId, position int) error {
+	// 該当UserがCardを追加するBoardの編集権限があるかを確認
 	return CardSvc.CardRepository.InsertCard(title, kanbanId, position)
 }
 
