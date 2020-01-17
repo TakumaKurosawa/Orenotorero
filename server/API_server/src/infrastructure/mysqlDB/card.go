@@ -22,8 +22,9 @@ func (p *CardRepositoryImpliment) InsertCard(title string, kanbanId, position in
 	return nil
 }
 
-func (p *CardRepositoryImpliment) UpdateCardTitle(id int, title string) error {
+func (p *CardRepositoryImpliment) UpdateCardTitle(cardId int, title string) error {
 	// カードタイトル更新機能
+	p.DB.Find(&model.Card{}, cardId).Update("Title", title)
 	return nil
 }
 

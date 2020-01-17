@@ -18,7 +18,8 @@ func (CardSvc *CardService) CreateCard(token, title string, kanbanId, position i
 	return CardSvc.CardRepository.InsertCard(title, kanbanId, position)
 }
 
-func (CardSvc *CardService) ChangeCardTitle(cardId int, token, title string) error {
+func (CardSvc *CardService) ChangeCardTitle(userId string, cardId int, title string) error {
+
 	return CardSvc.CardRepository.UpdateCardTitle(cardId, title)
 }
 
