@@ -6,12 +6,14 @@
         :text-rules="emailRules"
         :text-label="'email'"
         :text-type="'email'"
+        @submit="onReceiveEmail"
       ></TextField>
       <TextField
         :text-rules="passRules"
         :max-length="10"
         :text-label="'password'"
         :text-type="'password'"
+        @submit="onReceivePassword"
       ></TextField>
       <BaseButton
         :value="'ログイン'"
@@ -35,7 +37,17 @@ import BaseButton from '@/components/atom/Button.vue'
   }
 })
 export default class SignIn extends Vue {
+  email = ''
+  password = ''
   isValid = true
+  onReceiveEmail(emailData: string) {
+    this.email = emailData
+  }
+
+  onReceivePassword(passwordData: string) {
+    this.password = passwordData
+  }
+
   loginAction() {
     this.$store.dispatch('auth/login', {
       email: 'hogehoge@gmail.com',
