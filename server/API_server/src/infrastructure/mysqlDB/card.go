@@ -27,8 +27,9 @@ func (p *CardRepositoryImpliment) UpdateCardTitle(id int, title string) error {
 	return nil
 }
 
-func (p *CardRepositoryImpliment) UpdateCardDeadLine(id int, deadline time.Time) error {
+func (p *CardRepositoryImpliment) UpdateCardDeadLine(userId string, cardId int, deadline time.Time) error {
 	// カード期限更新機能
+	p.DB.Find(&model.Card{}, cardId).Update("DeadLine", deadline)
 	return nil
 }
 

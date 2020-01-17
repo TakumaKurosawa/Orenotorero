@@ -22,8 +22,8 @@ func (CardSvc *CardService) ChangeCardTitle(cardId int, token, title string) err
 	return CardSvc.CardRepository.UpdateCardTitle(cardId, title)
 }
 
-func (CardSvc *CardService) ChangeCardDeadline(cardId int, token string, deadline time.Time) error {
-	return CardSvc.CardRepository.UpdateCardDeadLine(cardId, deadline)
+func (CardSvc *CardService) ChangeCardDeadline(userId string, cardId int, deadline time.Time) error {
+	return CardSvc.CardRepository.UpdateCardDeadLine(userId, cardId, deadline)
 }
 
 func (CardSvc *CardService) InsertFileData(cardId int, token, s3Url, fileName string) error {
