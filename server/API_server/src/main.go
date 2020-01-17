@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"orenotorero/db"
 	"orenotorero/middleware"
@@ -22,6 +23,10 @@ func main() {
 	}
 
 	r := gin.Default()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	r.Use(cors.New(config))
 
 	// connection testAPI
 	r.GET("/ping", func(c *gin.Context) {
@@ -46,7 +51,10 @@ func main() {
 		authByJwt.GET("/board", boardAPI.GetBoard)
 		authByJwt.PUT("/board/publish", boardAPI.ChangeBoardPublish)
 	}
-	r.POST("/board", boardAPI.CreateNewBoard)
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
+	{
+		authByJwt.POST("/board", boardAPI.CreateNewBoard)
+	}
 	r.POST("/board/invite", boardAPI.SendInviteMail)
 
 	// kanbanAPI
@@ -68,5 +76,5 @@ func main() {
 	r.PUT("/img", utilityAPI.FileUpload)
 
 	// ポートを設定しています。
-	r.Run(":3000")
+	r.Run(":8080")
 }
