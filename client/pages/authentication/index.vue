@@ -19,6 +19,7 @@
     ></SignIn>
     <SignUp
       v-if="!isOpenLoginTab"
+      :name-rules="nameRules"
       :email-rules="emailRules"
       :pass-rules="passRules"
     ></SignUp>
@@ -38,6 +39,8 @@ import SignUp from '@/components/authentication/SignUp.vue'
 })
 export default class AuthenticationTop extends Vue {
   isOpenLoginTab: boolean = true
+  nameRules = [(v: string) => !!v || 'nameの入力は必須です']
+
   emailRules = [
     (v: string) => !!v || 'emailの入力は必須です',
     (v: string) => /.+@.+/.test(v) || 'emailが正しくありません'

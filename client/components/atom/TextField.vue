@@ -20,16 +20,16 @@ export default class TextField extends Vue {
     this.$emit('submit', this.textData)
   }
 
-  @Prop({ type: Array, required: false })
+  @Prop({ type: Array, required: false, default: [] })
   textRules!: Array<string>
 
-  @Prop({ type: Number, required: false })
+  @Prop({ type: Number, required: false, default: 10 })
   maxLength!: number
 
   @Prop({ type: String, required: true })
   textLabel!: string
 
-  @Prop({ type: String, required: false })
+  @Prop({ type: String, required: false, default: 'text' })
   textType!: string
 
   @Prop({ type: String, required: false, default: '' })
