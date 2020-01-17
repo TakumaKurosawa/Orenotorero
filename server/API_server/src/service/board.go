@@ -27,12 +27,9 @@ func (boardSvc *BoardService) CreateNewBoard(userId, title, img string) error {
 	return nil
 }
 
-func (boardSvc *BoardService) ChangePublishInfo(token string, boardId int, publish bool) error {
-	//var userId int//
-	// 受け取ったTokenを元にuserIdを取得し、ボードへのアクセス権限があるかを調べる
-
+func (boardSvc *BoardService) ChangePublishInfo(userId string, boardId int, publish bool) error {
 	// ボードの公開・非公開情報更新機能
-	return boardSvc.BoardRepository.UpdateBoardPublish(boardId, publish)
+	return boardSvc.BoardRepository.UpdateBoardPublish(userId, boardId, publish)
 }
 
 func (boardSvc *BoardService) SendInviteMail(boardId int, token, email, message string) error {
