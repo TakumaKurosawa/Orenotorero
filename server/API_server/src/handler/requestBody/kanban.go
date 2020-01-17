@@ -14,9 +14,3 @@ type KanbanChangeTitle struct {
 	KanbanDelete
 	Title string `json:"title"`
 }
-
-type KanbanChangePosition struct {
-	KanbanDelete
-	CurrentPosition     int `json:"current_position"`
-	DestinationPosition int `json:"destination_position"`
-}

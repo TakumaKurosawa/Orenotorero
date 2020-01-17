@@ -97,25 +97,3 @@ func (handler *KanbanHandler) ChangeKanbanTitle(context *gin.Context) {
 
 	context.Status(http.StatusOK)
 }
-
-func (handler *KanbanHandler) ChangeKanbanPosition(context *gin.Context) {
-	var token string
-	var reqBody requestBody.KanbanChangePosition
-
-	err := context.BindHeader(token)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.KanbanService.ChangeKanbanPosition(reqBody.KanbanId, reqBody.CurrentPosition, reqBody.DestinationPosition, token)
-	if err != nil {
-		context.Error(err)
-	}
-
-	context.Status(http.StatusOK)
-}

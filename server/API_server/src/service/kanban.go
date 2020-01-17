@@ -36,9 +36,3 @@ func (KanbanSvc *KanbanService) ChangeKanbanTitle(kanbanId int, token, title str
 
 	return KanbanSvc.KanbanRepository.UpdateKanbanTitle(kanbanId, title)
 }
-
-func (KanbanSvc *KanbanService) ChangeKanbanPosition(kanbanId, current, destination int, token string) error {
-	// tokenでボードへのアクセス権限があるかをチェックする
-
-	return KanbanSvc.KanbanRepository.UpdateKanbanPosition(kanbanId, current, destination)
-}

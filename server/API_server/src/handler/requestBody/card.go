@@ -12,12 +12,6 @@ type CardChangeDeadline struct {
 	Deadline time.Time `json:"deadline"`
 }
 
-type CardChangePosition struct {
-	Id          int `json:"id"`
-	Current     int `json:"current_position"`
-	Destination int `json:"destination_position"`
-}
-
 type CardCreate struct {
 	Title    string `json:"title"`
 	KanbanId int    `json:"kanban_id"`
