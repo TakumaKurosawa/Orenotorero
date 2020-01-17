@@ -39,3 +39,9 @@ func (p *CardRepositoryImpliment) SelectAll(kanbanId int) ([]model.Card, error) 
 
 	return cards, nil
 }
+
+func (p *CardRepositoryImpliment) DeleteCard(cardId int) error {
+	// 該当のCardを削除する
+	p.DB.Where("id = ?", cardId).Delete(&model.Card{})
+	return nil
+}

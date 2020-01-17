@@ -10,4 +10,5 @@ type CardRepository interface {
 	UpdateCardTitle(id int, title string) error
 	UpdateCardDeadLine(id int, deadline time.Time) error
 	SelectAll(kanbanId int) ([]model.Card, error)
+	DeleteCard(cardId int) error
 }
