@@ -50,9 +50,6 @@ func main() {
 	{
 		authByJwt.GET("/board", boardAPI.GetBoard)
 		authByJwt.PUT("/board/publish", boardAPI.ChangeBoardPublish)
-	}
-	authByJwt.Use(jwtAuth.MiddlewareFunc())
-	{
 		authByJwt.POST("/board", boardAPI.CreateNewBoard)
 	}
 	r.POST("/board/invite", boardAPI.SendInviteMail)
