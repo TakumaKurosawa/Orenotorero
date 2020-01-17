@@ -18,20 +18,20 @@ func NewBoardHandler(service service.BoardService) BoardHandler {
 }
 
 func (handler *BoardHandler) ChangeBoardPublish(context *gin.Context) {
-	var token string
 	var reqBody requestBody.BoardChangePublish
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.BoardService.ChangePublishInfo(token, reqBody.Id, reqBody.Publish)
+	err = handler.BoardService.ChangePublishInfo(userId, reqBody.Id, reqBody.Publish)
 	if err != nil {
 		context.Error(err)
 	}
@@ -62,20 +62,20 @@ func (handler *BoardHandler) SendInviteMail(context *gin.Context) {
 }
 
 func (handler *BoardHandler) CreateNewBoard(context *gin.Context) {
-	var token string
 	var reqBody requestBody.BoardCreate
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.BoardService.CreateNewBoard(token, reqBody.Title, reqBody.Img)
+	err = handler.BoardService.CreateNewBoard(id, reqBody.Title, reqBody.Img)
 	if err != nil {
 		context.Error(err)
 	}
