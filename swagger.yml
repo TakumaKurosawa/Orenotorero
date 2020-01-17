@@ -30,11 +30,6 @@ paths:
             produces:
             - "application/json"
             parameters:
-            -   in: "header"
-                name: "x-token"
-                description: "認証トークン"
-                required: true
-                type: "string"
             -   in: "body"
                 name: "body"
                 description: "Request Body"
@@ -209,8 +204,8 @@ paths:
                 required: true
                 type: "string"
             -   in: "header"
-                name: "kanban-id"
-                description: "カンバンID"
+                name: "board-id"
+                description: "ボードID"
                 required: true
                 type: "integer"
           responses:
@@ -290,32 +285,6 @@ paths:
                 required: true
                 schema:
                     $ref: "#/definitions/KanbanChangeTitleRequest"
-          responses:
-              200:
-                  "description": "A successful response."
-
-    /kanban/position:
-      put:
-          tags:
-          - "kanban"
-          summary: "カンバンポジション変更API"
-          description: "カンバンの位置が変更される度に呼び出されるAPI。\nカンバンのポジションを変更する。"
-          consumes:
-          - "application/json"
-          produces:
-          - "application/json"
-          parameters:
-            -   in: "header"
-                name: "x-token"
-                description: "認証トークン"
-                required: true
-                type: "string"
-            -   in: "body"
-                name: "body"
-                description: "Request Body"
-                required: true
-                schema:
-                    $ref: "#/definitions/KanbanChangePositionRequest"
           responses:
               200:
                   "description": "A successful response."
@@ -424,34 +393,8 @@ paths:
                 200:
                     "description": "A successful response."
 
-    /card/position:
-      put:
-          tags:
-          - "card"
-          summary: "カードポジション変更API"
-          description: "カードの位置が変更される度に呼び出されるAPI。\nカードのポジションを変更する。"
-          consumes:
-          - "application/json"
-          produces:
-          - "application/json"
-          parameters:
-            -   in: "header"
-                name: "x-token"
-                description: "認証トークン"
-                required: true
-                type: "string"
-            -   in: "body"
-                name: "body"
-                description: "Request Body"
-                required: true
-                schema:
-                    $ref: "#/definitions/CardChangePositionRequest"
-          responses:
-              200:
-                  "description": "A successful response."
-
     /email/check:
-      put:
+      get:
           tags:
           - "utility"
           summary: "アカウント存在チェックAPI"
@@ -479,7 +422,7 @@ paths:
                       "$ref": "#/definitions/EmailCheckResponse"
 
     /img:
-      put:
+      post:
           tags:
           - "utility"
           summary: "背景画像アップロードAPI"
@@ -505,6 +448,31 @@ paths:
                   "description": "A successful response."
                   "schema":
                       "$ref": "#/definitions/ImgUploadResponse"
+    /position:
+      put:
+          tags:
+            - "utility"
+          summary: "ポジション変更API"
+          description: "KanbanまたはCardの位置情報の変更をする"
+          consumes:
+          - "application/json"
+          produces:
+          - "application/json"
+          parameters:
+            -   in: "header"
+                name: "x-token"
+                description: "認証トークン"
+                required: true
+                type: "string"
+            -   in: "body"
+                name: "body"
+                description: "Request Body"
+                required: true
+                schema:
+                    $ref: "#/definitions/PositionChangeRequest"
+          responses:
+              200:
+                  "description": "A successful response."
 
 definitions:
     LoginRequest:
@@ -530,10 +498,6 @@ definitions:
     UserGetResponse:
         type: "object"
         properties:
-            id:
-                type: "string"
-                description: "ユーザID"
-                example: "ufkdskaeLKDKJFlji322rnkdsjdfk"
             img:
                 type: "string"
                 description: "S3のURL"
@@ -584,10 +548,18 @@ definitions:
                 type: "string"
                 description: "S3のURL"
                 example: "https://aws.s3.image.com"
+            created_user:
+                type: "string"
+                description: "作成したUser"
+                example: "noihgeaohigeohigeigeaige"
             publish:
-                type: boolean
+                type: "boolean"
                 description: "公開・非公開情報"
                 example: false
+            last_access:
+                type: "string"
+                description: "最終アクセス日"
+                example: "1999-03-08 00:00:00"
             author:
                 type: "array"
                 items:
@@ -659,6 +631,10 @@ definitions:
                 type: "string"
                 description: "カンバンタイトル"
                 example: "今週やること"
+            position:
+                type: "integer"
+                description: "Kanbanの位置関係を表す"
+                example: 1
             card:
                 type: "array"
                 items:
@@ -680,6 +656,10 @@ definitions:
                         type: "string"
                         description: "期日"
                         example: "2019-05-03 11:00"
+                    position:
+                        type: "integer"
+                        description: "Cardの位置関係を表す"
+                        example: 1
 
     KanbanCreateRequest:
         type: "object"
@@ -835,6 +815,31 @@ definitions:
                 type: "string"
                 description: "S3のURL"
                 example: "https://aws.s3.image.com"
+                
+    PositionChangeRequest:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            1:
+                type: "array"
+                items:
+                  type: "integer"
+                  description: "CardId"
+                  example: 1
+            2:
+                type: "array"
+                items:
+                  type: "integer"
+                  description: "CardId"
+                  example: 1
+            3:
+                type: "array"
+                items:
+                  type: "integer"
+                  description: "CardId"
+                  example: 1
+
 
     ErrorResponse:
         type: "object"

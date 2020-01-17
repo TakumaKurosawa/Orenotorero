@@ -42,8 +42,7 @@ func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(kanbanId int, newTitle str
 	return nil
 }
 
-func (p *KanbanRepositoryImpliment) UpdateKanbanPosition(id, current, destination int) error {
-
-	// カンバンボジション変更機能
+func (p *KanbanRepositoryImpliment) UpdatePosition(position []int) error {
+	//Kanban & Cardのポジション変更機能
 	return nil
 }

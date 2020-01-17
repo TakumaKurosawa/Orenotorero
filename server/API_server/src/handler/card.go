@@ -59,28 +59,6 @@ func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
 	context.Status(http.StatusOK)
 }
 
-func (handler *CardHandler) ChangeCardPosition(context *gin.Context) {
-	var token string
-	var reqBody requestBody.CardChangePosition
-
-	err := context.BindHeader(token)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.CardService.ChangeCardPosition(reqBody.Id, reqBody.Current, reqBody.Destination, token)
-	if err != nil {
-		context.Error(err)
-	}
-
-	context.Status(http.StatusOK)
-}
-
 func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 	var token string
 	var reqBody requestBody.CardChangeDeadline

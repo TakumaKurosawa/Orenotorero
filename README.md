@@ -1,8 +1,32 @@
 # Orenotorero
 
+## 開発用アプリケーションの立ち上げ方
+
+※全て別ウィンドウで実行のこと
+
+``` bash
+# 開発用DBを立ち上げる（立ち上がるのに20秒ほどかかります）
+make dev-db
+# -> root
+# -> orenotorero
+# と入力する
+
+# クライアントサイドアプリケーションを立ち上げる
+cd client && yarn
+yarn dev
+
+# サーバサイドアプリケーションを立ち上げる
+cd server/API_server/src
+go run main.go wire_gen.go
+
+```
+
 ## APIドキュメントの確認方法
 1. [Swagger](https://editor.swagger.io/)へアクセスする
 2. [Swaggerの内容](https://github.com/Takumaron/Orenotorero/blob/master/swagger.yml)をSwaggerページにコピペする
+
+## 【Backend】DBへのデータ取得方法
+[こちら]（https://hackmd.io/tWkmJETsT0W5CEU3nkKbpw?view）を参考にする
 
 ## GitHub運用ルール
 - masterへの直接Push＝NG

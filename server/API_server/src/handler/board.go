@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -17,20 +18,20 @@ func NewBoardHandler(service service.BoardService) BoardHandler {
 }
 
 func (handler *BoardHandler) ChangeBoardPublish(context *gin.Context) {
-	var token string
 	var reqBody requestBody.BoardChangePublish
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.BoardService.ChangePublishInfo(token, reqBody.Id, reqBody.Publish)
+	err = handler.BoardService.ChangePublishInfo(userId, reqBody.Id, reqBody.Publish)
 	if err != nil {
 		context.Error(err)
 	}
@@ -61,20 +62,20 @@ func (handler *BoardHandler) SendInviteMail(context *gin.Context) {
 }
 
 func (handler *BoardHandler) CreateNewBoard(context *gin.Context) {
-	var token string
 	var reqBody requestBody.BoardCreate
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
-	if err != nil {
-		context.Error(err)
-	}
-
-	err = handler.BoardService.CreateNewBoard(token, reqBody.Title, reqBody.Img)
+	err = handler.BoardService.CreateNewBoard(id, reqBody.Title, reqBody.Img)
 	if err != nil {
 		context.Error(err)
 	}
@@ -83,17 +84,11 @@ func (handler *BoardHandler) CreateNewBoard(context *gin.Context) {
 }
 
 func (handler *BoardHandler) GetBoard(context *gin.Context) {
-	var token string
-
-	err := context.BindHeader(token)
-	if err != nil {
-		context.Error(err)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
 	}
-
-	Boards, err := handler.BoardService.GetBoard(token)
-	if err != nil {
-		context.Error(err)
-	}
-
+	Boards := handler.BoardService.GetBoard(id)
 	context.JSON(http.StatusOK, Boards)
 }

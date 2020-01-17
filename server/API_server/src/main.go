@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"orenotorero/db"
 	"orenotorero/middleware"
@@ -23,6 +24,10 @@ func main() {
 
 	r := gin.Default()
 
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	r.Use(cors.New(config))
+
 	// connection testAPI
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -41,29 +46,40 @@ func main() {
 	r.GET("/users", userAPI.GetAllUsers)
 
 	// boardAPI
-	r.GET("/board", boardAPI.GetBoard)
-	r.POST("/board", boardAPI.CreateNewBoard)
-	r.PUT("/board/publish", boardAPI.ChangeBoardPublish)
-	r.POST("/board/invite", boardAPI.SendInviteMail)
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
+	{
+		authByJwt.GET("/board", boardAPI.GetBoard)
+		authByJwt.PUT("/board/publish", boardAPI.ChangeBoardPublish)
+		authByJwt.POST("/board", boardAPI.CreateNewBoard)
+		authByJwt.POST("/board/invite", boardAPI.SendInviteMail)
+	}
 
 	// kanbanAPI
-	r.GET("/kanban", kanbanAPI.GetKanban)
-	r.POST("/kanban", kanbanAPI.CreateNewKanban)
-	r.DELETE("/kanban", kanbanAPI.DeleteKanban)
-	r.PUT("/kanban", kanbanAPI.ChangeKanbanTitle)
-	r.PUT("/kanban/position", kanbanAPI.ChangeKanbanPosition)
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
+	{
+		authByJwt.GET("/kanban", kanbanAPI.GetKanban)
+		authByJwt.POST("/kanban", kanbanAPI.CreateNewKanban)
+		authByJwt.DELETE("/kanban", kanbanAPI.DeleteKanban)
+		authByJwt.PUT("/kanban", kanbanAPI.ChangeKanbanTitle)
+	}
 
 	// cardAPI
-	r.POST("/card", cardAPI.CreateNewCard)
-	r.POST("/card/file", cardAPI.AddFile)
-	r.PUT("/card", cardAPI.ChangeCardTitle)
-	r.PUT("/card/deadline", cardAPI.ChangeCardDeadline)
-	r.PUT("/card/position", cardAPI.ChangeCardPosition)
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
+	{
+		authByJwt.POST("/card", cardAPI.CreateNewCard)
+		authByJwt.POST("/card/file", cardAPI.AddFile)
+		authByJwt.PUT("/card", cardAPI.ChangeCardTitle)
+		authByJwt.PUT("/card/deadline", cardAPI.ChangeCardDeadline)
+	}
 
 	// utilityAPI
-	r.PUT("/email/check", utilityAPI.EmailCheck)
-	r.PUT("/img", utilityAPI.FileUpload)
+	r.GET("/email/check", utilityAPI.EmailCheck)
+	authByJwt.Use(jwtAuth.MiddlewareFunc())
+	{
+		authByJwt.POST("/img", utilityAPI.FileUpload)
+		authByJwt.PUT("/position", utilityAPI.UpdatePosition)
+	}
 
 	// ポートを設定しています。
-	r.Run(":3000")
+	r.Run(":8080")
 }

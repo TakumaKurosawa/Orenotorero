@@ -21,6 +21,7 @@
         @action="loginAction()"
       ></BaseButton>
     </v-form>
+    <v-btn @click="loginAction()"> あくしよんテスト</v-btn>
   </div>
 </template>
 
@@ -48,8 +49,10 @@ export default class SignIn extends Vue {
   }
 
   loginAction() {
-    console.log(this.email)
-    console.log(this.password)
+    this.$store.dispatch('auth/login', {
+      email: 'hogehoge@gmail.com',
+      password: 'passpass'
+    })
   }
 
   @Prop({ type: Array, required: true })

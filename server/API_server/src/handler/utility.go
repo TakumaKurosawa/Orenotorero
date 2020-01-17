@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -51,4 +52,26 @@ func (handler *UtilityHandler) FileUpload(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{"url": s3Url})
+}
+
+func (handler *UtilityHandler) UpdatePosition(context *gin.Context) {
+	var reqBody requestBody.UpdatePosition
+
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
+	if err != nil {
+		context.Error(err)
+	}
+
+	err = handler.UtilityService.UpdatePosition(userId, reqBody.Position)
+	if err != nil {
+		context.Error(err)
+	}
+
+	context.Status(http.StatusOK)
 }
