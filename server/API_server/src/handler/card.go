@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -96,6 +97,28 @@ func (handler *CardHandler) AddFile(context *gin.Context) {
 	}
 
 	err = handler.CardService.InsertFileData(reqBody.Id, token, s3Url, reqBody.FileName)
+	if err != nil {
+		context.Error(err)
+	}
+
+	context.Status(http.StatusOK)
+}
+
+func (handler *CardHandler) DeleteFile(context *gin.Context) {
+	var reqBody requestBody.CardDeleteFile
+
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
+	if err != nil {
+		context.Error(err)
+	}
+
+	err = handler.CardService.DeleteFileData(userId, reqBody.Id)
 	if err != nil {
 		context.Error(err)
 	}

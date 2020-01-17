@@ -23,3 +23,7 @@ type CardAddFile struct {
 	FileName string `json:"name"`
 	FileData string `json:"data"`
 }
+
+type CardDeleteFile struct {
+	Id       int    `json:"id"`
+}
