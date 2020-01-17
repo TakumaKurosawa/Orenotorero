@@ -13,9 +13,8 @@ func NewKanbanService(repository repository.KanbanRepository) KanbanService {
 	return KanbanService{KanbanRepository: repository}
 }
 
-func (KanbanSvc *KanbanService) GetKanban(token string, boardId int) ([]model.Kanban, error) {
-	// tokenでボードへのアクセス権限があるかをチェックする
-
+func (KanbanSvc *KanbanService) GetKanban(userId string, boardId int) []model.Kanban {
+	// UserIdでボードへのアクセス権限があるかをチェックする
 	return KanbanSvc.KanbanRepository.SelectByBoardId(boardId)
 }
 

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"orenotorero/handler/requestBody"
@@ -19,12 +20,18 @@ func NewKanbanHandler(service service.KanbanService) KanbanHandler {
 func (handler *KanbanHandler) GetKanban(context *gin.Context) {
 	var reqHeader requestHeader.KanbanGet
 
-	err := context.BindHeader(reqHeader)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindHeader(&reqHeader)
 	if err != nil {
 		context.Error(err)
 	}
 
-	kanbans, err := handler.KanbanService.GetKanban(reqHeader.Token, reqHeader.BoardId)
+	kanbans, err := handler.KanbanService.GetKanban(id, reqHeader.BoardId)
 	if err != nil {
 		context.Error(err)
 	}

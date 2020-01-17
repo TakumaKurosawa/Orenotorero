@@ -22,12 +22,12 @@ func (p *KanbanRepositoryImpliment) InsertKanban(boardId, position int, title st
 	return nil
 }
 
-func (p *KanbanRepositoryImpliment) SelectByBoardId(boardId int) ([]model.Kanban, error) {
-	var kanban []model.Kanban
+func (p *KanbanRepositoryImpliment) SelectByBoardId(boardId int) []model.Kanban {
+	// カンバン&カード取得
+	var kanbans []model.Kanban
 
-	// カンバン取得機能
-
-	return kanban, nil
+	p.DB.Preload("Cards").Find(&kanbans, boardId)
+	return kanbans
 }
 
 func (p *KanbanRepositoryImpliment) DeleteKanban(kanbanId int) error {
