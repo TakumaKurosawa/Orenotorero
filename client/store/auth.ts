@@ -10,7 +10,6 @@ export interface AuthState {
 export const state: () => AuthState = (): AuthState => ({
   isAuth: false,
   authedUser: {
-    id: 0,
     img: '',
     name: ''
   },
@@ -19,6 +18,12 @@ export const state: () => AuthState = (): AuthState => ({
 const getters: GetterTree<AuthState, RootState> = {
   getAuthedUser(state: AuthState) {
     return state.authedUser
+  },
+  getIsAuth(state: AuthState) {
+    return state.isAuth
+  },
+  getAuthToken(state: AuthState) {
+    return state.authToken
   }
 }
 const mutations: MutationTree<AuthState> = {
@@ -33,16 +38,42 @@ const mutations: MutationTree<AuthState> = {
   }
 }
 const actions: ActionTree<AuthState, RootState> = {
-  login({ commit }, email: string, pass: string): void {
-    const res = this.$axios.$post('/login', {
-      email,
-      password: pass
-    })
-    console.log(res.data)
-    commit('updateIsAuth', true)
+  // login({ commit }, email: string, pass: string): void {
+  //   const res = this.$axios.$post('/login', {
+  //     email,
+  //     password: pass
+  //   })
+  //   console.log(res.data)
+  //   commit('updateIsAuth', true)
+  // },
+  async login({ commit }: any, payload: object): Promise<any> {
+    await this.$axios
+      .post('/login', {
+        payload
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        commit('updateIsAuth', true)
+        commit('updateToken', res.data.token)
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   },
-  test(): void {
-    const res = this.$axios.$get('/ping')
+  async signup({ commit }: any, payload: object): Promise<any> {
+    await this.$axios
+      .post('/user/create', payload)
+      .then((res: any) => {
+        console.log(res.data)
+        commit('updateIsAuth', true)
+        commit('updateToken', res.data.token)
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  },
+  async test(): Promise<any> {
+    const res = await this.$axios.get('/ping')
     console.log(res.data)
   }
 }

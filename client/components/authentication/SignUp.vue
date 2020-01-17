@@ -20,6 +20,7 @@
         @action="signUpAction()"
       ></BaseButton>
     </v-form>
+    <v-btn @click="signUpAction()"> あくしよんテスト</v-btn>
   </div>
 </template>
 
@@ -37,7 +38,11 @@ import BaseButton from '@/components/atom/Button.vue'
 export default class SignUp extends Vue {
   isValid = false
   signUpAction() {
-    console.log('サインアップできますぞ')
+    this.$store.dispatch('auth/signup', {
+      name: 'kenshin',
+      email: 'hogehoge@gmail.com',
+      password: 'passpass'
+    })
   }
 
   @Prop({ type: Array, required: true })
