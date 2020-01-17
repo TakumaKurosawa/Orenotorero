@@ -57,15 +57,14 @@ func (p *BoardRepositoryImpliment) UpdateBoardPublish(userId string, boardId int
 
 	//モデル変数の宣言
 	var user model.User
-	var boards []model.Board
 
 	//userIdによるユーザー情報の取得
 	p.DB.Where("id=?", userId).Find(&user)
 
 	//取得したユーザーに対応するBoardを取得
-	p.DB.Model(&user).Related(&boards, "Boards")
+	p.DB.Model(&user).Related(&user.Boards, "Boards")
 
-	for _, board := range boards {
+	for _, board := range user.Boards {
 		//該当のBoardを見つけたらUPDATEをかける
 		if board.Id == boardId {
 			p.DB.Model(&board).Update("publish", publish)
