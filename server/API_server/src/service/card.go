@@ -7,6 +7,7 @@ import (
 
 type CardService struct {
 	CardRepository repository.CardRepository
+	FileRepository repository.FileRepository
 }
 
 func NewCardService(repository repository.CardRepository) CardService {
@@ -26,7 +27,7 @@ func (CardSvc *CardService) ChangeCardDeadline(cardId int, token string, deadlin
 	return CardSvc.CardRepository.UpdateCardDeadLine(cardId, deadline)
 }
 
-func (CardSvc *CardService) InsertFileData(cardId int, token, s3Url, fileName string) error {
+func (CardSvc *CardService) InsertFileData(userId string, cardId int, s3Url, fileName string) error {
 	// FileテーブルにS3に保存したファイルへのURLなどの情報を格納する処理
-	return nil
+	return CardSvc.FileRepository.AttachFile(userId, cardId, s3Url, fileName)
 }
