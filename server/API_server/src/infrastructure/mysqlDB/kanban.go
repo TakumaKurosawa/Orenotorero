@@ -17,8 +17,14 @@ func NewKanbanRepoImpl(DB *gorm.DB) repository.KanbanRepository {
 }
 
 func (p *KanbanRepositoryImpliment) InsertKanban(boardId, position int, title string) error {
-
 	// カンバン作成機能
+	newKanban := model.Kanban{
+		BoardId:  boardId,
+		Position: position,
+		Title:    title,
+	}
+
+	p.DB.Create(&newKanban)
 	return nil
 }
 
@@ -44,5 +50,6 @@ func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(kanbanId int, newTitle str
 
 func (p *KanbanRepositoryImpliment) UpdatePosition(position []int) error {
 	//Kanban & Cardのポジション変更機能
+
 	return nil
 }

@@ -19,9 +19,8 @@ func (KanbanSvc *KanbanService) GetKanban(token string, boardId int) ([]model.Ka
 	return KanbanSvc.KanbanRepository.SelectByBoardId(boardId)
 }
 
-func (KanbanSvc *KanbanService) CreateNewKanban(token, title string, boardId, position int) error {
-	// tokenでボードへのアクセス権限があるかをチェックする
-
+func (KanbanSvc *KanbanService) CreateNewKanban(userId, title string, boardId, position int) error {
+	//UserがBoardを所有しているかを確認する
 	return KanbanSvc.KanbanRepository.InsertKanban(boardId, position, title)
 }
 
