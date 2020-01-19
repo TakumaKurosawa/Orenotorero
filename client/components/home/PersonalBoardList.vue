@@ -5,14 +5,16 @@
       :icon-name="'mdi-account-outline'"
     ></LabelIcon>
     <v-row>
-      <Card
-        v-for="item in boardData"
-        :key="item.id"
-        :card-title="item.name"
-        :card-height="100"
-        :card-width="180"
-        :card-img="item.img"
-      ></Card>
+      <div v-if="boardData">
+        <Card
+          v-for="item in boardData"
+          :key="item.id"
+          :card-title="item.title"
+          :card-height="100"
+          :card-width="180"
+          :card-img="item.bg_img"
+        ></Card>
+      </div>
     </v-row>
   </div>
 </template>
