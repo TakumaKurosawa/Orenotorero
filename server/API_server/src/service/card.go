@@ -14,8 +14,7 @@ func NewCardService(repository repository.CardRepository) CardService {
 }
 
 func (CardSvc *CardService) CreateCard(userId, title string, kanbanId, position int) error {
-	// 該当UserがCardを追加するBoardの編集権限があるかを確認
-	return CardSvc.CardRepository.InsertCard(title, kanbanId, position)
+	return CardSvc.CardRepository.InsertCard(userId, title, kanbanId, position)
 }
 
 func (CardSvc *CardService) ChangeCardTitle(cardId int, token, title string) error {

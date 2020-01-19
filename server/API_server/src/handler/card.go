@@ -33,6 +33,8 @@ func (handler *CardHandler) CreateNewCard(context *gin.Context) {
 	err = handler.CardService.CreateCard(id, reqBody.Title, reqBody.KanbanId, reqBody.Position)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusInternalServerError)
+		return
 	}
 
 	context.Status(http.StatusOK)
