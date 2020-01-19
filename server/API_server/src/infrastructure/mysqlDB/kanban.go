@@ -19,6 +19,12 @@ func NewKanbanRepoImpl(DB *gorm.DB) repository.KanbanRepository {
 }
 
 func (p *KanbanRepositoryImpliment) InsertKanban(userId string, boardId, position int, title string) error {
+	var board model.Board
+	p.DB.Find(&board, boardId)
+	if board.Id == 0 {
+		return errors.New("挿入先のボードが存在しません")
+	}
+
 	isMyBoard := utility.IsMyBoard(p.DB, userId, boardId)
 
 	if isMyBoard {

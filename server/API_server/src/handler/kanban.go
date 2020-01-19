@@ -50,7 +50,7 @@ func (handler *KanbanHandler) CreateNewKanban(context *gin.Context) {
 	err = handler.KanbanService.CreateNewKanban(id, reqBody.Title, reqBody.BoardId, reqBody.Position)
 	if err != nil {
 		context.Error(err)
-		context.Status(http.StatusForbidden)
+		context.Status(http.StatusInternalServerError)
 		return
 	}
 
