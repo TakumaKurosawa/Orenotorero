@@ -34,6 +34,8 @@ func (handler *BoardHandler) ChangeBoardPublish(context *gin.Context) {
 	err = handler.BoardService.ChangePublishInfo(userId, reqBody.Id, reqBody.Publish)
 	if err != nil {
 		context.Error(err)
+		context.Status(400)
+		return
 	}
 
 	context.Status(http.StatusOK)
