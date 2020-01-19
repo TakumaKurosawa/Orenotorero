@@ -1,9 +1,12 @@
 package mysqlDB
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
+	"orenotorero/infrastructure/mysqlDB/"
 	"orenotorero/repository"
+	"orenotorero/utility"
 )
 
 type KanbanRepositoryImpliment struct {
@@ -30,19 +33,30 @@ func (p *KanbanRepositoryImpliment) SelectByBoardId(boardId int) ([]model.Kanban
 	return kanban, nil
 }
 
-func (p *KanbanRepositoryImpliment) DeleteKanban(kanbanId int) error {
+func (p *KanbanRepositoryImpliment) DeleteKanban(userId string, kanbanId int) error {
 	// カンバン削除機能
 	var kanban model.Kanban
-	var cards []model.Card
-
-	//該当データの抽出
 	p.DB.Where("id = ?", kanbanId).Find(&kanban)
-	p.DB.Model(&kanban).Related(&cards)
+	if kanban.Id == 0 {
+		return errors.New("カンバンが存在しません")
+	}
 
-	//該当データの削除
-	p.DB.Delete(&kanban)
-	p.DB.Delete(&cards)
-	return nil
+	isMyBoard := utility.IsMyBoard(p.DB, userId, kanban.BoardId)
+
+	if isMyBoard {
+		var cards []model.Card
+		p.DB.Model(&kanban).Related(&cards)
+
+		//該当データの削除
+		p.DB.Delete(&kanban)
+		//Kanbanに紐づくCardがあれば削除する
+		if len(cards) == 0 {
+			p.DB.Delete(&cards)
+		}
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 }
 
 func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(kanbanId int, newTitle string) error {
