@@ -22,6 +22,9 @@ func NewCardRepoImpl(DB *gorm.DB) repository.CardRepository {
 func (p *CardRepositoryImpliment) InsertCard(userId string, title string, kanbanId, position int) error {
 	var kanban model.Kanban
 	p.DB.Find(&kanban, kanbanId)
+	if kanban.Id == 0 {
+		return errors.New("挿入先のカンバンが存在しません")
+	}
 
 	isMyBoard := utility.IsMyBoard(p.DB, userId, kanban.BoardId)
 
