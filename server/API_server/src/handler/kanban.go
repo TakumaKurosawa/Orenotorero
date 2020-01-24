@@ -21,7 +21,7 @@ func (handler *KanbanHandler) GetKanban(context *gin.Context) {
 	var reqHeader requestHeader.KanbanGet
 
 	claims := ginJwt.ExtractClaims(context)
-	id, ok := claims["id"].(string)
+	userId, ok := claims["id"].(string)
 	if ok == false {
 		context.Error(ginJwt.ErrForbidden)
 	}
@@ -31,9 +31,11 @@ func (handler *KanbanHandler) GetKanban(context *gin.Context) {
 		context.Error(err)
 	}
 
-	kanbans, err := handler.KanbanService.GetKanban(id, reqHeader.BoardId)
+	kanbans, err := handler.KanbanService.GetKanban(userId, reqHeader.BoardId)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.JSON(http.StatusOK, kanbans)
