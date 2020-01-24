@@ -63,8 +63,26 @@ func (p *CardRepositoryImpliment) SelectAll(kanbanId int) ([]model.Card, error) 
 	return cards, nil
 }
 
-func (p *CardRepositoryImpliment) DeleteCard(cardId int) error {
+func (p *CardRepositoryImpliment) DeleteCard(userId string, cardId int) error {
 	// 該当のCardを削除する
-	p.DB.Where("id = ?", cardId).Delete(&model.Card{})
-	return nil
+	var card model.Card
+	p.DB.Where("id = ?", cardId).Find(&card)
+	if card.Id == 0 {
+		return errors.New("カードが見つかりませんでした")
+	}
+
+	var kanban model.Kanban
+	p.DB.Where("id = ?", card.KanbanId).Find(&kanban)
+	if kanban.Id == 0 {
+		return errors.New("カンバンが見つかりませんでした")
+	}
+
+	isMyBoard := utility.IsMyBoard(p.DB, userId, kanban.BoardId)
+
+	if isMyBoard {
+		p.DB.Delete(&card)
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 }

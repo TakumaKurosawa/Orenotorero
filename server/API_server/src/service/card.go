@@ -31,6 +31,5 @@ func (CardSvc *CardService) InsertFileData(cardId int, token, s3Url, fileName st
 }
 
 func (CardSvc *CardService) DeleteCard(userId string, cardId int) error {
-	// User確認必要
-	return CardSvc.CardRepository.DeleteCard(cardId)
+	return CardSvc.CardRepository.DeleteCard(userId, cardId)
 }

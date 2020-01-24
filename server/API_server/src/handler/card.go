@@ -123,6 +123,8 @@ func (handler *CardHandler) DeleteCard(context *gin.Context) {
 	err = handler.CardService.DeleteCard(id, reqBody.Id)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
