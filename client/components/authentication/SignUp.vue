@@ -3,6 +3,7 @@
     <h2>新規登録</h2>
     <v-form v-model="isValid">
       <TextField
+        :text-rules="nameRules"
         :text-label="'name'"
         :text-type="'text'"
         @submit="onReceiveName"
@@ -26,7 +27,6 @@
         @action="signUpAction()"
       ></BaseButton>
     </v-form>
-    <v-btn @click="signUpAction()"> あくしよんテスト</v-btn>
   </div>
 </template>
 
@@ -60,11 +60,14 @@ export default class SignUp extends Vue {
 
   signUpAction() {
     this.$store.dispatch('auth/signup', {
-      name: 'kenshin',
-      email: 'hogehoge@gmail.com',
-      password: 'passpass'
+      name: this.name,
+      email: this.email,
+      password: this.password
     })
   }
+
+  @Prop({ type: Array, required: true })
+  nameRules!: Array<string>
 
   @Prop({ type: Array, required: true })
   emailRules!: Array<string>

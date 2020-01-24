@@ -17,22 +17,24 @@ func NewCardHandler(service service.CardService) CardHandler {
 }
 
 func (handler *CardHandler) CreateNewCard(context *gin.Context) {
-	var token string
 	var reqBody requestBody.CardCreate
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.CardService.CreateCard(id, reqBody.Title, reqBody.KanbanId, reqBody.Position)
 	if err != nil {
 		context.Error(err)
-	}
-
-	err = handler.CardService.CreateCard(token, reqBody.Title, reqBody.KanbanId, reqBody.Position)
-	if err != nil {
-		context.Error(err)
+		context.Status(http.StatusInternalServerError)
+		return
 	}
 
 	context.Status(http.StatusOK)
@@ -55,6 +57,8 @@ func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
 	err = handler.CardService.ChangeCardTitle(userId, reqBody.Id, reqBody.Title)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
