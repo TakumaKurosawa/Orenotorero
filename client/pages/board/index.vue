@@ -22,6 +22,6 @@ import BoardHeader from '@/components/board/BoardHeader.vue'
   }
 })
 export default class BoardTop extends Vue {
-  boardData: object = this.$store.state.boardData
+  boardData: object = this.$store.state.board.boardData
 }
 </script>

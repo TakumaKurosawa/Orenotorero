@@ -35,7 +35,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/cookie-storage.ts'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -51,7 +51,9 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:8080/'
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -82,6 +84,8 @@ export default {
      */
     extend(config, ctx) {
       // Run ESLint on save
+      config.resolve.alias['@'] = path.resolve(__dirname)
+      config.resolve.alias['~'] = path.resolve(__dirname)
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',

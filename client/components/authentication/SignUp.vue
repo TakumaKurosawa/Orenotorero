@@ -2,17 +2,24 @@
   <div>
     <h2>新規登録</h2>
     <v-form v-model="isValid">
-      <TextField :text-label="'name'" :text-type="'text'"></TextField>
+      <TextField
+        :text-rules="nameRules"
+        :text-label="'name'"
+        :text-type="'text'"
+        @submit="onReceiveName"
+      ></TextField>
       <TextField
         :text-rules="emailRules"
         :text-label="'email'"
         :text-type="'email'"
+        @submit="onReceiveEmail"
       ></TextField>
       <TextField
         :text-rules="passRules"
         :max-length="10"
         :text-label="'password'"
         :text-type="'password'"
+        @submit="onReceivePassword"
       ></TextField>
       <BaseButton
         :value="'新規登録'"
@@ -35,10 +42,32 @@ import BaseButton from '@/components/atom/Button.vue'
   }
 })
 export default class SignUp extends Vue {
+  name = ''
+  email = ''
+  password = ''
   isValid = false
-  signUpAction() {
-    console.log('サインアップできますぞ')
+  onReceiveName(nameData: string) {
+    this.name = nameData
   }
+
+  onReceiveEmail(emailData: string) {
+    this.email = emailData
+  }
+
+  onReceivePassword(passwordData: string) {
+    this.password = passwordData
+  }
+
+  signUpAction() {
+    this.$store.dispatch('auth/signup', {
+      name: this.name,
+      email: this.email,
+      password: this.password
+    })
+  }
+
+  @Prop({ type: Array, required: true })
+  nameRules!: Array<string>
 
   @Prop({ type: Array, required: true })
   emailRules!: Array<string>
