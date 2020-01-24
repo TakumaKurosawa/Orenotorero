@@ -93,10 +93,11 @@ func (handler *KanbanHandler) ChangeKanbanTitle(context *gin.Context) {
 		context.Error(err)
 	}
 
-
 	err = handler.KanbanService.ChangeKanbanTitle(userId, reqBody.KanbanId, reqBody.Title)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)

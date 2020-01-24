@@ -31,6 +31,5 @@ func (KanbanSvc *KanbanService) DeleteKanban(kanbanId int, token string) error {
 }
 
 func (KanbanSvc *KanbanService) ChangeKanbanTitle(userId string, kanbanId int, title string) error {
-	// User確認をする
-	return KanbanSvc.KanbanRepository.UpdateKanbanTitle(kanbanId, title)
+	return KanbanSvc.KanbanRepository.UpdateKanbanTitle(userId, kanbanId, title)
 }
