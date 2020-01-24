@@ -17,44 +17,48 @@ func NewCardHandler(service service.CardService) CardHandler {
 }
 
 func (handler *CardHandler) CreateNewCard(context *gin.Context) {
-	var token string
 	var reqBody requestBody.CardCreate
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.CardService.CreateCard(id, reqBody.Title, reqBody.KanbanId, reqBody.Position)
 	if err != nil {
 		context.Error(err)
-	}
-
-	err = handler.CardService.CreateCard(token, reqBody.Title, reqBody.KanbanId, reqBody.Position)
-	if err != nil {
-		context.Error(err)
+		context.Status(http.StatusInternalServerError)
+		return
 	}
 
 	context.Status(http.StatusOK)
 }
 
 func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
-	var token string
 	var reqBody requestBody.CardChangeTitle
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.CardService.ChangeCardTitle(userId, reqBody.Id, reqBody.Title)
 	if err != nil {
 		context.Error(err)
-	}
-
-	err = handler.CardService.ChangeCardTitle(reqBody.Id, token, reqBody.Title)
-	if err != nil {
-		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
@@ -99,6 +103,30 @@ func (handler *CardHandler) AddFile(context *gin.Context) {
 	err = handler.CardService.InsertFileData(userId, reqBody.Id, s3Url, reqBody.FileName)
 	if err != nil {
 		context.Error(err)
+	}
+
+	context.Status(http.StatusOK)
+}
+
+func (handler *CardHandler) DeleteCard(context *gin.Context) {
+	var reqBody requestBody.CardDelete
+
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
+	if err != nil {
+		context.Error(err)
+	}
+
+	err = handler.CardService.DeleteCard(id, reqBody.Id)
+	if err != nil {
+		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
