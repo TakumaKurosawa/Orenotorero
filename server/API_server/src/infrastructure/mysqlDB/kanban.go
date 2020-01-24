@@ -42,12 +42,23 @@ func (p *KanbanRepositoryImpliment) InsertKanban(userId string, boardId, positio
 	}
 }
 
-func (p *KanbanRepositoryImpliment) SelectByBoardId(boardId int) ([]model.Kanban, error) {
-	var kanban []model.Kanban
+func (p *KanbanRepositoryImpliment) SelectByBoardId(userId string, boardId int) ([]model.Kanban, error) {
+	// カンバン&カード取得
+	var board model.Board
+	var kanbans []model.Kanban
+	p.DB.Where("id = ?", boardId).Find(&board)
+	if board.Id == 0 {
+		return nil, errors.New("Boardが見つかりません")
+	}
 
-	// カンバン取得機能
+	isMyBoard := utility.IsMyBoard(p.DB, userId, boardId)
 
-	return kanban, nil
+	if isMyBoard {
+		p.DB.Model(&board).Preload("Cards.Files").Related(&kanbans)
+		return kanbans, nil
+	} else {
+		return nil, errors.New("ボードへの権限がありません")
+	}
 }
 
 func (p *KanbanRepositoryImpliment) DeleteKanban(userId string, kanbanId int) error {
