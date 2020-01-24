@@ -27,7 +27,6 @@
         @action="signUpAction()"
       ></BaseButton>
     </v-form>
-    <v-btn @click="signUpAction()"> あくしよんテスト</v-btn>
   </div>
 </template>
 
@@ -61,9 +60,9 @@ export default class SignUp extends Vue {
 
   signUpAction() {
     this.$store.dispatch('auth/signup', {
-      name: 'kenshin',
-      email: 'hogehoge@gmail.com',
-      password: 'passpass'
+      name: this.name,
+      email: this.email,
+      password: this.password
     })
   }
 

@@ -2,14 +2,16 @@
   <div>
     <LabelIcon :text-label="'最近の表示'" :icon-name="'mdi-clock'"></LabelIcon>
     <v-row>
-      <Card
-        v-for="i in 4"
-        :key="boardData[i - 1].id"
-        :card-title="boardData[i - 1].name"
-        :card-height="100"
-        :card-width="180"
-        :card-img="boardData[i - 1].img"
-      ></Card>
+      <div v-if="boardData">
+        <Card
+          v-for="item in boardData"
+          :key="item.id"
+          :card-title="item.title"
+          :card-height="100"
+          :card-width="180"
+          :card-img="item.bg_img"
+        ></Card>
+      </div>
     </v-row>
   </div>
 </template>

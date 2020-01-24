@@ -5,11 +5,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom"
-    ],
+    "lib": ["esnext", "esnext.asynciterable", "dom"],
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowJs": true,
@@ -18,19 +14,19 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "~/*": ["./*"],
+      "@/*": ["./*"]
     },
-    "types": [
-      "@types/node",
-      "./types"
-    ]
+    "types": ["@types/node", "./types"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "files": ["shims-vue.d.ts"],
+  "include": [
+    "components/**/*.ts",
+    "components/**/*.vue",
+    "layouts/**/*.ts",
+    "layouts/**/*.vue",
+    "pages/**/*.ts",
+    "pages/**/*.vue"
+  ],
+  "exclude": ["node_modules"]
 }
