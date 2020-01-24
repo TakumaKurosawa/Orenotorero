@@ -1,15 +1,13 @@
 package requestBody
 
-import "time"
-
 type CardChangeTitle struct {
 	Id    int    `json:"id"`
 	Title string `json:"title"`
 }
 
 type CardChangeDeadline struct {
-	Id       int       `json:"id"`
-	Deadline time.Time `json:"deadline"`
+	Id       int    `json:"id"`
+	Deadline string `json:"deadline"`
 }
 
 type CardCreate struct {

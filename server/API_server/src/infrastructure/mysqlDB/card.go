@@ -52,8 +52,23 @@ func (p *CardRepositoryImpliment) UpdateCardTitle(id int, title string) error {
 
 func (p *CardRepositoryImpliment) UpdateCardDeadLine(userId string, cardId int, deadline time.Time) error {
 	// カード期限更新機能
-	p.DB.Find(&model.Card{}, cardId).Update("DeadLine", deadline)
-	return nil
+	var card model.Card
+	p.DB.Find(&card, cardId).Related(&card.Kanban)
+	if card.Id == 0 {
+		return errors.New("Cardが見つかりませんでした")
+	}
+	if card.Kanban.Id == 0 {
+		return errors.New("Kanbanが見つかりませんでした")
+	}
+
+	isMyBoard := utility.IsMyBoard(p.DB, userId, card.Kanban.BoardId)
+
+	if isMyBoard {
+		p.DB.Model(&card).Update("dead_line", deadline)
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 }
 
 func (p *CardRepositoryImpliment) SelectAll(kanbanId int) ([]model.Card, error) {

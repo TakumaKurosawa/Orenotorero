@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"orenotorero/handler/requestBody"
 	"orenotorero/service"
+	"time"
 )
 
 type CardHandler struct {
@@ -76,9 +77,12 @@ func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 		context.Error(err)
 	}
 
-	err = handler.CardService.ChangeCardDeadline(userId, reqBody.Id, reqBody.Deadline)
+	var time, _ = time.Parse("2006-01-02 15:04:05", reqBody.Deadline)
+	err = handler.CardService.ChangeCardDeadline(userId, reqBody.Id, time)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
