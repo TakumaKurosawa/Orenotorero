@@ -29,3 +29,7 @@ func (CardSvc *CardService) InsertFileData(cardId int, token, s3Url, fileName st
 	// FileテーブルにS3に保存したファイルへのURLなどの情報を格納する処理
 	return nil
 }
+
+func (CardSvc *CardService) DeleteCard(userId string, cardId int) error {
+	return CardSvc.CardRepository.DeleteCard(userId, cardId)
+}

@@ -70,6 +70,7 @@ func main() {
 		authByJwt.POST("/card/file", cardAPI.AddFile)
 		authByJwt.PUT("/card", cardAPI.ChangeCardTitle)
 		authByJwt.PUT("/card/deadline", cardAPI.ChangeCardDeadline)
+		authByJwt.DELETE("/card", cardAPI.DeleteCard)
 	}
 
 	// utilityAPI
