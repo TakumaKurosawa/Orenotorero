@@ -68,10 +68,22 @@ func (p *KanbanRepositoryImpliment) DeleteKanban(userId string, kanbanId int) er
 	}
 }
 
-func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(kanbanId int, newTitle string) error {
-
+func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(userId string, kanbanId int, newTitle string) error {
 	// カンバンタイトル変更機能
-	return nil
+	var kanban model.Kanban
+	p.DB.Where("id = ?", kanbanId).Find(&kanban)
+	if kanban.Id == 0 {
+		return errors.New("カンバンが見つかりません")
+	}
+
+	isMyBoard := utility.IsMyBoard(p.DB, userId, kanban.BoardId)
+
+	if isMyBoard {
+		p.DB.Model(&kanban).Update("title", newTitle)
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 }
 
 func (p *KanbanRepositoryImpliment) UpdatePosition(position []int) error {
