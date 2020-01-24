@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
-	"orenotorero/infrastructure/mysqlDB/"
 	"orenotorero/repository"
 	"orenotorero/utility"
 )
@@ -62,15 +61,7 @@ func (p *KanbanRepositoryImpliment) DeleteKanban(userId string, kanbanId int) er
 	isMyBoard := utility.IsMyBoard(p.DB, userId, kanban.BoardId)
 
 	if isMyBoard {
-		var cards []model.Card
-		p.DB.Model(&kanban).Related(&cards)
-
-		//該当データの削除
 		p.DB.Delete(&kanban)
-		//Kanbanに紐づくCardがあれば削除する
-		if len(cards) == 0 {
-			p.DB.Delete(&cards)
-		}
 		return nil
 	} else {
 		return errors.New("ボードへの権限がありません")
