@@ -34,22 +34,24 @@ func (handler *KanbanHandler) GetKanban(context *gin.Context) {
 }
 
 func (handler *KanbanHandler) CreateNewKanban(context *gin.Context) {
-	var token string
 	var reqBody requestBody.KanbanCreate
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.KanbanService.CreateNewKanban(id, reqBody.Title, reqBody.BoardId, reqBody.Position)
 	if err != nil {
 		context.Error(err)
-	}
-
-	err = handler.KanbanService.CreateNewKanban(token, reqBody.Title, reqBody.BoardId, reqBody.Position)
-	if err != nil {
-		context.Error(err)
+		context.Status(http.StatusInternalServerError)
+		return
 	}
 
 	context.Status(http.StatusOK)

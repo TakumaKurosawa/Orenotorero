@@ -36,14 +36,11 @@ func migration(db *gorm.DB) *gorm.DB {
 	db.Set("gorm:table_options", "ENGINE=InnoDB")
 	db.LogMode(true)
 	db.SingularTable(true)
-
-	db.AutoMigrate(
-		&model.User{},
-		&model.Board{},
-		&model.Card{},
-		&model.Kanban{},
-		&model.File{},
-	)
+	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Board{})
+	db.AutoMigrate(&model.Kanban{}).AddForeignKey("board_id", "board(id)", "CASCADE", "RESTRICT")
+	db.AutoMigrate(&model.Card{}).AddForeignKey("kanban_id", "kanban(id)", "CASCADE", "RESTRICT")
+	db.AutoMigrate(&model.File{}).AddForeignKey("card_id", "card(id)", "CASCADE", "RESTRICT")
 
 	return db
 }
