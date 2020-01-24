@@ -25,5 +25,5 @@ type CardAddFile struct {
 }
 
 type CardDelete struct {
-	Id       int    `json:"id"`
+	Id int `json:"id"`
 }
