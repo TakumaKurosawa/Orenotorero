@@ -10,4 +10,5 @@ type Card struct {
 	Describe *string    `json:"describe"  gorm:"type:varchar(255)"`
 	DeadLine *time.Time `json:"dead_line" gorm:"type:datetime;"`
 	Files    []File     `json:"files"     gorm:"foreignkey:CardId"`
+	Kanban   Kanban     `gorm:"foreignkey:Id;association_foreignkey:KanbanId"`
 }
