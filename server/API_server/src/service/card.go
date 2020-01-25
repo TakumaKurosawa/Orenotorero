@@ -10,8 +10,11 @@ type CardService struct {
 	FileRepository repository.FileRepository
 }
 
-func NewCardService(repository repository.CardRepository) CardService {
-	return CardService{CardRepository: repository}
+func NewCardService(cardRepository repository.CardRepository, fileRepository repository.FileRepository) CardService {
+	return CardService{
+		CardRepository: cardRepository,
+		FileRepository: fileRepository,
+	}
 }
 
 func (CardSvc *CardService) CreateCard(userId, title string, kanbanId, position int) error {
