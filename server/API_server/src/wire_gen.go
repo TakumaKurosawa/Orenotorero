@@ -37,7 +37,8 @@ func InitBoardAPI(db *gorm.DB) handler.BoardHandler {
 
 func InitCardAPI(db *gorm.DB) handler.CardHandler {
 	cardRepository := mysqlDB.NewCardRepoImpl(db)
-	cardService := service.NewCardService(cardRepository)
+	fileRepository := mysqlDB.NewFileRepoImpl(db)
+	cardService := service.NewCardService(cardRepository, fileRepository)
 	cardHandler := handler.NewCardHandler(cardService)
 	return cardHandler
 }

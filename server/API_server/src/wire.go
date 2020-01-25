@@ -29,7 +29,7 @@ func InitBoardAPI(db *gorm.DB) handler.BoardHandler {
 }
 
 func InitCardAPI(db *gorm.DB) handler.CardHandler {
-	wire.Build(mysqlDB.NewCardRepoImpl, service.NewCardService, handler.NewCardHandler)
+	wire.Build(mysqlDB.NewCardRepoImpl, mysqlDB.NewFileRepoImpl, service.NewCardService, handler.NewCardHandler)
 
 	return handler.CardHandler{}
 }

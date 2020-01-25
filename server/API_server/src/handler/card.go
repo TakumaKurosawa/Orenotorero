@@ -87,22 +87,24 @@ func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 }
 
 func (handler *CardHandler) AddFile(context *gin.Context) {
-	var token, s3Url string
 	var reqBody requestBody.CardAddFile
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.CardService.AttachFile(userId, reqBody.Id, reqBody.FileData, reqBody.FileName)
 	if err != nil {
 		context.Error(err)
-	}
-
-	err = handler.CardService.InsertFileData(reqBody.Id, token, s3Url, reqBody.FileName)
-	if err != nil {
-		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
