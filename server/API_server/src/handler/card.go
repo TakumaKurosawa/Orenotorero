@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"orenotorero/handler/requestBody"
 	"orenotorero/service"
+	"time"
 )
 
 type CardHandler struct {
@@ -65,22 +66,30 @@ func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
 }
 
 func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
-	var token string
 	var reqBody requestBody.CardChangeDeadline
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	var deadline time.Time
+	deadline, err = time.Parse("2006-01-02 15:04:05", reqBody.Deadline)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = handler.CardService.ChangeCardDeadline(reqBody.Id, token, reqBody.Deadline)
+	err = handler.CardService.ChangeCardDeadline(userId, reqBody.Id, deadline)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
