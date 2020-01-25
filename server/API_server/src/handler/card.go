@@ -96,7 +96,7 @@ func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 }
 
 func (handler *CardHandler) AddFile(context *gin.Context) {
-	var reqBody requestBody.CardAddFile
+	var reqBody requestBody.FileAdd
 
 	claims := ginJwt.ExtractClaims(context)
 	userId, ok := claims["id"].(string)
@@ -134,6 +134,30 @@ func (handler *CardHandler) DeleteCard(context *gin.Context) {
 	}
 
 	err = handler.CardService.DeleteCard(id, reqBody.Id)
+	if err != nil {
+		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
+	}
+
+	context.Status(http.StatusOK)
+}
+
+func (handler *CardHandler) DeleteFile(context *gin.Context) {
+	var reqBody requestBody.FileDelete
+
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
+	if err != nil {
+		context.Error(err)
+	}
+
+	err = handler.CardService.DeleteFile(userId, reqBody.Id)
 	if err != nil {
 		context.Error(err)
 		context.Status(http.StatusBadRequest)
