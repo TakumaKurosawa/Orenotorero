@@ -77,8 +77,13 @@ func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 		context.Error(err)
 	}
 
-	var time, _ = time.Parse("2006-01-02 15:04:05", reqBody.Deadline)
-	err = handler.CardService.ChangeCardDeadline(userId, reqBody.Id, time)
+	var deadline time.Time
+	deadline, err = time.Parse("2006-01-02 15:04:05", reqBody.Deadline)
+	if err != nil {
+		context.Error(err)
+	}
+
+	err = handler.CardService.ChangeCardDeadline(userId, reqBody.Id, deadline)
 	if err != nil {
 		context.Error(err)
 		context.Status(http.StatusBadRequest)
