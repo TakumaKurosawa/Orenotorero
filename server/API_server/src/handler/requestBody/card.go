@@ -18,10 +18,14 @@ type CardCreate struct {
 	Position int    `json:"position"`
 }
 
-type CardAddFile struct {
+type FileAdd struct {
 	Id       int    `json:"id"`
 	FileName string `json:"name"`
 	FileData string `json:"data"`
+}
+
+type FileDelete struct {
+	Id int `json:"id"`
 }
 
 type CardDelete struct {

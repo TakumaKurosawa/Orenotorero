@@ -29,15 +29,14 @@ func (CardSvc *CardService) ChangeCardDeadline(cardId int, token string, deadlin
 	return CardSvc.CardRepository.UpdateCardDeadLine(cardId, deadline)
 }
 
-func (CardSvc *CardService) AttachFile(userId string, cardId int, s3Url, fileName string) error {
-	return CardSvc.FileRepository.AttachFile(userId, cardId, s3Url, fileName)
-}
-
 func (CardSvc *CardService) DeleteCard(userId string, cardId int) error {
 	return CardSvc.CardRepository.DeleteCard(userId, cardId)
 }
 
-func (CardSvc *CardService) DeleteFileData(userId string, cardId int) error {
-	//User確認する
-	return nil
+func (CardSvc *CardService) AttachFile(userId string, cardId int, s3Url, fileName string) error {
+	return CardSvc.FileRepository.AttachFile(userId, cardId, s3Url, fileName)
+}
+
+func (CardSvc *CardService) DeleteFile(userId string, cardId int) error {
+	return CardSvc.FileRepository.DeleteFile(userId, cardId)
 }
