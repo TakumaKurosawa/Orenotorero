@@ -71,6 +71,7 @@ func main() {
 		authByJwt.DELETE("/card/file", cardAPI.DeleteCard)
 		authByJwt.PUT("/card", cardAPI.ChangeCardTitle)
 		authByJwt.PUT("/card/deadline", cardAPI.ChangeCardDeadline)
+		authByJwt.DELETE("/card", cardAPI.DeleteCard)
 	}
 
 	// utilityAPI
