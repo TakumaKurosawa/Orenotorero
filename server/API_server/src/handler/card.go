@@ -42,22 +42,24 @@ func (handler *CardHandler) CreateNewCard(context *gin.Context) {
 }
 
 func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
-	var token string
 	var reqBody requestBody.CardChangeTitle
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.CardService.ChangeCardTitle(userId, reqBody.Id, reqBody.Title)
 	if err != nil {
 		context.Error(err)
-	}
-
-	err = handler.CardService.ChangeCardTitle(reqBody.Id, token, reqBody.Title)
-	if err != nil {
-		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)
@@ -94,22 +96,48 @@ func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 }
 
 func (handler *CardHandler) AddFile(context *gin.Context) {
-	var token, s3Url string
 	var reqBody requestBody.CardAddFile
 
-	err := context.BindHeader(token)
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = context.BindJSON(reqBody)
+	err = handler.CardService.AttachFile(userId, reqBody.Id, reqBody.FileData, reqBody.FileName)
+	if err != nil {
+		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
+	}
+
+	context.Status(http.StatusOK)
+}
+
+func (handler *CardHandler) DeleteCard(context *gin.Context) {
+	var reqBody requestBody.CardDelete
+
+	claims := ginJwt.ExtractClaims(context)
+	id, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	err = handler.CardService.InsertFileData(reqBody.Id, token, s3Url, reqBody.FileName)
+	err = handler.CardService.DeleteCard(id, reqBody.Id)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)

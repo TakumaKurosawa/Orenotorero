@@ -45,9 +45,25 @@ func (p *CardRepositoryImpliment) InsertCard(userId string, title string, kanban
 	}
 }
 
-func (p *CardRepositoryImpliment) UpdateCardTitle(id int, title string) error {
+func (p *CardRepositoryImpliment) UpdateCardTitle(userId string, cardId int, title string) error {
 	// カードタイトル更新機能
-	return nil
+	var card model.Card
+	p.DB.Find(&card, cardId).Related(&card.Kanban)
+	if card.Id == 0 {
+		return errors.New("Cardが見つかりませんでした")
+	}
+	if card.Kanban.Id == 0 {
+		return errors.New("Kanbanが見つかりませんでした")
+	}
+
+	isMyBoard := utility.IsMyBoard(p.DB, userId, card.Kanban.BoardId)
+
+	if isMyBoard {
+		p.DB.Model(&card).Update("title", title)
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 }
 
 func (p *CardRepositoryImpliment) UpdateCardDeadLine(userId string, cardId int, deadline time.Time) error {
@@ -77,4 +93,25 @@ func (p *CardRepositoryImpliment) SelectAll(kanbanId int) ([]model.Card, error) 
 	p.DB.Find(&cards)
 
 	return cards, nil
+}
+
+func (p *CardRepositoryImpliment) DeleteCard(userId string, cardId int) error {
+	// 該当のCardを削除する
+	var card model.Card
+	p.DB.Where("id = ?", cardId).Find(&card).Related(&card.Kanban)
+	if card.Id == 0 {
+		return errors.New("カードが見つかりませんでした")
+	}
+	if card.Kanban.Id == 0 {
+		return errors.New("カンバンが見つかりませんでした")
+	}
+
+	isMyBoard := utility.IsMyBoard(p.DB, userId, card.Kanban.BoardId)
+
+	if isMyBoard {
+		p.DB.Delete(&card)
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 }

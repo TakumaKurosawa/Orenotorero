@@ -82,7 +82,7 @@ func (handler *KanbanHandler) DeleteKanban(context *gin.Context) {
 	err = handler.KanbanService.DeleteKanban(id, reqBody.KanbanId)
 	if err != nil {
 		context.Error(err)
-		context.Status(http.StatusInternalServerError)
+		context.Status(http.StatusBadRequest)
 		return
 	}
 
