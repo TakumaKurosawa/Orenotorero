@@ -26,8 +26,7 @@ func (CardSvc *CardService) ChangeCardDeadline(cardId int, token string, deadlin
 	return CardSvc.CardRepository.UpdateCardDeadLine(cardId, deadline)
 }
 
-func (CardSvc *CardService) InsertFileData(userId string, cardId int, s3Url, fileName string) error {
-	// FileテーブルにS3に保存したファイルへのURLなどの情報を格納する処理
+func (CardSvc *CardService) AttachFile(userId string, cardId int, s3Url, fileName string) error {
 	return CardSvc.FileRepository.AttachFile(userId, cardId, s3Url, fileName)
 }
 

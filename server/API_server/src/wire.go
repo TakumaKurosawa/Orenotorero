@@ -39,3 +39,9 @@ func InitKanbanAPI(db *gorm.DB) handler.KanbanHandler {
 
 	return handler.KanbanHandler{}
 }
+
+func InitFileAPI(db *gorm.DB) handler.CardHandler {
+	wire.Build(mysqlDB.NewFileRepoImpl, service.NewCardService, handler.NewCardHandler)
+
+	return handler.CardHandler{}
+}
