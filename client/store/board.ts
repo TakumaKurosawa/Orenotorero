@@ -1,24 +1,73 @@
 import { Module, MutationTree, GetterTree, ActionTree } from 'vuex'
-import boardData from '../assets/mock/board.json'
 import { RootState } from '~/store/index'
 
 export interface BoardState {
-  boardData: object
+  boardData: Array<any>
 }
 export const state: () => BoardState = (): BoardState => ({
-  boardData
+  boardData: [
+    {
+      id: 1,
+      title: '今週やること',
+      position: 1,
+      card: [
+        {
+          id: 1,
+          title:
+            '牛乳を買いに行くんじゃあああああああああああああああああああああああああああああああああああああ',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 1
+        },
+        {
+          id: 2,
+          title: '牛を狩に行く',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 2
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: 'TODO',
+      position: 2,
+      card: [
+        {
+          id: 5,
+          title: 'ミルクゲット',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 1
+        },
+        {
+          id: 3,
+          title: 'ミートゲット',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 2
+        }
+      ]
+    }
+  ]
 })
 const getters: GetterTree<BoardState, RootState> = {
-  getBoardData(state: BoardState) {
+  boardData(state: BoardState) {
     return state.boardData
+  },
+  kanbanData: (state: BoardState) => (index: number) => {
+    return state.boardData[index].card
   }
   // cardData: (state: BoardState) => (index: number) => {
   //   return state.boardData[index].card
   // }
 }
 const mutations: MutationTree<BoardState> = {
-  updateBoardData(state: BoardState, newBoardData: Array<object>): void {
+  updateBoardData(state: BoardState, newBoardData: any): void {
     state.boardData = newBoardData
+  },
+  updateKanbanData(state: BoardState, payload: any) {
+    state.boardData[payload.index].card = payload.value
   }
 }
 const actions: ActionTree<BoardState, RootState> = {

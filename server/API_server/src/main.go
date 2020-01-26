@@ -26,6 +26,7 @@ func main() {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
+	config.AllowHeaders = []string{"*"}
 	r.Use(cors.New(config))
 
 	// connection testAPI
