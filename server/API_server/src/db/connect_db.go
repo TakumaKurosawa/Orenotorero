@@ -38,9 +38,9 @@ func migration(db *gorm.DB) *gorm.DB {
 	db.SingularTable(true)
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Board{})
-	db.AutoMigrate(&model.Kanban{}).AddForeignKey("board_id", "board(id)", "CASCADE", "RESTRICT")
-	db.AutoMigrate(&model.Card{}).AddForeignKey("kanban_id", "kanban(id)", "CASCADE", "RESTRICT")
-	db.AutoMigrate(&model.File{}).AddForeignKey("card_id", "card(id)", "CASCADE", "RESTRICT")
+	db.AutoMigrate(&model.Kanban{}).AddForeignKey("board_id", "board(id)", "CASCADE", "CASCADE")
+	db.AutoMigrate(&model.Card{}).AddForeignKey("kanban_id", "kanban(id)", "CASCADE", "CASCADE")
+	db.AutoMigrate(&model.File{}).AddForeignKey("card_id", "card(id)", "CASCADE", "CASCADE")
 
 	return db
 }

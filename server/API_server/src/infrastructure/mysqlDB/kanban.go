@@ -111,21 +111,17 @@ func (p *KanbanRepositoryImpliment) UpdatePosition(userId string, positions []re
 	isMyBoard := utility.IsMyBoard(p.DB, userId, board.Id)
 
 	if isMyBoard {
-		var kanbans []model.Kanban
-		//対象のBoardにあるカンバン以下全てをしゅとくしてくる
-		p.DB.Model(&board).Preload("Cards.Files").Related(&kanbans)
-
-		for num, _ := range positions {
+		for i, position := range positions {
 			//Kanban Positionの更新
-			kanbans[positions[num].KanbanId-1].Id = num
+			//position.KanbanId:i+1番目のKanbanのID
+			p.DB.Find(&model.Kanban{}, position.KanbanId).Update("position", i+1)
 
-			////Card Positionの更新
-			//for i,_ := range positions[num].CardArray {
-			//	kanbans[num].Cards[i].Position = i
-			//}
+			//Card Positionの更新
+			//position.CardArray[j]:i+1番目のKanbanに属するj+1番目のCardのID
+			for j, _ := range position.CardArray {
+				p.DB.Find(&model.Card{}, position.CardArray[j]).Updates(model.Card{Position: j + 1, KanbanId: position.KanbanId})
+			}
 		}
-		//最後に変更分をぜんぶ一斉にてきおうさせる
-		p.DB.Update(&kanbans)
 		return nil
 	} else {
 		return errors.New("ボードへの権限がありません")

@@ -23,7 +23,8 @@ func InitUserAPI(db *gorm.DB) handler.UserHandler {
 
 func InitUtilityAPI(db *gorm.DB) handler.UtilityHandler {
 	userRepository := mysqlDB.NewUserRepoImpl(db)
-	utilityService := service.NewUtilityService(userRepository)
+	kanbanRepository := mysqlDB.NewKanbanRepoImpl(db)
+	utilityService := service.NewUtilityService(userRepository, kanbanRepository)
 	utilityHandler := handler.NewUtilityHandler(utilityService)
 	return utilityHandler
 }

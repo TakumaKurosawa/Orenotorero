@@ -12,7 +12,7 @@ type UtilityService struct {
 
 func NewUtilityService(userRepository repository.UserRepository, kanbanRepository repository.KanbanRepository) UtilityService {
 	return UtilityService{
-		UserRepository: userRepository,
+		UserRepository:   userRepository,
 		KanbanRepository: kanbanRepository,
 	}
 }
