@@ -55,7 +55,9 @@ func (p *KanbanRepositoryImpliment) SelectByBoardId(userId string, boardId int) 
 	isMyBoard := utility.IsMyBoard(p.DB, userId, boardId)
 
 	if isMyBoard {
-		p.DB.Model(&board).Preload("Cards.Files").Related(&kanbans)
+		p.DB.Model(&board).Preload("Cards", func(db *gorm.DB) *gorm.DB {
+			return db.Order("position")
+		}).Order("position").Preload("Cards.Files").Related(&kanbans)
 		return kanbans, nil
 	} else {
 		return nil, errors.New("ボードへの権限がありません")
@@ -98,7 +100,35 @@ func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(userId string, kanbanId in
 	}
 }
 
-func (p *KanbanRepositoryImpliment) UpdatePosition(userId string, position []requestBody.UpdatePosition) error {
+func (p *KanbanRepositoryImpliment) UpdatePosition(userId string, positions []requestBody.UpdatePosition) error {
 	//Kanban & Cardのポジション変更機能
+	var board model.Board
+	p.DB.Find(&model.Kanban{}, positions[0].KanbanId).Related(&board)
+	if board.Id == 0 {
+		return errors.New("Boardが見つかりませんでした")
+	}
+
+	isMyBoard := utility.IsMyBoard(p.DB, userId, board.Id)
+
+	if isMyBoard {
+		var kanbans []model.Kanban
+		//対象のBoardにあるカンバン以下全てをしゅとくしてくる
+		p.DB.Model(&board).Preload("Cards.Files").Related(&kanbans)
+
+		for num, _ := range positions {
+			//Kanban Positionの更新
+			kanbans[positions[num].KanbanId-1].Id = num
+
+			////Card Positionの更新
+			//for i,_ := range positions[num].CardArray {
+			//	kanbans[num].Cards[i].Position = i
+			//}
+		}
+		//最後に変更分をぜんぶ一斉にてきおうさせる
+		p.DB.Update(&kanbans)
+		return nil
+	} else {
+		return errors.New("ボードへの権限がありません")
+	}
 	return nil
 }

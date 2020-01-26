@@ -17,7 +17,7 @@ func InitUserAPI(db *gorm.DB) handler.UserHandler {
 }
 
 func InitUtilityAPI(db *gorm.DB) handler.UtilityHandler {
-	wire.Build(mysqlDB.NewUserRepoImpl, service.NewUtilityService, handler.NewUtilityHandler)
+	wire.Build(mysqlDB.NewUserRepoImpl, mysqlDB.NewKanbanRepoImpl(), service.NewUtilityService, handler.NewUtilityHandler)
 
 	return handler.UtilityHandler{}
 }

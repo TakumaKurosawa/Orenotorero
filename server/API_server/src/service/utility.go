@@ -10,8 +10,11 @@ type UtilityService struct {
 	KanbanRepository repository.KanbanRepository
 }
 
-func NewUtilityService(repository repository.UserRepository) UtilityService {
-	return UtilityService{UserRepository: repository}
+func NewUtilityService(userRepository repository.UserRepository, kanbanRepository repository.KanbanRepository) UtilityService {
+	return UtilityService{
+		UserRepository: userRepository,
+		KanbanRepository: kanbanRepository,
+	}
 }
 
 func (UtilitySvc *UtilityService) CheckEmail(email string) (bool, error) {

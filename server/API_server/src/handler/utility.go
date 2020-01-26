@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -56,7 +55,7 @@ func (handler *UtilityHandler) FileUpload(context *gin.Context) {
 }
 
 func (handler *UtilityHandler) UpdatePosition(context *gin.Context) {
-	reqBody := new(requestBody.List)
+	var reqBody []requestBody.UpdatePosition
 
 	claims := ginJwt.ExtractClaims(context)
 	userId, ok := claims["id"].(string)
@@ -64,14 +63,11 @@ func (handler *UtilityHandler) UpdatePosition(context *gin.Context) {
 		context.Error(ginJwt.ErrForbidden)
 	}
 
-	err := context.BindJSON(reqBody)
+	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.Error(err)
 	}
 
-	for _, pos := range reqBody.Position {
-		fmt.Print(pos)
-	}
 	err = handler.UtilityService.UpdatePosition(userId, reqBody)
 	if err != nil {
 		context.Error(err)
