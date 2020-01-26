@@ -1,50 +1,71 @@
-import { Module, MutationTree, GetterTree } from 'vuex'
-import boardData from '../assets/mock/board.json'
+import { Module, MutationTree, GetterTree, ActionTree } from 'vuex'
 import { RootState } from '~/store/index'
 
 export interface BoardState {
-  boardData: object
+  boardData: Array<any>
 }
 export const state: () => BoardState = (): BoardState => ({
-  boardData
+  boardData: [
+    {
+      id: 1,
+      title: '今週やること',
+      position: 1,
+      card: [
+        {
+          id: 1,
+          title: '牛乳を買いに行くんじゃあああああああああああああああああああああああああああああああああああああ',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 1
+        },
+        {
+          id: 2,
+          title: '牛を狩に行く',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 2
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: 'TODO',
+      position: 2,
+      card: [
+        {
+          id: 5,
+          title: 'ミルクゲット',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 1
+        },
+        {
+          id: 3,
+          title: 'ミートゲット',
+          describe: 'これは1番目のカードです。',
+          deadline: '2019-05-03 11:00',
+          position: 2
+        }
+      ]
+    }
+  ]
 })
 const getters: GetterTree<BoardState, RootState> = {
-  getBoardData(state: BoardState) {
+  boardData(state: BoardState) {
     return state.boardData
+  },
+  kanbanData: (state: BoardState) => (index: number) => {
+    return state.boardData[index].card
   }
 }
 const mutations: MutationTree<BoardState> = {
-  setBoardData(state: BoardState, boardData: any): void {
-    state.boardData = boardData
+  updateBoardData(state: BoardState, newBoardData: any): void {
+    state.boardData = newBoardData
+  },
+  updateKanbanData(state: BoardState, payload: any) {
+    state.boardData[payload.index].card = payload.value
   }
 }
-// const actions: ActionTree<BoardState, RootState> = {
-// //   nuxtServerInit ({ commit }, { req }) {
-// //   if (req.headers.cookie) {
-// //     const cookieData = cookieparser.parse(req.headers.cookie);
-// //     const token = cookieData.token;
-// //     const tokenAdmin = cookieData.tokenAdmin;
-// //     if (tokenAdmin) {
-// //       commit('admin/auth/loginAdmin', tokenAdmin);
-// //     }
-// //     if (token) {
-// //       commit('login', token);
-// //     }
-// //   }
-// // },
-// // async setBoardData ({ commit }): Promise<any> {
-// //   const boardData: any = this.getters.getboardData;
-// // if (Object.keys(boardData).length === 0) {
-// //   await this.$axios.get('/profile/')
-// //     .then((res) => {
-// //       console.log(res.data);
-// //       commit('setUserData', res.data);
-// //     }).catch((err) => {
-// //       console.log(err);
-// //     });
-// // }
-// }
-// };
 export const Board: Module<BoardState, RootState> = {
   namespaced: true,
   state,

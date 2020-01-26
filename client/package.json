@@ -18,7 +18,8 @@
     "hard-source-webpack-plugin": "^0.13.1",
     "nuxt": "^2.0.0",
     "nuxt-property-decorator": "^2.5.0",
-    "vue-property-decorator": "^8.3.0"
+    "vue-property-decorator": "^8.3.0",
+    "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.3.4",
