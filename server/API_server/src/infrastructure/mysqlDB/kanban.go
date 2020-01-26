@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"orenotorero/db/Model"
+	"orenotorero/handler/requestBody"
 	"orenotorero/repository"
 	"orenotorero/utility"
 )
@@ -97,8 +98,7 @@ func (p *KanbanRepositoryImpliment) UpdateKanbanTitle(userId string, kanbanId in
 	}
 }
 
-func (p *KanbanRepositoryImpliment) UpdatePosition(position []int) error {
+func (p *KanbanRepositoryImpliment) UpdatePosition(userId string, position []requestBody.UpdatePosition) error {
 	//Kanban & Cardのポジション変更機能
-
 	return nil
 }

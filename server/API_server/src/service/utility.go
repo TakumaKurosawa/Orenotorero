@@ -1,6 +1,7 @@
 package service
 
 import (
+	"orenotorero/handler/requestBody"
 	"orenotorero/repository"
 )
 
@@ -32,13 +33,6 @@ func (UtilitySvc *UtilityService) FileUpload(token, img string) (string, error) 
 	return s3Url, nil
 }
 
-func (UtilitySvc *UtilityService) UpdatePosition(userId string, position []int) error {
-	//ここでリクエストを投げたUserがちゃんと該当Boardを所持しているかを確認する
-
-	//Update
-	err := UtilitySvc.KanbanRepository.UpdatePosition(position)
-	if err != nil {
-		return err
-	}
-	return nil
+func (UtilitySvc *UtilityService) UpdatePosition(userId string, position []requestBody.UpdatePosition) error {
+	return UtilitySvc.KanbanRepository.UpdatePosition(userId, position)
 }
