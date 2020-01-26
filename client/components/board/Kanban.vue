@@ -12,7 +12,28 @@
         ></card>
       </draggable>
       <v-card-actions>
-        <v-btn block text>カード追加</v-btn>
+        <v-btn v-if="!inputTitle" block text @click="inputTitle = true"
+          >カード追加</v-btn
+        >
+        <v-form v-if="inputTitle" v-model="isValid">
+          <v-col>
+            <textField
+              :text-rules="titleRules"
+              :max-length="30"
+              :text-label="'タイトルを入力'"
+              :text-type="'text'"
+              @submit="onReceiveCardTitle"
+            ></textField>
+          </v-col>
+          <v-col>
+            <Button
+              :value="'カードを追加'"
+              :is-valid="isValid"
+              @action="createKanban()"
+            ></Button>
+            <v-icon @click="inputTitle = false">mdi-close</v-icon>
+          </v-col>
+        </v-form>
       </v-card-actions>
     </v-card>
   </v-col>
@@ -22,14 +43,21 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
 import Card from './Card.vue'
+import textField from '@/components/atom/TextField.vue'
+import Button from '@/components/atom/Button.vue'
 
 @Component({
   components: {
     draggable,
-    Card
+    Card,
+    textField,
+    Button
   }
 })
 export default class Kanban extends Vue {
+  newCardTitle = ''
+  inputTitle = false
+  isValid = true
   get kanbanData() {
     return this.$store.getters['board/boardData'][this.kanbanIndex].card
   }
@@ -40,6 +68,13 @@ export default class Kanban extends Vue {
       value
     })
   }
+
+  onReceiveCardTitle(cardTitle: string) {
+    this.newCardTitle = cardTitle
+  }
+
+  @Prop({ type: Array, required: true })
+  titleRules!: Array<string>
 
   @Prop({ type: Object, required: true })
   kanban!: object
