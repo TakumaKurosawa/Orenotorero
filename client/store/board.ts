@@ -58,9 +58,6 @@ const getters: GetterTree<BoardState, RootState> = {
   kanbanData: (state: BoardState) => (index: number) => {
     return state.boardData[index].card
   }
-  // cardData: (state: BoardState) => (index: number) => {
-  //   return state.boardData[index].card
-  // }
 }
 const mutations: MutationTree<BoardState> = {
   updateBoardData(state: BoardState, newBoardData: any): void {
@@ -71,21 +68,18 @@ const mutations: MutationTree<BoardState> = {
   }
 }
 const actions: ActionTree<BoardState, RootState> = {
-  async fetchBoardData({ rootState, commit }, boardId): Promise<any> {
-    // axios -> データを取ってくる
+  async fetchBoardData({ rootState, commit }, payload): Promise<any> {
     const boardData: Array<object> = await this.$axios
       .$get('/kanban', {
         headers: {
           Authorization: 'Bearer ' + rootState.auth.authToken,
-          BoardId: boardId
+          BoardId: payload.boardId
         },
         data: {}
       })
       .catch((err: any) => {
         console.log(err)
       })
-
-    // mutationのupdateBoardDataを呼び出す
     commit('updateBoardData', boardData)
   }
 }
