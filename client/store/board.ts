@@ -12,10 +12,51 @@ const getters: GetterTree<BoardState, RootState> = {
   getBoardData(state: BoardState) {
     return state.boardData
   }
+  // cardData: (state: BoardState) => (index: number) => {
+  //   return state.boardData[index].card
+  // }
 }
 const mutations: MutationTree<BoardState> = {
-  setBoardData(state: BoardState, boardData: any): void {
-    state.boardData = boardData
+  updateBoardData(state: BoardState, newBoardData: Array<object>): void {
+    state.boardData = newBoardData
+  }
+}
+const actions: ActionTree<BoardState, RootState> = {
+  async fetchBoardData({ rootState, commit }, boardId): Promise<any> {
+    // axios -> データを取ってくる
+    const boardData: Array<object> = await this.$axios
+      .$get('/kanban', {
+        headers: {
+          Authorization: 'Bearer ' + rootState.auth.authToken,
+          BoardId: boardId
+        },
+        data: {}
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+
+    // mutationのupdateBoardDataを呼び出す
+    commit('updateBoardData', boardData)
+  }
+}
+const actions: ActionTree<BoardState, RootState> = {
+  async fetchBoardData({ rootState, commit }, boardId): Promise<any> {
+    // axios -> データを取ってくる
+    const boardData: Array<object> = await this.$axios
+      .$get('/kanban', {
+        headers: {
+          Authorization: 'Bearer ' + rootState.auth.authToken,
+          BoardId: boardId
+        },
+        data: {}
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+
+    // mutationのupdateBoardDataを呼び出す
+    commit('updateBoardData', boardData)
   }
 }
 // const actions: ActionTree<BoardState, RootState> = {
@@ -49,7 +90,7 @@ export const Board: Module<BoardState, RootState> = {
   namespaced: true,
   state,
   getters,
-  // actions,
+  actions,
   mutations
 }
 export default Board
