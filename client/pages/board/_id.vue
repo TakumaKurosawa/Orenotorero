@@ -8,13 +8,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import draggable from 'vuedraggable'
 import Board from '~/components/board/Board.vue'
 import BoardHeader from '@/components/board/BoardHeader.vue'
 
 @Component({
   components: {
-    draggable,
     Board,
     BoardHeader
   }

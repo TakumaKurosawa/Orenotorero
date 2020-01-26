@@ -30,7 +30,7 @@ export default class BoardCanvas extends Vue {
     return this.$store.getters['board/boardData']
   }
 
-  set boardData(value: object) {
+  set boardData(value: Array<object>) {
     this.$store.commit('board/updateBoardData', value)
   }
 }

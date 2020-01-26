@@ -34,7 +34,7 @@ export default class Kanban extends Vue {
     return this.$store.getters['board/boardData'][this.kanbanIndex].card
   }
 
-  set kanbanData(value) {
+  set kanbanData(value: Array<object>) {
     this.$store.commit('board/updateKanbanData', {
       index: this.kanbanIndex,
       value
