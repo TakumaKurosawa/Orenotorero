@@ -55,7 +55,7 @@ func (handler *UtilityHandler) FileUpload(context *gin.Context) {
 }
 
 func (handler *UtilityHandler) UpdatePosition(context *gin.Context) {
-	var reqBody requestBody.UpdatePosition
+	var reqBody []requestBody.UpdatePosition
 
 	claims := ginJwt.ExtractClaims(context)
 	userId, ok := claims["id"].(string)
@@ -68,9 +68,11 @@ func (handler *UtilityHandler) UpdatePosition(context *gin.Context) {
 		context.Error(err)
 	}
 
-	err = handler.UtilityService.UpdatePosition(userId, reqBody.Position)
+	err = handler.UtilityService.UpdatePosition(userId, reqBody)
 	if err != nil {
 		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
 	}
 
 	context.Status(http.StatusOK)

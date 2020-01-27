@@ -9,5 +9,6 @@ type FileUpload struct {
 }
 
 type UpdatePosition struct {
-	Position []int `json:"position"`
+	KanbanId  int   `json:"kanbanId"`
+	CardArray []int `json:"cardArray"`
 }
