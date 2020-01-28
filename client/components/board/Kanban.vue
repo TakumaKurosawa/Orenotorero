@@ -29,7 +29,7 @@
             <Button
               :value="'カードを追加'"
               :is-valid="isValid"
-              @action="createKanban()"
+              @action="createCard()"
             ></Button>
             <v-icon @click="inputTitle = false">mdi-close</v-icon>
           </v-col>
@@ -71,6 +71,10 @@ export default class Kanban extends Vue {
 
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
+  }
+
+  createCard() {
+    console.log(this.newCardTitle)
   }
 
   @Prop({ type: Array, required: true })

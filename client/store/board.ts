@@ -1,4 +1,4 @@
-import { Module, MutationTree, GetterTree, ActionTree } from 'vuex'
+import { Module, MutationTree, GetterTree } from 'vuex'
 import { RootState } from '~/store/index'
 
 export interface BoardState {
