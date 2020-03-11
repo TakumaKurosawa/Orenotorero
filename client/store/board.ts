@@ -1,4 +1,4 @@
-import { Module, MutationTree, GetterTree, ActionTree } from 'vuex'
+import { Module, MutationTree, GetterTree } from 'vuex'
 import { RootState } from '~/store/index'
 
 export interface BoardState {
@@ -13,7 +13,8 @@ export const state: () => BoardState = (): BoardState => ({
       card: [
         {
           id: 1,
-          title: '牛乳を買いに行くんじゃあああああああああああああああああああああああああああああああああああああ',
+          title:
+            '牛乳を買いに行くんじゃあああああああああああああああああああああああああああああああああああああ',
           describe: 'これは1番目のカードです。',
           deadline: '2019-05-03 11:00',
           position: 1

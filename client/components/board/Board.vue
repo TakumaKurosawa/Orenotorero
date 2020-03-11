@@ -6,10 +6,39 @@
           v-for="(kanban, index) in boardData"
           :key="index"
           class="list-group-item mr-5"
+          :title-rules="titleRules"
           :kanban-index="index"
           :kanban="kanban"
         ></kanban>
       </draggable>
+      <v-col>
+        <v-card light min-width="200px" max-width="200px">
+          <v-card-actions>
+            <v-btn v-if="!inputTitle" block text @click="inputTitle = true"
+              >カンバン追加</v-btn
+            >
+            <v-form v-if="inputTitle" v-model="isValid">
+              <v-col>
+                <textField
+                  :text-rules="titleRules"
+                  :max-length="30"
+                  :text-label="'タイトルを入力'"
+                  :text-type="'text'"
+                  @submit="onReceiveKanbanTitle"
+                ></textField>
+              </v-col>
+              <v-col>
+                <Button
+                  :value="'カンバンを追加'"
+                  :is-valid="isValid"
+                  @action="createKanban()"
+                ></Button>
+                <v-icon @click="inputTitle = false">mdi-close</v-icon>
+              </v-col>
+            </v-form>
+          </v-card-actions>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -18,20 +47,40 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
 import kanban from './Kanban.vue'
+import textField from '@/components/atom/TextField.vue'
+import Button from '@/components/atom/Button.vue'
 
 @Component({
   components: {
     draggable,
-    kanban
+    kanban,
+    textField,
+    Button
   }
 })
 export default class BoardCanvas extends Vue {
+  newKanbanTitle = ''
+  inputTitle = false
+  isValid = true
+  titleRules = [
+    (v: string) => !!v || 'titleの入力は必須です',
+    (v: string) => v.length <= 30 || '30文字以内で入力してください'
+  ]
+
   get boardData() {
     return this.$store.getters['board/boardData']
   }
 
   set boardData(value: Array<object>) {
     this.$store.commit('board/updateBoardData', value)
+  }
+
+  onReceiveKanbanTitle(kanbanTitle: string) {
+    this.newKanbanTitle = kanbanTitle
+  }
+
+  createKanban() {
+    console.log(this.newKanbanTitle)
   }
 }
 </script>
