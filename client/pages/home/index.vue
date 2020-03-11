@@ -5,7 +5,10 @@
     <RecentlyUsedBoardList
       :board-data="recentAccessedBoard"
     ></RecentlyUsedBoardList>
-    <PersonalBoardList :board-data="boardData"></PersonalBoardList>
+    <PersonalBoardList
+      :board-data="boardData"
+      @action="updateBoardData()"
+    ></PersonalBoardList>
   </div>
 </template>
 
@@ -37,6 +40,23 @@ export default class Home extends Vue {
         console.log(err)
       })
     return { boardData }
+  }
+
+  async updateBoardData() {
+    await this.$axios
+      .get('/board', {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        },
+        data: {}
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        this.boardData = res.data
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 
   get recentAccessedBoard(): Array<object> {
