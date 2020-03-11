@@ -2,16 +2,15 @@
   <div>
     <LabelIcon :text-label="'最近の表示'" :icon-name="'mdi-clock'"></LabelIcon>
     <v-row>
-      <div v-if="boardData">
-        <Card
-          v-for="item in boardData"
-          :key="item.id"
-          :card-title="item.title"
-          :card-height="100"
-          :card-width="180"
-          :card-img="item.bg_img"
-        ></Card>
-      </div>
+      <Card
+        v-for="item in boardData"
+        :key="item.id"
+        :card-title="item.title"
+        :card-height="100"
+        :card-width="180"
+        :card-img="item.bg_img"
+        @action="transitionBoard(item.id)"
+      ></Card>
     </v-row>
   </div>
 </template>
@@ -27,6 +26,10 @@ import Card from '@/components/atom/Card.vue'
   }
 })
 export default class RecentlyUsedBoardList extends Vue {
+  transitionBoard(id: Number) {
+    this.$router.push('/board/' + id)
+  }
+
   @Prop({ type: Array, required: true })
   boardData!: Array<string>
 }

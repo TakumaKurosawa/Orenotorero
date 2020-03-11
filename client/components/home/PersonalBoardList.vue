@@ -91,14 +91,17 @@ export default class PersonalBoardList extends Vue {
       })
       .then((res: any) => {
         console.log(res.data)
+        this.$emit('action')
       })
       .catch((err: any) => {
         console.log(err)
+        this.boardTitle = ''
+        this.imageURL = ''
       })
   }
 
   transitionBoard(id: Number) {
-    console.log(id)
+    this.$router.push('/board/' + id)
   }
 
   validDialog() {
