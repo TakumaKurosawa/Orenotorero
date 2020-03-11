@@ -4,7 +4,7 @@
     :height="cardHeight"
     :img="cardImg"
     :color="cardColor"
-    @click="runFunc()"
+    @click="submit()"
   >
     <v-card-title>{{ cardTitle }}</v-card-title>
   </v-card>
@@ -15,7 +15,7 @@ import { Vue, Prop, Component } from 'nuxt-property-decorator'
 
 @Component
 export default class TextField extends Vue {
-  runFunc() {
+  submit() {
     this.$emit('action')
   }
 
