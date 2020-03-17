@@ -67,12 +67,23 @@ export default class BoardCanvas extends Vue {
     (v: string) => v.length <= 30 || '30文字以内で入力してください'
   ]
 
+  created() {
+    this.getBoardData()
+  }
+
   get boardData() {
     return this.$store.getters['board/boardData']
   }
 
   set boardData(value: Array<object>) {
     this.$store.commit('board/updateBoardData', value)
+  }
+
+  getBoardData() {
+    this.$store.dispatch('board/getBoardData', {
+      boardId: this.$route.params.id,
+      token: this.$store.getters['auth/getAuthToken']
+    })
   }
 
   onReceiveKanbanTitle(kanbanTitle: string) {
