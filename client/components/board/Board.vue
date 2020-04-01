@@ -1,7 +1,5 @@
 <template>
   <div>
-    {{ $route.params.id }}
-    {{ boardData.length }}
     <v-container fluid>
       <v-row>
         <draggable v-model="boardData" class="list-group d-flex" group="kanban">
@@ -74,11 +72,11 @@ export default class BoardCanvas extends Vue {
   async createKanban() {
     const payload = {
       title: this.newKanbanTitle,
-      board_id: this.$route.params.id,
-      position: this.boardData.length
+      board_id: Number(this.$route.params.id),
+      position: this.boardData.length + 1
     }
     await this.$axios
-      .post('/board', payload, {
+      .post('/kanban', payload, {
         headers: {
           Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
         }
@@ -88,7 +86,6 @@ export default class BoardCanvas extends Vue {
       })
       .catch((err: any) => {
         console.log(err)
-        this.newKanbanTitle = ''
       })
   }
 
