@@ -69,6 +69,10 @@ export default class BoardCanvas extends Vue {
     (v: string) => v.length <= 30 || '30文字以内で入力してください'
   ]
 
+  created() {
+    this.getBoardData()
+  }
+
   async createKanban() {
     const payload = {
       title: this.newKanbanTitle,
@@ -95,6 +99,13 @@ export default class BoardCanvas extends Vue {
 
   set boardData(value: Array<object>) {
     this.$store.commit('board/updateBoardData', value)
+  }
+
+  getBoardData() {
+    this.$store.dispatch('board/getBoardData', {
+      boardId: this.$route.params.id,
+      token: this.$store.getters['auth/getAuthToken']
+    })
   }
 
   onReceiveKanbanTitle(kanbanTitle: string) {

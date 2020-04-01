@@ -1,4 +1,4 @@
-import { Module, MutationTree, GetterTree } from 'vuex'
+import { Module, MutationTree, GetterTree, ActionTree } from 'vuex'
 import { RootState } from '~/store/index'
 
 export interface BoardState {
@@ -67,11 +67,30 @@ const mutations: MutationTree<BoardState> = {
     state.boardData[payload.index].card = payload.value
   }
 }
+const actions: ActionTree<BoardState, RootState> = {
+  async getBoardData({ commit }: any, payload: object): Promise<any> {
+    console.log(payload)
+    await this.$axios
+      .get('/kanban', {
+        headers: {
+          Authorization: 'Bearer ' + payload.token,
+          BoardId: payload.boardId
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        commit('updateBoardData', res.data)
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  },
+}
 export const Board: Module<BoardState, RootState> = {
   namespaced: true,
   state,
   getters,
-  // actions,
+  actions,
   mutations
 }
 export default Board
