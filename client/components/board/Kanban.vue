@@ -1,5 +1,7 @@
 <template>
   <v-col>
+    {{ this.kanban.id }}
+    {{ this.kanban.card.length }}
     <v-card light min-width="200px" max-width="200px">
       <v-card-title>{{ kanban.title }}</v-card-title>
       <draggable v-model="kanbanData" class="list-group" group="card">
@@ -58,6 +60,29 @@ export default class Kanban extends Vue {
   newCardTitle = ''
   inputTitle = false
   isValid = true
+
+  async createCard() {
+    const payload = {
+      title: this.newCardTitle,
+      kanban_id: this.kanban.id,
+      position: this.kanban.card.length + 1
+    }
+    await this.$axios
+      .post('/card', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        this.$emit('action')
+        this.inputTitle = false
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
   get kanbanData() {
     return this.$store.getters['board/boardData'][this.kanbanIndex].card
   }
@@ -71,10 +96,6 @@ export default class Kanban extends Vue {
 
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
-  }
-
-  createCard() {
-    console.log(this.newCardTitle)
   }
 
   @Prop({ type: Array, required: true })
