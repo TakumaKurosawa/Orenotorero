@@ -2,7 +2,12 @@
   <div>
     <v-container fluid>
       <v-row>
-        <draggable v-model="boardData" class="list-group d-flex" group="kanban">
+        <draggable
+          v-model="boardData"
+          class="list-group d-flex"
+          group="kanban"
+          :move="replace()"
+        >
           <kanban
             v-for="(kanban, index) in boardData"
             :key="index"
@@ -113,6 +118,10 @@ export default class BoardCanvas extends Vue {
 
   onReceiveKanbanTitle(kanbanTitle: string) {
     this.newKanbanTitle = kanbanTitle
+  }
+
+  replace() {
+    console.log('replaceKanban')
   }
 }
 </script>

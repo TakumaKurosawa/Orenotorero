@@ -84,7 +84,7 @@ const actions: ActionTree<BoardState, RootState> = {
       .catch((err: any) => {
         console.log(err)
       })
-  },
+  }
 }
 export const Board: Module<BoardState, RootState> = {
   namespaced: true,

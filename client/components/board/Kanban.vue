@@ -2,7 +2,12 @@
   <v-col>
     <v-card light min-width="200px" max-width="200px">
       <v-card-title>{{ kanban.title }}</v-card-title>
-      <draggable v-model="kanbanData" class="list-group" group="card">
+      <draggable
+        v-model="kanbanData"
+        class="list-group"
+        group="card"
+        :move="replace()"
+      >
         <card
           v-for="(card, index) in kanbanData"
           :key="index"
@@ -73,7 +78,7 @@ export default class Kanban extends Vue {
       })
       .then((res: any) => {
         console.log(res.data)
-        this.$emit('action')
+        this.updateBoardData()
         this.inputTitle = false
       })
       .catch((err: any) => {
@@ -94,6 +99,14 @@ export default class Kanban extends Vue {
 
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
+  }
+
+  updateBoardData() {
+    this.$emit('action')
+  }
+
+  replace() {
+    console.log('replaceCard')
   }
 
   @Prop({ type: Array, required: true })
