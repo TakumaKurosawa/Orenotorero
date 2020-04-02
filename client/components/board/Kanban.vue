@@ -6,7 +6,7 @@
         v-model="kanbanData"
         class="list-group"
         group="card"
-        :move="replace()"
+        @end="replace()"
       >
         <card
           v-for="(card, index) in kanbanData"

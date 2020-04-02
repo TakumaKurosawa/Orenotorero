@@ -6,7 +6,7 @@
           v-model="boardData"
           class="list-group d-flex"
           group="kanban"
-          :move="replace()"
+          @end="replace()"
         >
           <kanban
             v-for="(kanban, index) in boardData"
