@@ -24,10 +24,10 @@
       <v-spacer></v-spacer>
       <div v-if="this.$store.state.auth.isAuth">
         ログインしてます
-        <!--        <v-btn @click="logout">-->
-        <!--          <v-icon>mdi-logout</v-icon>-->
-        <!--          ログアウト-->
-        <!--        </v-btn>-->
+        <v-btn @click="logout">
+          <v-icon>mdi-logout</v-icon>
+          ログアウト
+        </v-btn>
       </div>
       <v-btn v-else to="/authentication">
         <v-icon>mdi-login</v-icon>
@@ -69,11 +69,11 @@ export default {
       ],
       title: 'Orenotorero'
     }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
+    }
   }
-  // method() {
-  //   logout(){
-  //     this.$store.dispatch('auth/logout')
-  //   }
-  // },
 }
 </script>
