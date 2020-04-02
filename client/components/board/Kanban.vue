@@ -1,7 +1,5 @@
 <template>
   <v-col>
-    {{ this.kanban.id }}
-    {{ this.kanban.card.length }}
     <v-card light min-width="200px" max-width="200px">
       <v-card-title>{{ kanban.title }}</v-card-title>
       <draggable v-model="kanbanData" class="list-group" group="card">
