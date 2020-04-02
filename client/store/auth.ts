@@ -50,6 +50,10 @@ const actions: ActionTree<AuthState, RootState> = {
         console.log(err)
       })
   },
+  logout({ commit }: any): any {
+    commit('updateIsAuth', false)
+    commit('updateToken', '')
+  },
   async signup({ commit }: any, payload: object): Promise<any> {
     await this.$axios
       .post('/user/create', payload)
