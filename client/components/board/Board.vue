@@ -10,6 +10,7 @@
             :title-rules="titleRules"
             :kanban-index="index"
             :kanban="kanban"
+            @action="getBoardData()"
           ></kanban>
         </draggable>
         <v-col>
