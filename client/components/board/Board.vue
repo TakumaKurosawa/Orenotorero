@@ -88,6 +88,7 @@ export default class BoardCanvas extends Vue {
       .then((res: any) => {
         console.log(res.data)
         this.getBoardData()
+        this.inputTitle = false
       })
       .catch((err: any) => {
         console.log(err)
