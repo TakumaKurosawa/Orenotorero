@@ -47,12 +47,14 @@ export default class SignIn extends Vue {
     this.password = passwordData
   }
 
-  loginAction() {
-    this.$store.dispatch('auth/login', {
+  async loginAction() {
+    await this.$store.dispatch('auth/login', {
       email: this.email,
       password: this.password
     })
-    this.$router.push('/home')
+    if (this.$store.state.auth.isAuth) {
+      this.$router.push('/home')
+    }
   }
 
   @Prop({ type: Array, required: true })
