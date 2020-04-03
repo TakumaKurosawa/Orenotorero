@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ boardData }}
     <v-container fluid>
       <v-row>
         <draggable
