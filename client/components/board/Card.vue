@@ -15,7 +15,19 @@
           <v-icon @click="dialog = false">mdi-close</v-icon>
         </v-card-actions>
         <v-card-title class="headline">
-          {{ card.title }}
+          <span v-if="isEdit"
+            ><v-text-field :value="card.title" type="text"
+          /></span>
+          <span v-else>{{ card.title }}</span>
+          <a v-if="isEdit" @click="updateCardTitle"
+            ><v-icon>mdi-send</v-icon></a
+          >
+          <a v-if="isEdit" @click="toggleIsEdit"
+            ><v-icon>mdi-pencil-remove</v-icon></a
+          >
+          <a v-else @click="toggleIsEdit"
+            ><v-icon>mdi-square-edit-outline</v-icon></a
+          >
         </v-card-title>
         <v-card-title>
           説明:
@@ -35,10 +47,27 @@ import { Prop } from '~/node_modules/nuxt-property-decorator'
 @Component
 export default class Card extends Vue {
   dialog = false
+  isEdit = false
+
   @Prop({ type: Object, required: true })
   card!: object
 
   @Prop({ type: Number, required: true })
   cardIndex!: number
+
+  toggleIsEdit(): void {
+    this.isEdit = !this.isEdit
+  }
+
+  updateCardTitle(): void {
+    const payload = {
+      id: this.cardIndex,
+      title: this.card.title,
+      token: this.$store.getters['auth/getAuthToken']
+    }
+
+    console.log(payload)
+    this.$store.dispatch('board/updateCardTitle', payload)
+  }
 }
 </script>

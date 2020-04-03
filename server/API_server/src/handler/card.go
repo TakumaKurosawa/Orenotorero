@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -54,6 +55,8 @@ func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
 	if err != nil {
 		context.Error(err)
 	}
+
+	fmt.Println(reqBody)
 
 	err = handler.CardService.ChangeCardTitle(userId, reqBody.Id, reqBody.Title)
 	if err != nil {
