@@ -60,12 +60,6 @@ import Button from '@/components/atom/Button.vue'
   }
 })
 export default class Kanban extends Vue {
-  const wait = (sec) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, sec*1000);
-    })
-  }
-
   newCardTitle = ''
   inputTitle = false
   isValid = true
