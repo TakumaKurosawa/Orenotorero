@@ -85,24 +85,24 @@ const actions: ActionTree<BoardState, RootState> = {
         console.log(err)
       })
   },
-  updateCardTitle(payload: object): void {
-    console.log(payload)
-    // await this.$axios
-    //   .put(
-    //     '/card',
-    //     {
-    //       id: payload.id,
-    //       title: payload.title
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: 'Bearer ' + payload.token
-    //       },
-    //     }
-    //   )
-    //   .catch((err: any) => {
-    //     console.log(err)
-    //   })
+  async updateCardTitle({ commit }: any, payload: object): Promise<any> {
+    console.log('payload:', payload)
+    await this.$axios
+      .put(
+        '/card',
+        {
+          id: payload.id,
+          title: payload.title
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + payload.token
+          }
+        }
+      )
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 }
 export const Board: Module<BoardState, RootState> = {

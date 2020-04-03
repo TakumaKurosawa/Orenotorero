@@ -16,7 +16,7 @@
         </v-card-actions>
         <v-card-title class="headline">
           <span v-if="isEdit"
-            ><v-text-field :value="card.title" type="text"
+            ><v-text-field v-model="cardTitle" type="text"
           /></span>
           <span v-else>{{ card.title }}</span>
           <a v-if="isEdit" @click="updateCardTitle"
@@ -48,6 +48,7 @@ import { Prop } from '~/node_modules/nuxt-property-decorator'
 export default class Card extends Vue {
   dialog = false
   isEdit = false
+  cardTitle = ''
 
   @Prop({ type: Object, required: true })
   card!: object
@@ -55,14 +56,18 @@ export default class Card extends Vue {
   @Prop({ type: Number, required: true })
   cardIndex!: number
 
+  created() {
+    this.cardTitle = this.card.title
+  }
+
   toggleIsEdit(): void {
     this.isEdit = !this.isEdit
   }
 
   updateCardTitle(): void {
     const payload = {
-      id: this.cardIndex,
-      title: this.card.title,
+      id: this.card.id,
+      title: this.cardTitle,
       token: this.$store.getters['auth/getAuthToken']
     }
 
