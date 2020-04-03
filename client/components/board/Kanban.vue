@@ -1,7 +1,12 @@
 <template>
   <v-col>
     <v-card light min-width="200px" max-width="200px">
-      <v-card-title>{{ kanban.title }}</v-card-title>
+      <v-card-title
+        >{{ kanban.title }}
+        <v-spacer></v-spacer>
+        <v-icon>mdi-pencil</v-icon>
+        <v-icon @click="deleteKanban()">mdi-close</v-icon>
+      </v-card-title>
       <draggable v-model="kanbanData" class="list-group" group="card">
         <card
           v-for="(card, index) in kanbanData"
@@ -90,6 +95,25 @@ export default class Kanban extends Vue {
       index: this.kanbanIndex,
       value
     })
+  }
+
+  async deleteKanban() {
+    await this.$axios
+      .delete('/kanban', {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        },
+        data: {
+          id: this.kanban.id
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        this.$emit('action')
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 
   onReceiveCardTitle(cardTitle: string) {
