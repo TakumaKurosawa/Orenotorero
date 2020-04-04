@@ -20,7 +20,7 @@
         <v-btn v-if="!inputTitle" block text @click="inputTitle = true"
           >カード追加</v-btn
         >
-        <v-form v-if="inputTitle" v-model="isValid">
+        <div v-if="inputTitle">
           <v-col>
             <textField
               :text-rules="titleRules"
@@ -38,7 +38,7 @@
             ></Button>
             <v-icon @click="inputTitle = false">mdi-close</v-icon>
           </v-col>
-        </v-form>
+        </div>
       </v-card-actions>
     </v-card>
   </v-col>
