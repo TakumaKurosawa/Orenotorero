@@ -98,7 +98,7 @@ func (p *CardRepositoryImpliment) SelectAll(kanbanId int) ([]model.Card, error) 
 func (p *CardRepositoryImpliment) DeleteCard(userId string, cardId int) error {
 	// 該当のCardを削除する
 	var card model.Card
-	p.DB.Where("id = ?", cardId).Find(&card).Related(&card.Kanban)
+	p.DB.Preload("Kanban").Find(&card, cardId)
 	if card.Id == 0 {
 		return errors.New("カードが見つかりませんでした")
 	}
