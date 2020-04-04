@@ -22,9 +22,10 @@
           <v-menu v-model="deadlinePicker">
             <template v-slot:activator="{ on }">
               <v-btn outlined v-on="on">
+                {{ new Date(card.dead_line) }}
                 <template v-if="deadline">{{ deadline }}</template>
-                <template v-else-if="!card.deadline">なし</template>
-                <template v-else> {{ card.deadline }} </template>
+                <template v-else-if="!card.dead_line">なし</template>
+                <template v-else> {{ card.dead_line }} </template>
               </v-btn>
             </template>
             <v-date-picker v-model="deadline"></v-date-picker>
@@ -62,7 +63,7 @@ export default class Card extends Vue {
 
   updateDeadline() {
     const payload = {
-      deadline: this.deadline + ' 00:00',
+      deadline: this.deadline + ' 00:00:00',
       id: this.card.id
     }
     console.log(payload)
