@@ -50,7 +50,11 @@
           説明:
         </v-card-title>
         <v-card-text>
-          {{ card.describe }}
+          <!-- エンターを押された時に関数実行-->
+          <v-text-field
+            v-model="describe"
+            @keyup.enter="updateDescribe"
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -70,6 +74,7 @@ export default class Card extends Vue {
   dialog = false
   deadline = ''
   deadlinePicker = false
+  describe = ''
   isEdit = false
   cardTitle = ''
 
@@ -84,6 +89,27 @@ export default class Card extends Vue {
   cardIndex!: number
 
   updateDeadline() {
+    const payload = {
+      deadline: this.deadline + ' 00:00:00',
+      id: this.card.id
+    }
+    console.log(payload)
+    this.$axios
+      .put('/card/deadline', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+    this.dialog = false
+  }
+
+  updateDescribe() {
     const payload = {
       deadline: this.deadline + ' 00:00:00',
       id: this.card.id
