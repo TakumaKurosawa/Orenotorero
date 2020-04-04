@@ -101,6 +101,7 @@ export default class Card extends Vue {
       .catch((err: any) => {
         console.log(err)
       })
+    this.dialog = false
   }
 
   toggleIsEdit(): void {
