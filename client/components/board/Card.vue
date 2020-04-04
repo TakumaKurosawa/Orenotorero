@@ -53,6 +53,7 @@
           {{ card.describe }}
         </v-card-text>
         <v-card-actions>
+          <v-btn color="error" @click="deleteCard">削除</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="updateDeadline">保存</v-btn>
         </v-card-actions>
@@ -82,6 +83,30 @@ export default class Card extends Vue {
 
   @Prop({ type: Number, required: true })
   cardIndex!: number
+
+  async deleteCard() {
+    const options = {
+      headers: {
+        Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+      },
+      data: {
+        id: this.card.id
+      }
+    }
+    console.log(options)
+    await this.$axios
+      .delete('/card', options)
+      .then(() => {
+        this.dialog = false
+        this.$store.dispatch('board/getBoardData', {
+          boardId: this.$route.params.id,
+          token: this.$store.getters['auth/getAuthToken']
+        })
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
 
   updateDeadline() {
     const payload = {
