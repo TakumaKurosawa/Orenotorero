@@ -1,10 +1,13 @@
 <template>
   <v-col>
     <v-card light min-width="200px" max-width="200px">
-      <v-card-title
-        >{{ kanban.title }}
+      <v-card-title>
+        <v-text-field
+          v-model="kanbanTitle"
+          readonly
+          @click="changeTitle"
+        ></v-text-field>
         <v-spacer></v-spacer>
-        <v-icon>mdi-pencil</v-icon>
         <v-icon @click="deleteKanban()">mdi-close</v-icon>
       </v-card-title>
       <draggable v-model="kanbanData" class="list-group" group="card">
@@ -63,6 +66,11 @@ export default class Kanban extends Vue {
   newCardTitle = ''
   inputTitle = false
   isValid = true
+  kanbanTitle = ''
+
+  created() {
+    this.kanbanTitle = this.kanban.title
+  }
 
   async createCard() {
     const payload = {
@@ -118,6 +126,10 @@ export default class Kanban extends Vue {
 
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
+  }
+
+  changeTitle() {
+    console.log(this.kanbanTitle)
   }
 
   @Prop({ type: Array, required: true })
