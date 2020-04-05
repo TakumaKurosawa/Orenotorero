@@ -10,6 +10,11 @@ type CardChangeDeadline struct {
 	Deadline string `json:"deadline"`
 }
 
+type CardChangeDescribe struct{
+	Id       int    `json:"id"`
+	Describe string `json:"describe"`
+}
+
 type CardCreate struct {
 	Title    string `json:"title"`
 	KanbanId int    `json:"kanban_id"`
