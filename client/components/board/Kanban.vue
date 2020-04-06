@@ -159,10 +159,6 @@ export default class Kanban extends Vue {
     this.newCardTitle = cardTitle
   }
 
-  changeTitle() {
-    console.log(this.kanbanTitle)
-  }
-
   @Prop({ type: Array, required: true })
   titleRules!: Array<string>
 

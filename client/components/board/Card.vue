@@ -45,7 +45,7 @@
             </template>
             <v-date-picker
               v-model="deadline"
-              @click:date="updateDeadline()"
+              @click:date="updateDeadline"
             ></v-date-picker>
           </v-menu>
         </v-card-text>
@@ -108,15 +108,11 @@ export default class Card extends Vue {
       deadline: this.deadline + ' 00:00:00',
       id: this.card.id
     }
-    console.log(payload)
     await this.$axios
       .put('/card/deadline', payload, {
         headers: {
           Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
         }
-      })
-      .then((res: any) => {
-        console.log(res.data)
       })
       .catch((err: any) => {
         console.log(err)
@@ -128,15 +124,13 @@ export default class Card extends Vue {
       describe: this.describe,
       id: this.card.id
     }
-    console.log(payload)
     await this.$axios
       .put('/card/describe', payload, {
         headers: {
           Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
         }
       })
-      .then((res: any) => {
-        console.log(res.data)
+      .then(() => {
         this.$store.dispatch('board/getBoardData', {
           boardId: this.$route.params.id,
           token: this.$store.getters['auth/getAuthToken']
@@ -149,7 +143,7 @@ export default class Card extends Vue {
   }
 
   async deleteCard() {
-    const options = {
+    const payload = {
       headers: {
         Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
       },
@@ -157,9 +151,8 @@ export default class Card extends Vue {
         id: this.card.id
       }
     }
-    console.log(options)
     await this.$axios
-      .delete('/card', options)
+      .delete('/card', payload)
       .then(() => {
         this.dialog = false
         this.$store.dispatch('board/getBoardData', {
@@ -182,8 +175,6 @@ export default class Card extends Vue {
       title: this.cardTitle,
       token: this.$store.getters['auth/getAuthToken']
     }
-
-    console.log(payload)
     this.$store.dispatch('board/updateCardTitle', payload)
   }
 }
