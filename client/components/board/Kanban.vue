@@ -1,14 +1,22 @@
 <template>
   <v-col>
     <v-card light min-width="200px" max-width="200px">
-      <v-card-title>
-        <v-text-field
-          v-model="kanbanTitle"
-          readonly
-          @click="changeTitle"
-        ></v-text-field>
+      <v-card-title v-if="isEdit">
+        {{ kanban.title }}
         <v-spacer></v-spacer>
-        <v-icon @click="deleteKanban()">mdi-close</v-icon>
+        <v-icon @click="isEdit = false">mdi-pencil</v-icon>
+        <v-icon @click="deleteKanban">mdi-close</v-icon>
+      </v-card-title>
+      <v-card-title v-if="!isEdit">
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="kanbanTitle"
+              append-icon="mdi-send"
+              @click:append="changeKanbanTitle"
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-card-title>
       <draggable v-model="kanbanData" class="list-group" group="card">
         <card
@@ -67,6 +75,7 @@ export default class Kanban extends Vue {
   inputTitle = false
   isValid = true
   kanbanTitle = ''
+  isEdit = true
 
   created() {
     this.kanbanTitle = this.kanban.title
@@ -121,6 +130,28 @@ export default class Kanban extends Vue {
       })
       .catch((err: any) => {
         console.log(err)
+      })
+  }
+
+  async changeKanbanTitle() {
+    const payload = {
+      id: this.kanban.id,
+      title: this.kanbanTitle
+    }
+    await this.$axios
+      .put('/kanban', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        this.isEdit = true
+        this.$emit('action')
+      })
+      .catch((err: any) => {
+        console.log(err)
+        this.isEdit = true
       })
   }
 

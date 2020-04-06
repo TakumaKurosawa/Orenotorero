@@ -43,22 +43,35 @@
                 </template>
               </v-btn>
             </template>
-            <v-date-picker v-model="deadline"></v-date-picker>
+            <v-date-picker
+              v-model="deadline"
+              @click:date="updateDeadline()"
+            ></v-date-picker>
           </v-menu>
         </v-card-text>
         <v-card-title>
-          説明:
+          説明:<v-btn
+            v-if="!isDescribeEdit"
+            @click="isDescribeEdit = true"
+            color="blue-grey"
+            outlined
+            >編集</v-btn
+          >
         </v-card-title>
-        <v-card-text>
-          <!-- エンターを押された時に関数実行-->
-          <v-text-field
-            v-model="describe"
-            @keyup.enter="updateDescribe"
-          ></v-text-field>
+        <v-card-text v-if="isDescribeEdit">
+          <v-textarea v-model="describe" outlined auto-grow></v-textarea>
+          <v-btn color="success" @click="updateDescribe">保存</v-btn>
+          <v-btn icon @click="isDescribeEdit = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-text>
+        <v-card-text v-else>
+          <div class="text--primary">
+            {{ describe }}
+          </div>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="updateDeadline">保存</v-btn>
+          <v-btn color="error" @click="deleteCard">削除</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -75,11 +88,13 @@ export default class Card extends Vue {
   deadline = ''
   deadlinePicker = false
   describe = ''
+  isDescribeEdit = false
   isEdit = false
   cardTitle = ''
 
   created() {
     this.cardTitle = this.card.title
+    this.describe = this.card.describe
   }
 
   @Prop({ type: Object, required: true })
@@ -88,13 +103,13 @@ export default class Card extends Vue {
   @Prop({ type: Number, required: true })
   cardIndex!: number
 
-  updateDeadline() {
+  async updateDeadline() {
     const payload = {
       deadline: this.deadline + ' 00:00:00',
       id: this.card.id
     }
     console.log(payload)
-    this.$axios
+    await this.$axios
       .put('/card/deadline', payload, {
         headers: {
           Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
@@ -106,28 +121,55 @@ export default class Card extends Vue {
       .catch((err: any) => {
         console.log(err)
       })
-    this.dialog = false
   }
 
-  updateDescribe() {
+  async updateDescribe() {
     const payload = {
-      deadline: this.deadline + ' 00:00:00',
+      describe: this.describe,
       id: this.card.id
     }
     console.log(payload)
-    this.$axios
-      .put('/card/deadline', payload, {
+    await this.$axios
+      .put('/card/describe', payload, {
         headers: {
           Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
         }
       })
       .then((res: any) => {
         console.log(res.data)
+        this.$store.dispatch('board/getBoardData', {
+          boardId: this.$route.params.id,
+          token: this.$store.getters['auth/getAuthToken']
+        })
+        this.isDescribeEdit = false
       })
       .catch((err: any) => {
         console.log(err)
       })
-    this.dialog = false
+  }
+
+  async deleteCard() {
+    const options = {
+      headers: {
+        Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+      },
+      data: {
+        id: this.card.id
+      }
+    }
+    console.log(options)
+    await this.$axios
+      .delete('/card', options)
+      .then(() => {
+        this.dialog = false
+        this.$store.dispatch('board/getBoardData', {
+          boardId: this.$route.params.id,
+          token: this.$store.getters['auth/getAuthToken']
+        })
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 
   toggleIsEdit(): void {

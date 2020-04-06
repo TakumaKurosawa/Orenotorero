@@ -29,6 +29,10 @@ func (CardSvc *CardService) ChangeCardDeadline(userId string, cardId int, deadli
 	return CardSvc.CardRepository.UpdateCardDeadLine(userId, cardId, deadline)
 }
 
+func (CardSvc *CardService) ChangeCardDescribe(userId string, cardId int, describe string) error {
+	return CardSvc.CardRepository.UpdateCardDescribe(userId, cardId, describe)
+}
+
 func (CardSvc *CardService) DeleteCard(userId string, cardId int) error {
 	return CardSvc.CardRepository.DeleteCard(userId, cardId)
 }
