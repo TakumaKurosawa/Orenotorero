@@ -43,19 +43,35 @@
                 </template>
               </v-btn>
             </template>
-            <v-date-picker v-model="deadline"></v-date-picker>
+            <v-date-picker
+              v-model="deadline"
+              @click:date="updateDeadline"
+            ></v-date-picker>
           </v-menu>
         </v-card-text>
         <v-card-title>
-          説明:
+          説明:<v-btn
+            v-if="!isDescribeEdit"
+            @click="isDescribeEdit = true"
+            color="blue-grey"
+            outlined
+            >編集</v-btn
+          >
         </v-card-title>
-        <v-card-text>
-          {{ card.describe }}
+        <v-card-text v-if="isDescribeEdit">
+          <v-textarea v-model="describe" outlined auto-grow></v-textarea>
+          <v-btn color="success" @click="updateDescribe">保存</v-btn>
+          <v-btn icon @click="isDescribeEdit = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-text>
+        <v-card-text v-else>
+          <div class="text--primary">
+            {{ describe }}
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-btn color="error" @click="deleteCard">削除</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="updateDeadline">保存</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -71,11 +87,14 @@ export default class Card extends Vue {
   dialog = false
   deadline = ''
   deadlinePicker = false
+  describe = ''
+  isDescribeEdit = false
   isEdit = false
   cardTitle = ''
 
   created() {
     this.cardTitle = this.card.title
+    this.describe = this.card.describe
   }
 
   @Prop({ type: Object, required: true })
@@ -84,8 +103,47 @@ export default class Card extends Vue {
   @Prop({ type: Number, required: true })
   cardIndex!: number
 
+  async updateDeadline() {
+    const payload = {
+      deadline: this.deadline + ' 00:00:00',
+      id: this.card.id
+    }
+    await this.$axios
+      .put('/card/deadline', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
+  async updateDescribe() {
+    const payload = {
+      describe: this.describe,
+      id: this.card.id
+    }
+    await this.$axios
+      .put('/card/describe', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .then(() => {
+        this.$store.dispatch('board/getBoardData', {
+          boardId: this.$route.params.id,
+          token: this.$store.getters['auth/getAuthToken']
+        })
+        this.isDescribeEdit = false
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
   async deleteCard() {
-    const options = {
+    const payload = {
       headers: {
         Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
       },
@@ -93,9 +151,8 @@ export default class Card extends Vue {
         id: this.card.id
       }
     }
-    console.log(options)
     await this.$axios
-      .delete('/card', options)
+      .delete('/card', payload)
       .then(() => {
         this.dialog = false
         this.$store.dispatch('board/getBoardData', {
@@ -108,27 +165,6 @@ export default class Card extends Vue {
       })
   }
 
-  updateDeadline() {
-    const payload = {
-      deadline: this.deadline + ' 00:00:00',
-      id: this.card.id
-    }
-    console.log(payload)
-    this.$axios
-      .put('/card/deadline', payload, {
-        headers: {
-          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
-        }
-      })
-      .then((res: any) => {
-        console.log(res.data)
-      })
-      .catch((err: any) => {
-        console.log(err)
-      })
-    this.dialog = false
-  }
-
   toggleIsEdit(): void {
     this.isEdit = !this.isEdit
   }
@@ -139,8 +175,6 @@ export default class Card extends Vue {
       title: this.cardTitle,
       token: this.$store.getters['auth/getAuthToken']
     }
-
-    console.log(payload)
     this.$store.dispatch('board/updateCardTitle', payload)
   }
 }
