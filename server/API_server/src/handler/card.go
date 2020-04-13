@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -55,6 +56,8 @@ func (handler *CardHandler) ChangeCardTitle(context *gin.Context) {
 		context.Error(err)
 	}
 
+	fmt.Println(reqBody)
+
 	err = handler.CardService.ChangeCardTitle(userId, reqBody.Id, reqBody.Title)
 	if err != nil {
 		context.Error(err)
@@ -86,6 +89,30 @@ func (handler *CardHandler) ChangeCardDeadline(context *gin.Context) {
 	}
 
 	err = handler.CardService.ChangeCardDeadline(userId, reqBody.Id, deadline)
+	if err != nil {
+		context.Error(err)
+		context.Status(http.StatusBadRequest)
+		return
+	}
+
+	context.Status(http.StatusOK)
+}
+
+func (handler *CardHandler) ChangeCardDescribe(context *gin.Context) {
+	var reqBody requestBody.CardChangeDescribe
+
+	claims := ginJwt.ExtractClaims(context)
+	userId, ok := claims["id"].(string)
+	if ok == false {
+		context.Error(ginJwt.ErrForbidden)
+	}
+
+	err := context.BindJSON(&reqBody)
+	if err != nil {
+		context.Error(err)
+	}
+
+	err = handler.CardService.ChangeCardDescribe(userId, reqBody.Id, reqBody.Describe)
 	if err != nil {
 		context.Error(err)
 		context.Status(http.StatusBadRequest)
@@ -166,3 +193,5 @@ func (handler *CardHandler) DeleteFile(context *gin.Context) {
 
 	context.Status(http.StatusOK)
 }
+
+

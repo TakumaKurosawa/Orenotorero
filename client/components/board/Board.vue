@@ -7,7 +7,7 @@
           v-model="boardData"
           class="list-group d-flex"
           group="kanban"
-          @end="replace()"
+          @end="updatePosition"
         >
           <kanban
             v-for="(kanban, index) in boardData"
@@ -16,7 +16,7 @@
             :title-rules="titleRules"
             :kanban-index="index"
             :kanban="kanban"
-            @action="getBoardData()"
+            @action="getBoardData"
           ></kanban>
         </draggable>
         <v-col>
@@ -25,7 +25,7 @@
               <v-btn v-if="!inputTitle" block text @click="inputTitle = true"
                 >カンバン追加</v-btn
               >
-              <v-form v-if="inputTitle" v-model="isValid">
+              <div v-if="inputTitle">
                 <v-col>
                   <textField
                     :text-rules="titleRules"
@@ -39,11 +39,11 @@
                   <Button
                     :value="'カンバンを追加'"
                     :is-valid="isValid"
-                    @action="createKanban()"
+                    @action="createKanban"
                   ></Button>
                   <v-icon @click="inputTitle = false">mdi-close</v-icon>
                 </v-col>
-              </v-form>
+              </div>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -121,8 +121,29 @@ export default class BoardCanvas extends Vue {
     this.newKanbanTitle = kanbanTitle
   }
 
-  replace() {
-    console.log('replaceKanban')
+  async updatePosition() {
+    interface position {
+      kanbanId: Number
+      cardArray: Array<Number>
+    }
+    const payload = this.$store.state.board.boardData.map(
+      (kanban: { id: Number; card: [] }) => {
+        const p: position = {
+          kanbanId: kanban.id,
+          cardArray: kanban.card.map((card: { id: Number }) => card.id)
+        }
+        return p
+      }
+    )
+    await this.$axios
+      .put('/position', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
   }
 }
 </script>

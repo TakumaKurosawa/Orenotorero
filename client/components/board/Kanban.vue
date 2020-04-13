@@ -1,12 +1,28 @@
 <template>
   <v-col>
     <v-card light min-width="200px" max-width="200px">
-      <v-card-title>{{ kanban.title }}</v-card-title>
+      <v-card-title v-if="isEdit">
+        {{ kanban.title }}
+        <v-spacer></v-spacer>
+        <v-icon @click="isEdit = false">mdi-pencil</v-icon>
+        <v-icon @click="deleteKanban">mdi-close</v-icon>
+      </v-card-title>
+      <v-card-title v-if="!isEdit">
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="kanbanTitle"
+              append-icon="mdi-send"
+              @click:append="changeKanbanTitle"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-card-title>
       <draggable
         v-model="kanbanData"
         class="list-group"
         group="card"
-        @end="replace()"
+        @end="updatePosition"
       >
         <card
           v-for="(card, index) in kanbanData"
@@ -20,7 +36,7 @@
         <v-btn v-if="!inputTitle" block text @click="inputTitle = true"
           >カード追加</v-btn
         >
-        <v-form v-if="inputTitle" v-model="isValid">
+        <div v-if="inputTitle">
           <v-col>
             <textField
               :text-rules="titleRules"
@@ -38,7 +54,7 @@
             ></Button>
             <v-icon @click="inputTitle = false">mdi-close</v-icon>
           </v-col>
-        </v-form>
+        </div>
       </v-card-actions>
     </v-card>
   </v-col>
@@ -63,6 +79,12 @@ export default class Kanban extends Vue {
   newCardTitle = ''
   inputTitle = false
   isValid = true
+  kanbanTitle = ''
+  isEdit = true
+
+  created() {
+    this.kanbanTitle = this.kanban.title
+  }
 
   async createCard() {
     const payload = {
@@ -97,16 +119,78 @@ export default class Kanban extends Vue {
     })
   }
 
+  async deleteKanban() {
+    await this.$axios
+      .delete('/kanban', {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        },
+        data: {
+          id: this.kanban.id
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        this.$emit('action')
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
+  async changeKanbanTitle() {
+    const payload = {
+      id: this.kanban.id,
+      title: this.kanbanTitle
+    }
+    await this.$axios
+      .put('/kanban', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data)
+        this.isEdit = true
+        this.$emit('action')
+      })
+      .catch((err: any) => {
+        console.log(err)
+        this.isEdit = true
+      })
+  }
+
+  async updatePosition() {
+    interface position {
+      kanbanId: Number
+      cardArray: Array<Number>
+    }
+    const payload = this.$store.state.board.boardData.map(
+      (kanban: { id: Number; card: [] }) => {
+        const p: position = {
+          kanbanId: kanban.id,
+          cardArray: kanban.card.map((card: { id: Number }) => card.id)
+        }
+        return p
+      }
+    )
+    await this.$axios
+      .put('/position', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
   }
 
   updateBoardData() {
     this.$emit('action')
-  }
-
-  replace() {
-    console.log('replaceCard')
   }
 
   @Prop({ type: Array, required: true })
