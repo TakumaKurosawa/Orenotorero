@@ -100,7 +100,7 @@ export default class Kanban extends Vue {
       })
       .then((res: any) => {
         console.log(res.data)
-        this.updateBoardData()
+        this.$emit('action')
         this.inputTitle = false
       })
       .catch((err: any) => {
@@ -187,10 +187,6 @@ export default class Kanban extends Vue {
 
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
-  }
-
-  updateBoardData() {
-    this.$emit('action')
   }
 
   @Prop({ type: Array, required: true })
