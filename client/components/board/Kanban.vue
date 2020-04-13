@@ -155,6 +155,31 @@ export default class Kanban extends Vue {
       })
   }
 
+  async updatePosition() {
+    interface position {
+      kanbanId: Number
+      cardArray: Array<Number>
+    }
+    const payload = this.$store.state.board.boardData.map(
+      (kanban: { id: Number; card: [] }) => {
+        const p: position = {
+          kanbanId: kanban.id,
+          cardArray: kanban.card.map((card: { id: Number }) => card.id)
+        }
+        return p
+      }
+    )
+    await this.$axios
+      .put('/position', payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters['auth/getAuthToken']
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
   onReceiveCardTitle(cardTitle: string) {
     this.newCardTitle = cardTitle
   }

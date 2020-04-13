@@ -52,9 +52,9 @@
         <v-card-title>
           説明:<v-btn
             v-if="!isDescribeEdit"
-            @click="isDescribeEdit = true"
             color="blue-grey"
             outlined
+            @click="isDescribeEdit = true"
             >編集</v-btn
           >
         </v-card-title>
