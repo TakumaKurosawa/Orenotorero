@@ -154,6 +154,7 @@ export default class Kanban extends Vue {
         this.isEdit = true
       })
   }
+
   async updatePosition() {
     interface position {
       kanbanId: Number

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-btn @click="updatePosition">更新</v-btn>
     <v-container fluid>
       <v-row>
         <draggable v-model="boardData" class="list-group d-flex" group="kanban">
