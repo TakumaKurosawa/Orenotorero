@@ -18,7 +18,12 @@
           </v-col>
         </v-row>
       </v-card-title>
-      <draggable v-model="kanbanData" class="list-group" group="card">
+      <draggable
+        v-model="kanbanData"
+        class="list-group"
+        group="card"
+        @end="updatePosition"
+      >
         <card
           v-for="(card, index) in kanbanData"
           :key="index"

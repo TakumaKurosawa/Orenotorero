@@ -2,7 +2,12 @@
   <div>
     <v-container fluid>
       <v-row>
-        <draggable v-model="boardData" class="list-group d-flex" group="kanban">
+        <draggable
+          v-model="boardData"
+          class="list-group d-flex"
+          group="kanban"
+          @end="updatePosition"
+        >
           <kanban
             v-for="(kanban, index) in boardData"
             :key="index"
@@ -10,7 +15,7 @@
             :title-rules="titleRules"
             :kanban-index="index"
             :kanban="kanban"
-            @action="getBoardData()"
+            @action="getBoardData"
           ></kanban>
         </draggable>
         <v-col>
@@ -33,7 +38,7 @@
                   <Button
                     :value="'カンバンを追加'"
                     :is-valid="isValid"
-                    @action="createKanban()"
+                    @action="createKanban"
                   ></Button>
                   <v-icon @click="inputTitle = false">mdi-close</v-icon>
                 </v-col>
