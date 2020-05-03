@@ -11,5 +11,13 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
-export default class Top extends Vue {}
+export default class Top extends Vue {
+  created() {
+    if (this.$store.state.auth.isAuth) {
+      this.$router.push('/home')
+    } else {
+      this.$router.push('/authentication')
+    }
+  }
+}
 </script>

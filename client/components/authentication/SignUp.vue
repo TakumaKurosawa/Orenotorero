@@ -64,6 +64,9 @@ export default class SignUp extends Vue {
       email: this.email,
       password: this.password
     })
+    if (this.$store.state.auth.isAuth) {
+      this.$router.push('/home')
+    }
   }
 
   @Prop({ type: Array, required: true })

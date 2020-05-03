@@ -23,7 +23,6 @@
       <v-toolbar-title v-text="title" />
       <v-spacer></v-spacer>
       <div v-if="this.$store.state.auth.isAuth">
-        ログインしてます
         <v-btn @click="logout">
           <v-icon>mdi-logout</v-icon>
           ログアウト
